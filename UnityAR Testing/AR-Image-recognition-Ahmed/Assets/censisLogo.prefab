@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2034090718653565040}
   - component: {fileID: 2904212054280982612}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: censisLogo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
