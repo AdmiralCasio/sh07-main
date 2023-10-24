@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 848409ee8ba454f42a5ddff137688a27, type: 3}
   m_Name: ReferenceImageLibrary
   m_EditorClassIdentifier: 
-  m_GuidLow: 0
-  m_GuidHigh: 0
+  m_GuidLow: 5107813150294121967
+  m_GuidHigh: 180094109804832919
   m_DataStore:
     m_Storage: []
   m_Images:
@@ -26,4 +26,14 @@ MonoBehaviour:
     m_Size: {x: 0.5, y: 0.5}
     m_SpecifySize: 1
     m_Name: censisLogo
+    m_Texture: {fileID: 0}
+  - m_SerializedGuid:
+      m_GuidLow: 5291371440298772648
+      m_GuidHigh: 504209143574113453
+    m_SerializedTextureGuid:
+      m_GuidLow: 13214900767677883680
+      m_GuidHigh: 591352196884992091
+    m_Size: {x: 0, y: 0}
+    m_SpecifySize: 0
+    m_Name: unityLogo
     m_Texture: {fileID: 0}
