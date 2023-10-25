@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
 using UnityEngine.XR.ARFoundation;
+using UnityEngine.XR.ARSubsystems;
 
 [RequireComponent(typeof(ARTrackedImageManager))]
 public class imageTracking : MonoBehaviour
@@ -34,18 +35,29 @@ public class imageTracking : MonoBehaviour
     }
     private void imageChanged(ARTrackedImagesChangedEventArgs eventArgs)
     {
+        
         foreach (ARTrackedImage trackedImage in eventArgs.added)
         {
+            Debug.Log($"{trackedImage.referenceImage.name} added to scene");
             updateImage(trackedImage);
         }
         foreach (ARTrackedImage trackedImage in eventArgs.updated)
         {
+            Debug.Log($"{trackedImage.name} updated in scene");
             updateImage(trackedImage);
+            trackedImage.destroyOnRemoval = true;
+            if (trackedImage.trackingState == TrackingState.Limited)
+            {
+                Debug.Log($"{trackedImage.referenceImage.name}");
+                spawnedPrefab[trackedImage.referenceImage.name].SetActive(false);
+            }
+            
         }
         foreach (ARTrackedImage trackedImage in eventArgs.removed)
         {
-            spawnedPrefab[trackedImage.name].SetActive(false);
-            Destroy(spawnedPrefab[trackedImage.name]);
+            Debug.Log($"{trackedImage.referenceImage.name} removed from scene");
+            spawnedPrefab[trackedImage.referenceImage.name].SetActive(false);
+            Destroy(spawnedPrefab[trackedImage.referenceImage.name]);
         }
     }
     private void updateImage(ARTrackedImage trackedImage)
