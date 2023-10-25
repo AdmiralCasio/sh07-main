@@ -43,7 +43,7 @@ public class imageTracking : MonoBehaviour
         }
         foreach (ARTrackedImage trackedImage in eventArgs.updated)
         {
-            Debug.Log($"{trackedImage.name} updated in scene");
+            Debug.Log($"{trackedImage.referenceImage.name} updated in scene");
             updateImage(trackedImage);
             trackedImage.destroyOnRemoval = true;
             if (trackedImage.trackingState == TrackingState.Limited)
