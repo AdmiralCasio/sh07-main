@@ -515,7 +515,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   placedPrefab:
   - {fileID: 2380701641875856155, guid: 743c843602f1c364abdaf5472ac72208, type: 3}
-  - {fileID: 1695263202195536438, guid: ae3039461fdf1b94c985ea45d0ca47f3, type: 3}
   - {fileID: 726897787556432767, guid: 25a71eeb0b09e414ea9769d67e2cb1bb, type: 3}
 --- !u!114 &2105607464
 MonoBehaviour:
