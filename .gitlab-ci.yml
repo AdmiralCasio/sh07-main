@@ -23,7 +23,7 @@ unit-test-job:   # This job runs in the test stage.
     -projectPath . \
     -runTests -testPlatform editmode \
     -logFile \
-    -testResults ./unit-tests.xml | Out-Default"
+    -testResults ./unit-tests.xml"
   tags:
     - unity
 
