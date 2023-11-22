@@ -18,9 +18,9 @@ public class ARFeatheredPlaneMeshVisualizer : MonoBehaviour
     /// The width of the texture feathering (in world units).
     /// </summary>
     public float featheringWidth
-    { 
+    {
         get { return m_FeatheringWidth; }
-        set { m_FeatheringWidth = value; } 
+        set { m_FeatheringWidth = value; }
     }
 
     void Awake()
