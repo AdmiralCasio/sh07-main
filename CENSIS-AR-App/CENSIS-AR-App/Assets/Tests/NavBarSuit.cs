@@ -28,7 +28,22 @@ namespace Tests
             Click(mouse.leftButton);
         }
 
+
+
         // Home Page button tests
+
+        [UnityTest]
+        public IEnumerator HomeButtonOnHomePage()
+        {
+            GameObject homeButton = GameObject.Find("HomeCanvas/NavBar/HomeButton");
+            ClickUI(homeButton);
+
+            Canvas homeCanvas = GameObject.Find("HomeCanvas").GetComponent<Canvas>();
+            Assert.IsTrue(homeCanvas.enabled);
+
+            yield return null;
+        }
+
         [UnityTest]
         public IEnumerator TestCameraButtonOnHomePage()
         {
@@ -70,11 +85,23 @@ namespace Tests
         [UnityTest]
         public IEnumerator HomeButtonOnMapPage()
         {
-            GameObject homeButton = GameObject.Find("HomeCanvas/NavBar/HomeButton");
+            GameObject homeButton = GameObject.Find("MapCanvas/NavBar/HomeButton");
             ClickUI(homeButton);
 
             Canvas homeCanvas = GameObject.Find("HomeCanvas").GetComponent<Canvas>();
             Assert.IsTrue(homeCanvas.enabled);
+
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator MapButtonOnMapPage()
+        {
+            GameObject mapButton = GameObject.Find("MapCanvas/NavBar/MapButton");
+            ClickUI(mapButton);
+
+            Canvas mapCanvas = GameObject.Find("MapCanvas").GetComponent<Canvas>();
+            Assert.IsTrue(mapCanvas.enabled);
 
             yield return null;
         }
@@ -129,6 +156,18 @@ namespace Tests
         }
 
         [UnityTest]
+        public IEnumerator CameraButtonOnCameraPage()
+        {
+            GameObject cameraButton = GameObject.Find("CameraCanvas/NavBar/CameraButton");
+            ClickUI(cameraButton);
+
+            Canvas cameraCanvas = GameObject.Find("CameraCanvas").GetComponent<Canvas>();
+            Assert.IsTrue(cameraCanvas.enabled);
+
+            yield return null;
+        }
+
+        [UnityTest]
         public IEnumerator InfoButtonOnCameraPage()
         {
             GameObject infoButton = GameObject.Find("CameraCanvas/NavBar/InfoButton");
@@ -174,6 +213,18 @@ namespace Tests
 
             Canvas mapCanvas = GameObject.Find("MapCanvas").GetComponent<Canvas>();
             Assert.IsTrue(mapCanvas.enabled);
+
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator InfoButtonOnInfoPage()
+        {
+            GameObject infoButton = GameObject.Find("InfoCanvas/NavBar/InfoButton");
+            ClickUI(infoButton);
+
+            Canvas infoCanvas = GameObject.Find("InfoCanvas").GetComponent<Canvas>();
+            Assert.IsTrue(infoCanvas.enabled);
 
             yield return null;
         }
