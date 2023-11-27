@@ -69,7 +69,46 @@ namespace Tests
             yield return null;
         }
 
-        
+        // Map page button tests
+        [UnityTest]
+        public IEnumerator HomeButtonOnMapPage()
+        {
+            GameObject homeButton = GameObject.Find("HomeCanvas/NavBar/HomeButton");
+            ClickUI(homeButton);
+
+            // CameraCanvas = SceneManager.GetActiveScene().name;
+            Canvas homeCanvas = GameObject.Find("HomeCanvas").GetComponent<Canvas>();
+            Assert.IsTrue(homeCanvas.enabled);
+
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator CameraButtonOnMapPage()
+        {
+            GameObject cameraButton = GameObject.Find("MapCanvas/NavBar/CameraButton");
+            ClickUI(cameraButton);
+
+            // CameraCanvas = SceneManager.GetActiveScene().name;
+            Canvas cameraCanvas = GameObject.Find("CameraCanvas").GetComponent<Canvas>();
+            Assert.IsTrue(cameraCanvas.enabled);
+
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator InfoButtonOnMapPage()
+        {
+            GameObject infoButton = GameObject.Find("MapCanvas/NavBar/InfoButton");
+            ClickUI(infoButton);
+
+            // CameraCanvas = SceneManager.GetActiveScene().name;
+            Canvas infoCanvas = GameObject.Find("InfoCanvas").GetComponent<Canvas>();
+            Assert.IsTrue(infoCanvas.enabled);
+
+            yield return null;
+        }
+
     }
 
 }
