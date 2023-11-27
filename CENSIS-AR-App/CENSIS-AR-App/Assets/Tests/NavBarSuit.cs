@@ -35,7 +35,6 @@ namespace Tests
             GameObject cameraButton = GameObject.Find("HomeCanvas/NavBar/CameraButton");
             ClickUI(cameraButton);
 
-            // CameraCanvas = SceneManager.GetActiveScene().name;
             Canvas cameraCanvas = GameObject.Find("CameraCanvas").GetComponent<Canvas>();
             Assert.IsTrue(cameraCanvas.enabled);
 
@@ -48,7 +47,6 @@ namespace Tests
             GameObject mapButton = GameObject.Find("HomeCanvas/NavBar/MapButton");
             ClickUI(mapButton);
 
-            // CameraCanvas = SceneManager.GetActiveScene().name;
             Canvas mapCanvas = GameObject.Find("MapCanvas").GetComponent<Canvas>();
             Assert.IsTrue(mapCanvas.enabled);
 
@@ -62,7 +60,6 @@ namespace Tests
             GameObject infoButton = GameObject.Find("HomeCanvas/NavBar/InfoButton");
             ClickUI(infoButton);
 
-            // CameraCanvas = SceneManager.GetActiveScene().name;
             Canvas infoCanvas = GameObject.Find("InfoCanvas").GetComponent<Canvas>();
             Assert.IsTrue(infoCanvas.enabled);
 
@@ -76,7 +73,6 @@ namespace Tests
             GameObject homeButton = GameObject.Find("HomeCanvas/NavBar/HomeButton");
             ClickUI(homeButton);
 
-            // CameraCanvas = SceneManager.GetActiveScene().name;
             Canvas homeCanvas = GameObject.Find("HomeCanvas").GetComponent<Canvas>();
             Assert.IsTrue(homeCanvas.enabled);
 
@@ -89,7 +85,6 @@ namespace Tests
             GameObject cameraButton = GameObject.Find("MapCanvas/NavBar/CameraButton");
             ClickUI(cameraButton);
 
-            // CameraCanvas = SceneManager.GetActiveScene().name;
             Canvas cameraCanvas = GameObject.Find("CameraCanvas").GetComponent<Canvas>();
             Assert.IsTrue(cameraCanvas.enabled);
 
@@ -102,7 +97,6 @@ namespace Tests
             GameObject infoButton = GameObject.Find("MapCanvas/NavBar/InfoButton");
             ClickUI(infoButton);
 
-            // CameraCanvas = SceneManager.GetActiveScene().name;
             Canvas infoCanvas = GameObject.Find("InfoCanvas").GetComponent<Canvas>();
             Assert.IsTrue(infoCanvas.enabled);
 
@@ -116,7 +110,6 @@ namespace Tests
             GameObject homeButton = GameObject.Find("CameraCanvas/NavBar/HomeButton");
             ClickUI(homeButton);
 
-            // CameraCanvas = SceneManager.GetActiveScene().name;
             Canvas homeCanvas = GameObject.Find("HomeCanvas").GetComponent<Canvas>();
             Assert.IsTrue(homeCanvas.enabled);
 
@@ -129,7 +122,6 @@ namespace Tests
             GameObject mapButton = GameObject.Find("CameraCanvas/NavBar/MapButton");
             ClickUI(mapButton);
 
-            // CameraCanvas = SceneManager.GetActiveScene().name;
             Canvas mapCanvas = GameObject.Find("MapCanvas").GetComponent<Canvas>();
             Assert.IsTrue(mapCanvas.enabled);
 
@@ -148,6 +140,43 @@ namespace Tests
             yield return null;
         }
 
+
+
+        // Info page button tests
+        [UnityTest]
+        public IEnumerator HomeButtonOnInfoPage()
+        {
+            GameObject homeButton = GameObject.Find("InfoCanvas/NavBar/HomeButton");
+            ClickUI(homeButton);
+
+            Canvas homeCanvas = GameObject.Find("HomeCanvas").GetComponent<Canvas>();
+            Assert.IsTrue(homeCanvas.enabled);
+
+            yield return null;
+        }
+        [UnityTest]
+        public IEnumerator CameraButtonOnInfoPage()
+        {
+            GameObject cameraButton = GameObject.Find("InfoCanvas/NavBar/CameraButton");
+            ClickUI(cameraButton);
+
+            Canvas cameraCanvas = GameObject.Find("CameraCanvas").GetComponent<Canvas>();
+            Assert.IsTrue(cameraCanvas.enabled);
+
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator MapButtonOnInfoPage()
+        {
+            GameObject mapButton = GameObject.Find("InfoCanvas/NavBar/MapButton");
+            ClickUI(mapButton);
+
+            Canvas mapCanvas = GameObject.Find("MapCanvas").GetComponent<Canvas>();
+            Assert.IsTrue(mapCanvas.enabled);
+
+            yield return null;
+        }
     }
 
 }
