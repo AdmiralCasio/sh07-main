@@ -8,6 +8,18 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/ExampleAssets/Scenes/SampleScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 0
+    path: Assets/Scenes/AppDesign/HomePageScavenger.unity
+    guid: 321e4b9b9bc776e4f9eb4bcf0e2f902a
+  - enabled: 0
+    path: Assets/Scenes/AppDesign/CameraSceneScavenger.unity
+    guid: 2b5b8be93ad1f476694583b6283685bc
+  - enabled: 0
+    path: Assets/Scenes/AppDesign/MapSceneScavenger.unity
+    guid: 63fd7dd7150399f48872d54a9678f47d
+  - enabled: 0
+    path: Assets/Scenes/AppDesign/InfoSceneScavenger.unity
+    guid: d30d183703ca25f47ac2d339a24eec42
   m_configObjects:
     Unity.XR.WindowsMR.Settings: {fileID: 11400000, guid: 744b813df90924c169af73489b8325de,
       type: 2}
