@@ -7,6 +7,7 @@ public class TestLocationService : MonoBehaviour
 
     private void Awake()
     {
+        Permission.RequestUserPermission(Permission.FineLocation);
         Input.location.Start();
         Input.compass.enabled = true;
 
@@ -17,10 +18,12 @@ public class TestLocationService : MonoBehaviour
     }
     IEnumerator Start()
     {
-        Permission.RequestUserPermission(Permission.FineLocation);
         // Check if the user has location service enabled.
         if (!Input.location.isEnabledByUser)
+        {
             Debug.Log("Location not enabled on device or app does not have permission to access location");
+            yield break;
+        }
 
         // Starts the location service.
 
