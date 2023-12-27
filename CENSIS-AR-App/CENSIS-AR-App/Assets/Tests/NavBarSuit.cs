@@ -33,9 +33,9 @@ namespace Tests
         // Home Page button tests
 
         [UnityTest]
-        public IEnumerator HomeButtonOnHomePage()
+        public IEnumerator TestHomeButton()
         {
-            GameObject homeButton = GameObject.Find("HomeCanvas/NavBar/HomeButton");
+            GameObject homeButton = GameObject.Find("NavbarAndTopBar/NavBar/HomeButton");
             ClickUI(homeButton);
 
             Canvas homeCanvas = GameObject.Find("HomeCanvas").GetComponent<Canvas>();
@@ -45,9 +45,9 @@ namespace Tests
         }
 
         [UnityTest]
-        public IEnumerator TestCameraButtonOnHomePage()
+        public IEnumerator TestCameraButton()
         {
-            GameObject cameraButton = GameObject.Find("HomeCanvas/NavBar/CameraButton");
+            GameObject cameraButton = GameObject.Find("NavbarAndTopBar/NavBar/CameraButton");
             ClickUI(cameraButton);
 
             Canvas cameraCanvas = GameObject.Find("CameraCanvas").GetComponent<Canvas>();
@@ -57,9 +57,9 @@ namespace Tests
         }
 
         [UnityTest]
-        public IEnumerator TestMapButtonOnHomePage()
+        public IEnumerator TestMapButton()
         {
-            GameObject mapButton = GameObject.Find("HomeCanvas/NavBar/MapButton");
+            GameObject mapButton = GameObject.Find("NavbarAndTopBar/NavBar/MapButton");
             ClickUI(mapButton);
 
             Canvas mapCanvas = GameObject.Find("MapCanvas").GetComponent<Canvas>();
@@ -70,9 +70,9 @@ namespace Tests
 
 
         [UnityTest]
-        public IEnumerator TestInfoButtonOnHomePage()
+        public IEnumerator TestInfoButton()
         {
-            GameObject infoButton = GameObject.Find("HomeCanvas/NavBar/InfoButton");
+            GameObject infoButton = GameObject.Find("NavbarAndTopBar/NavBar/InfoButton");
             ClickUI(infoButton);
 
             Canvas infoCanvas = GameObject.Find("InfoCanvas").GetComponent<Canvas>();
@@ -81,153 +81,153 @@ namespace Tests
             yield return null;
         }
 
-        // Map page button tests
-        [UnityTest]
-        public IEnumerator HomeButtonOnMapPage()
-        {
-            GameObject homeButton = GameObject.Find("MapCanvas/NavBar/HomeButton");
-            ClickUI(homeButton);
+        //// Map page button tests
+        //[UnityTest]
+        //public IEnumerator HomeButtonOnMapPage()
+        //{
+        //    GameObject homeButton = GameObject.Find("MapCanvas/NavBar/HomeButton");
+        //    ClickUI(homeButton);
 
-            Canvas homeCanvas = GameObject.Find("HomeCanvas").GetComponent<Canvas>();
-            Assert.IsTrue(homeCanvas.enabled);
+        //    Canvas homeCanvas = GameObject.Find("HomeCanvas").GetComponent<Canvas>();
+        //    Assert.IsTrue(homeCanvas.enabled);
 
-            yield return null;
-        }
+        //    yield return null;
+        //}
 
-        [UnityTest]
-        public IEnumerator MapButtonOnMapPage()
-        {
-            GameObject mapButton = GameObject.Find("MapCanvas/NavBar/MapButton");
-            ClickUI(mapButton);
+        //[UnityTest]
+        //public IEnumerator MapButtonOnMapPage()
+        //{
+        //    GameObject mapButton = GameObject.Find("MapCanvas/NavBar/MapButton");
+        //    ClickUI(mapButton);
 
-            Canvas mapCanvas = GameObject.Find("MapCanvas").GetComponent<Canvas>();
-            Assert.IsTrue(mapCanvas.enabled);
+        //    Canvas mapCanvas = GameObject.Find("MapCanvas").GetComponent<Canvas>();
+        //    Assert.IsTrue(mapCanvas.enabled);
 
-            yield return null;
-        }
+        //    yield return null;
+        //}
 
-        [UnityTest]
-        public IEnumerator CameraButtonOnMapPage()
-        {
-            GameObject cameraButton = GameObject.Find("MapCanvas/NavBar/CameraButton");
-            ClickUI(cameraButton);
+        //[UnityTest]
+        //public IEnumerator CameraButtonOnMapPage()
+        //{
+        //    GameObject cameraButton = GameObject.Find("MapCanvas/NavBar/CameraButton");
+        //    ClickUI(cameraButton);
 
-            Canvas cameraCanvas = GameObject.Find("CameraCanvas").GetComponent<Canvas>();
-            Assert.IsTrue(cameraCanvas.enabled);
+        //    Canvas cameraCanvas = GameObject.Find("CameraCanvas").GetComponent<Canvas>();
+        //    Assert.IsTrue(cameraCanvas.enabled);
 
-            yield return null;
-        }
+        //    yield return null;
+        //}
 
-        [UnityTest]
-        public IEnumerator InfoButtonOnMapPage()
-        {
-            GameObject infoButton = GameObject.Find("MapCanvas/NavBar/InfoButton");
-            ClickUI(infoButton);
+        //[UnityTest]
+        //public IEnumerator InfoButtonOnMapPage()
+        //{
+        //    GameObject infoButton = GameObject.Find("MapCanvas/NavBar/InfoButton");
+        //    ClickUI(infoButton);
 
-            Canvas infoCanvas = GameObject.Find("InfoCanvas").GetComponent<Canvas>();
-            Assert.IsTrue(infoCanvas.enabled);
+        //    Canvas infoCanvas = GameObject.Find("InfoCanvas").GetComponent<Canvas>();
+        //    Assert.IsTrue(infoCanvas.enabled);
 
-            yield return null;
-        }
+        //    yield return null;
+        //}
 
-        // Camera page button tests
-        [UnityTest]
-        public IEnumerator HomeButtonOnCameraPage()
-        {
-            GameObject homeButton = GameObject.Find("CameraCanvas/NavBar/HomeButton");
-            ClickUI(homeButton);
+        //// Camera page button tests
+        //[UnityTest]
+        //public IEnumerator HomeButtonOnCameraPage()
+        //{
+        //    GameObject homeButton = GameObject.Find("CameraCanvas/NavBar/HomeButton");
+        //    ClickUI(homeButton);
 
-            Canvas homeCanvas = GameObject.Find("HomeCanvas").GetComponent<Canvas>();
-            Assert.IsTrue(homeCanvas.enabled);
+        //    Canvas homeCanvas = GameObject.Find("HomeCanvas").GetComponent<Canvas>();
+        //    Assert.IsTrue(homeCanvas.enabled);
 
-            yield return null;
-        }
+        //    yield return null;
+        //}
 
-        [UnityTest]
-        public IEnumerator MapButtonOnCameraPage()
-        {
-            GameObject mapButton = GameObject.Find("CameraCanvas/NavBar/MapButton");
-            ClickUI(mapButton);
+        //[UnityTest]
+        //public IEnumerator MapButtonOnCameraPage()
+        //{
+        //    GameObject mapButton = GameObject.Find("CameraCanvas/NavBar/MapButton");
+        //    ClickUI(mapButton);
 
-            Canvas mapCanvas = GameObject.Find("MapCanvas").GetComponent<Canvas>();
-            Assert.IsTrue(mapCanvas.enabled);
+        //    Canvas mapCanvas = GameObject.Find("MapCanvas").GetComponent<Canvas>();
+        //    Assert.IsTrue(mapCanvas.enabled);
 
-            yield return null;
-        }
+        //    yield return null;
+        //}
 
-        [UnityTest]
-        public IEnumerator CameraButtonOnCameraPage()
-        {
-            GameObject cameraButton = GameObject.Find("CameraCanvas/NavBar/CameraButton");
-            ClickUI(cameraButton);
+        //[UnityTest]
+        //public IEnumerator CameraButtonOnCameraPage()
+        //{
+        //    GameObject cameraButton = GameObject.Find("CameraCanvas/NavBar/CameraButton");
+        //    ClickUI(cameraButton);
 
-            Canvas cameraCanvas = GameObject.Find("CameraCanvas").GetComponent<Canvas>();
-            Assert.IsTrue(cameraCanvas.enabled);
+        //    Canvas cameraCanvas = GameObject.Find("CameraCanvas").GetComponent<Canvas>();
+        //    Assert.IsTrue(cameraCanvas.enabled);
 
-            yield return null;
-        }
+        //    yield return null;
+        //}
 
-        [UnityTest]
-        public IEnumerator InfoButtonOnCameraPage()
-        {
-            GameObject infoButton = GameObject.Find("CameraCanvas/NavBar/InfoButton");
-            ClickUI(infoButton);
+        //[UnityTest]
+        //public IEnumerator InfoButtonOnCameraPage()
+        //{
+        //    GameObject infoButton = GameObject.Find("CameraCanvas/NavBar/InfoButton");
+        //    ClickUI(infoButton);
 
-            Canvas infoCanvas = GameObject.Find("InfoCanvas").GetComponent<Canvas>();
-            Assert.IsTrue(infoCanvas.enabled);
+        //    Canvas infoCanvas = GameObject.Find("InfoCanvas").GetComponent<Canvas>();
+        //    Assert.IsTrue(infoCanvas.enabled);
 
-            yield return null;
-        }
+        //    yield return null;
+        //}
 
 
 
-        // Info page button tests
-        [UnityTest]
-        public IEnumerator HomeButtonOnInfoPage()
-        {
-            GameObject homeButton = GameObject.Find("InfoCanvas/NavBar/HomeButton");
-            ClickUI(homeButton);
+        //// Info page button tests
+        //[UnityTest]
+        //public IEnumerator HomeButtonOnInfoPage()
+        //{
+        //    GameObject homeButton = GameObject.Find("InfoCanvas/NavBar/HomeButton");
+        //    ClickUI(homeButton);
 
-            Canvas homeCanvas = GameObject.Find("HomeCanvas").GetComponent<Canvas>();
-            Assert.IsTrue(homeCanvas.enabled);
+        //    Canvas homeCanvas = GameObject.Find("HomeCanvas").GetComponent<Canvas>();
+        //    Assert.IsTrue(homeCanvas.enabled);
 
-            yield return null;
-        }
-        [UnityTest]
-        public IEnumerator CameraButtonOnInfoPage()
-        {
-            GameObject cameraButton = GameObject.Find("InfoCanvas/NavBar/CameraButton");
-            ClickUI(cameraButton);
+        //    yield return null;
+        //}
+        //[UnityTest]
+        //public IEnumerator CameraButtonOnInfoPage()
+        //{
+        //    GameObject cameraButton = GameObject.Find("InfoCanvas/NavBar/CameraButton");
+        //    ClickUI(cameraButton);
 
-            Canvas cameraCanvas = GameObject.Find("CameraCanvas").GetComponent<Canvas>();
-            Assert.IsTrue(cameraCanvas.enabled);
+        //    Canvas cameraCanvas = GameObject.Find("CameraCanvas").GetComponent<Canvas>();
+        //    Assert.IsTrue(cameraCanvas.enabled);
 
-            yield return null;
-        }
+        //    yield return null;
+        //}
 
-        [UnityTest]
-        public IEnumerator MapButtonOnInfoPage()
-        {
-            GameObject mapButton = GameObject.Find("InfoCanvas/NavBar/MapButton");
-            ClickUI(mapButton);
+        //[UnityTest]
+        //public IEnumerator MapButtonOnInfoPage()
+        //{
+        //    GameObject mapButton = GameObject.Find("InfoCanvas/NavBar/MapButton");
+        //    ClickUI(mapButton);
 
-            Canvas mapCanvas = GameObject.Find("MapCanvas").GetComponent<Canvas>();
-            Assert.IsTrue(mapCanvas.enabled);
+        //    Canvas mapCanvas = GameObject.Find("MapCanvas").GetComponent<Canvas>();
+        //    Assert.IsTrue(mapCanvas.enabled);
 
-            yield return null;
-        }
+        //    yield return null;
+        //}
 
-        [UnityTest]
-        public IEnumerator InfoButtonOnInfoPage()
-        {
-            GameObject infoButton = GameObject.Find("InfoCanvas/NavBar/InfoButton");
-            ClickUI(infoButton);
+        //[UnityTest]
+        //public IEnumerator InfoButtonOnInfoPage()
+        //{
+        //    GameObject infoButton = GameObject.Find("InfoCanvas/NavBar/InfoButton");
+        //    ClickUI(infoButton);
 
-            Canvas infoCanvas = GameObject.Find("InfoCanvas").GetComponent<Canvas>();
-            Assert.IsTrue(infoCanvas.enabled);
+        //    Canvas infoCanvas = GameObject.Find("InfoCanvas").GetComponent<Canvas>();
+        //    Assert.IsTrue(infoCanvas.enabled);
 
-            yield return null;
-        }
+        //    yield return null;
+        //}
     }
 
 }
