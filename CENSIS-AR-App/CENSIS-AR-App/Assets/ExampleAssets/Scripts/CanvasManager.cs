@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class CanvasManager : MonoBehaviour
 {
     public Canvas[] canvases; // Array to hold your different canvases
@@ -14,4 +15,9 @@ public class CanvasManager : MonoBehaviour
             canvases[i].enabled = (i == canvasIndex);
         }
     }
+    void Awake()
+    {
+        ActivateCanvas(0);
+    }
+
 }
