@@ -18,7 +18,7 @@ namespace Tests
         public override void Setup()
         {
             base.Setup();
-            EditorSceneManager.OpenScene("Assets/ExampleAssets/Scenes/SampleScene.unity");
+            EditorSceneManager.OpenScene("Assets/Scenes/AppScene.unity");
         }
 
      
