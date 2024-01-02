@@ -46,4 +46,7 @@ sysinfo.txt
 *.apk
 *.unitypackage
 
+#Test Results
+unit-tests.xml
+
 .DS_Store
