@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<test-run id="2" testcasecount="0" result="Passed" total="0" passed="0" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2023-11-22 13:25:25Z" end-time="2023-11-22 13:25:25Z" duration="0.0054166">
-  <test-suite type="TestSuite" id="1005" name="AR" fullname="AR" runstate="Runnable" testcasecount="0" result="Passed" start-time="2023-11-22 13:25:25Z" end-time="2023-11-22 13:25:25Z" duration="0.005417" total="0" passed="0" failed="0" inconclusive="0" skipped="0" asserts="0">
-    <properties />
-  </test-suite>
-</test-run>
