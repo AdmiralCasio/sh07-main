@@ -22,6 +22,16 @@ The app will then build and open automatically on your Android device.
 
 ### IOS
 
+To build and run on IOS it is somewhat more difficult. 
+
+Firstly macOS is required to access XCode to run builds and so this guide will assume you are using a mac but if you are developing on windows a virtual environment may need to be explored, however, these have proven to be difficult to work with. Assuming access to a mac and an iphone is available firstly ensure both devices are updated to the most recent software as previous versions may not be compatible. Then, if you do not have XCode installed simply visit the apple developer webpage and install the most recent version to your mac. To finish preparing the devices navigate to the privacy settings on your iphone and turn on developer mode. 
+
+Now, from the unity hub you need to install the IOS package module before opening the folder {repo-root}/CENSIS-AR-App/CENSIS-AR-App/ in the Unity Editor. To build the project, open the build setting and firstly switch the platform to IOS before checking the developer build setting and add the 'Sample Scene'. Now click the build and run button and create a new folder name 'Builds' and XCode should be open upon completion.
+
+Next in XCode the code should begin compiling but before we can deploy we must first navigate to the Signing and Capabilites tab, check the Enable Automatic Signing box and create and assign your team following the pop ups from the drop down menu. Now Connect your phone to the mac (a cable is most appropriate) and ensure the correct device is selected on the top bar of XCode and press run. Finally navigate to the VPN and Device Management option in the phones general setting and trust the developer and you should be able to open the app from your home page.
+
+If any issues are encountered please refer to documentation online or this youtube video as a reference https://www.youtube.com/watch?v=-Hr4-XNCf8Y&t=352s
+
 ## Visuals
 
 ## Usage
