@@ -77,7 +77,7 @@ public class BoundaryBoxes : MonoBehaviour
             double y = R * Math.Cos(latRad) * Math.Sin(lonRad);
             double z = R * Math.Sin(latRad);
 
-            cartesians[i] = new Vector2((float)x, (float)z);
+            cartesians[i] = new Vector2((float)x, (float)y);
         }
 
         return cartesians;
@@ -99,26 +99,23 @@ public class BoundaryBoxes : MonoBehaviour
     {
         Vector2[] examplePolygon = new Vector2[]
          {
-            new Vector2(55.873973596942015f, -4.292135331723896f),
-            new Vector2(55.873782764067884f, -4.291896762586177f),
-            new Vector2(55.87362637209446f, -4.291949588730184f),
-            new Vector2(55.87350749483508f, -4.292231220666218f),
-            new Vector2(55.87369408682638f, -4.292416293081326f),
-            new Vector2(55.87373772514658f, -4.292349237858461f),
-            new Vector2(55.87387014457666f, -4.292475301677447f),
-            new Vector2(55.87394086840546f, -4.292335826813887f),
-            new Vector2(55.87413197257516f, -4.292633552003409f),
-            new Vector2(55.87456834865173f, -4.292193669741016f),
-            new Vector2(55.87448634041885f, -4.291720259867589f),
-            new Vector2(55.87443653399497f, -4.291489738037023f),
-            new Vector2(55.87430426510995f, -4.291064433617194f),
-            new Vector2(55.873988164231972f, -4.291438104850677f),
-            new Vector2(55.874039879970475f, -4.291520556493378f),
-            new Vector2(55.874035288127324f, -4.292075245593535f)
+            new Vector2(55.8740145f,-4.2920211f),
+            new Vector2(55.8740176f,-4.2917896f),
+            new Vector2(55.8740208f,-4.2915686f),
+            new Vector2(55.8739457f,-4.2914601f),
+            new Vector2(55.8737967f,-4.2918125f),
+            new Vector2(55.8738249f,-4.2918538f),
+            new Vector2(55.8737938f,-4.2919222f),
+            new Vector2(55.8739423f,-4.2921254f),
+            new Vector2(55.8739423f,-4.2921254f),
+            new Vector2(55.8739947f,-4.2920999f),
+            new Vector2(55.8739961f,-4.2920208f),
+            new Vector2(55.8740145f,-4.2920211f)
          };
+
         //Array.Reverse(examplePolygon);
         Vector2[] exampleCartPolygon = ConvertToCartesian(examplePolygon);
-        Vector2[] examplePosition = { new Vector2(55.873782764067884f, -4.291896762586167f) }; // 55.873782764067884, -4.291896762586167
+        Vector2[] examplePosition = { new Vector2(55.87393f, -4.29185f) }; 
         Vector2 exampleCartPosition = ConvertToCartesian(examplePosition)[0];
         bool isinside = IsPointInPolygon(exampleCartPosition, exampleCartPolygon);
         IsInsidePrint(isinside);
