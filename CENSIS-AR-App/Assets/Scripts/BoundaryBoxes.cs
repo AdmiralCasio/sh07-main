@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class BoundaryBoxes : MonoBehaviour
 {
-    public Vector3[] polygonVertices;
+    public Vector2[] polygonVertices;
     public Transform userLocation;
 
     // Start is called before the first frame update
@@ -17,7 +17,7 @@ public class BoundaryBoxes : MonoBehaviour
 
     }
 
-    bool IsPointInPolygon(Vector2 point, Vector2[] polygon)
+    public bool IsPointInPolygon(Vector2 point, Vector2[] polygon)
     {
         bool inside = false;
         float tolerance = 0.001f; // Add a small tolerance value
@@ -40,7 +40,7 @@ public class BoundaryBoxes : MonoBehaviour
 
 
 
-    Vector2[] ConvertToCartesian(Vector2[] latLongs)
+    public Vector2[] ConvertToCartesian(Vector2[] latLongs)
     {
         double R = 6371000; // radius of the earth in meters
         int n = latLongs.Length;
