@@ -14,28 +14,6 @@ public class BoundaryBoxes : MonoBehaviour
         Debug.Log("BOUNDARY BOXES SCRIPT STARTED");
         Debug.Log("BOUNDARY BOX : CS BUILDING TEST");
         TestPoint();
-        Debug.Log("BOUNDARY BOX : EXTRA TEST CASES");
-        Vector2[] polygon = new Vector2[] { new Vector2(0, 0), new Vector2(0, 10), new Vector2(10, 10), new Vector2(10, 0) };
-        Vector2 point1 = new Vector2(5, 5);
-        Vector2 point2 = new Vector2(15, 5);
-        Vector2 point3 = new Vector2(0, 0);
-        Vector2 point4 = new Vector2(10, 15);
-        Vector2 point5 = new Vector2(5, 10);
-        Vector2 point6 = new Vector2(5, 0);
-
-        bool result1 = IsPointInPolygon(point1, polygon); // returns true
-        bool result2 = IsPointInPolygon(point2, polygon); // returns false
-        bool result3 = IsPointInPolygon(point3, polygon); // returns true
-        bool result4 = IsPointInPolygon(point4, polygon); // returns false
-        bool result5 = IsPointInPolygon(point5, polygon); // returns true
-        bool result6 = IsPointInPolygon(point6, polygon); // returns true
-
-        IsInsidePrint(result1); // true
-        IsInsidePrint(result2); // false
-        IsInsidePrint(result3); // true
-        IsInsidePrint(result4); // false
-        IsInsidePrint(result5); // true
-        IsInsidePrint(result6); // true
 
     }
 
