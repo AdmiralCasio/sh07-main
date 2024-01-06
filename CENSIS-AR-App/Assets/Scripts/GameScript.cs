@@ -28,6 +28,9 @@ public class GameScript : MonoBehaviour
     private void Next()
     {
         buildingIndex += 1;
+
+        PlayerPrefs.SetInt("CurrentBuilding", buildingIndex);
+        PlayerPrefs.Save();
         // show clue
         ShowClue();
         // Debug.Log($"Building clue: {buildings[buildingIndex].clue});
