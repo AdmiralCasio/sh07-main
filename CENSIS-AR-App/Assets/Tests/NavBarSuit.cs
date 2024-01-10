@@ -10,9 +10,7 @@ using UnityEditor.SceneManagement;
 using System.Web;
 using UnityEngine.UI;
 
-namespace Tests
-{
-    public class NavBarSuit : InputTestFixture
+public class NavBarSuit : InputTestFixture
     {
         Mouse mouse;
         public override void Setup()
@@ -98,7 +96,5 @@ namespace Tests
             yield return null;
         }
     }
-
-}
 
 
