@@ -3,21 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class BoundaryBoxes : MonoBehaviour
+public class BoundaryBoxes
 {
-    public Vector2[] polygonVertices;
-    public Transform userLocation;
-
-    // Start is called before the first frame update
     void Start()
     {
         Debug.Log("BOUNDARY BOXES SCRIPT STARTED");
-        Debug.Log("BOUNDARY BOX : CS BUILDING TEST");
-        TestPoint();
-
     }
 
-    public bool IsPointInPolygon(Vector2 point, Vector2[] polygon)
+    public static bool IsPointInPolygonGPS(Vector2 point, Vector2[] polygon)
+    {
+        Vector2 pointCart = ConvertToCartesian(point);
+        Vector2[] polygonCart = ConvertToCartesian(polygon);
+        return IsPointInPolygon(pointCart, polygonCart);
+    }
+    
+    public static bool IsPointInPolygon(Vector2 point, Vector2[] polygon)
     {
         bool inside = false;
         float tolerance = 0.001f; // Add a small tolerance value
@@ -38,9 +38,7 @@ public class BoundaryBoxes : MonoBehaviour
         return inside;
     }
 
-
-
-    public Vector2[] ConvertToCartesian(Vector2[] latLongs)
+    public static Vector2[] ConvertToCartesian(Vector2[] latLongs)
     {
         double R = 6371000; // radius of the earth in meters
         int n = latLongs.Length;
@@ -61,7 +59,22 @@ public class BoundaryBoxes : MonoBehaviour
         return cartesians;
     }
 
-    void IsInsidePrint(bool isInside)
+    public static Vector2 ConvertToCartesian(Vector2 latLong)
+    {
+        double R = 6371000; // radius of the earth in meters
+
+        double latRad = latLong.x * Math.PI / 180;
+        double lonRad = latLong.y * Math.PI / 180;
+
+        double x = R * Math.Cos(latRad) * Math.Cos(lonRad);
+        double y = R * Math.Cos(latRad) * Math.Sin(lonRad);
+        double z = R * Math.Sin(latRad);
+
+        Vector2 cartesian = new Vector2((float)x, (float)y);
+        return cartesian;
+    }
+
+    private void IsInsidePrint(bool isInside)
     {
         if (isInside)
         {
@@ -71,34 +84,6 @@ public class BoundaryBoxes : MonoBehaviour
         {
             Debug.Log("BOUNDARY BOX: User is not within this boundary box");
         }
-    }
-
-    void TestPoint()
-    {
-        Vector2[] examplePolygon = new Vector2[]
-         {
-            new Vector2(55.8740145f,-4.2920211f),
-            new Vector2(55.8740176f,-4.2917896f),
-            new Vector2(55.8740208f,-4.2915686f),
-            new Vector2(55.8739457f,-4.2914601f),
-            new Vector2(55.8737967f,-4.2918125f),
-            new Vector2(55.8738249f,-4.2918538f),
-            new Vector2(55.8737938f,-4.2919222f),
-            new Vector2(55.8739423f,-4.2921254f),
-            new Vector2(55.8739423f,-4.2921254f),
-            new Vector2(55.8739947f,-4.2920999f),
-            new Vector2(55.8739961f,-4.2920208f),
-            new Vector2(55.8740145f,-4.2920211f)
-         };
-
-        //Array.Reverse(examplePolygon);
-        Vector2[] exampleCartPolygon = ConvertToCartesian(examplePolygon);
-        Vector2[] examplePosition = { new Vector2(55.87393f, -4.29185f) }; 
-        Vector2 exampleCartPosition = ConvertToCartesian(examplePosition)[0];
-        bool isinside = IsPointInPolygon(exampleCartPosition, exampleCartPolygon);
-        IsInsidePrint(isinside);
-
-
     }
 
 }
