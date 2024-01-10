@@ -5,11 +5,6 @@ using UnityEngine;
 
 public class BoundaryBoxes
 {
-    void Start()
-    {
-        Debug.Log("BOUNDARY BOXES SCRIPT STARTED");
-    }
-
     public static bool IsPointInPolygonGPS(Vector2 point, Vector2[] polygon)
     {
         Vector2 pointCart = ConvertToCartesian(point);
