@@ -6,39 +6,46 @@ using UnityEngine;
 public class GameScript : MonoBehaviour
 {
     [SerializeField] string filename;
-    int buildingIndex;
-    //List<Building> buildings = new List<Building>();
+
 
     // Start is called before the first frame update
     void Start()
     {
-        //buildings = FileHandler.ReadFromJSON<Building>(filename);
-
-        // gets the index of the current building or 0 
-        int buildingIndex = PlayerPrefs.GetInt("CurrentBuilding", 0);
+        // get locations from file
+        List<Location> locations = FileHandler.ReadFromJSON<Location>(filename);
+        LocationHandler.locations = locations;
     }
 
-    public void BuildingFound()
+    public void LocationFound()
     {
         // show info
-        // Debug.Log($"Building name: {buildings[buildingIndex].name}, Building info: {buildings[buildingIndex].information}");
+        Debug.Log($"Location name: {LocationHandler.GetCurrLocation().name}, Building info: {LocationHandler.GetCurrLocation().information}");
         // show next button
     }
 
     private void Next()
     {
-        buildingIndex += 1;
-
-        PlayerPrefs.SetInt("CurrentBuilding", buildingIndex);
-        PlayerPrefs.Save();
-        // show clue
-        ShowClue();
-        // Debug.Log($"Building clue: {buildings[buildingIndex].clue});
+        // switch to next location
+        if (LocationHandler.UpdateLocation())  {
+            // show clue
+            ShowClue();
+            Debug.Log($"Locations clue: {LocationHandler.GetCurrLocation().clue}");
+        }
+        else
+        {
+            GameWon();
+        }
     }
 
     private void ShowClue()
     {
         // show clue;
+    }
+
+    void GameWon()
+    {
+        // display congradulations
+        Debug.Log("Game finished, well done");
     }
 
 }
