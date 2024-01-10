@@ -10,9 +10,8 @@ public class BoundaryBoxTest
     [Test]
     public void BoundaryBoxConvertToCartTest()
     {
-        BoundaryBoxes bb = new();
-        Vector2[] longlat = { new Vector2(55.8740145f, -4.2920211f) };
-        Vector2 longlatAsCart = bb.ConvertToCartesian(longlat)[0];
+        Vector2 longlat = new Vector2(55.8740145f, -4.2920211f);
+        Vector2 longlatAsCart = BoundaryBoxes.ConvertToCartesian(longlat);
         Vector2 cart = new Vector2(3576405.012f, -268410.39f);
         var acceptableDiff = 15000;
         Assert.IsTrue(Math.Abs(longlatAsCart.x - cart.x) < acceptableDiff && Math.Abs(longlatAsCart.y - cart.y) < acceptableDiff);
@@ -21,7 +20,6 @@ public class BoundaryBoxTest
     [Test]
     public void BoundaryBoxSimpleIsPointInPolygonTests()
     {
-        BoundaryBoxes bb = new BoundaryBoxes();
         Vector2[] polygon = new Vector2[] { new Vector2(0, 0), new Vector2(0, 10), new Vector2(10, 10), new Vector2(10, 0) };
         Vector2 point1 = new Vector2(5, 5);
         Vector2 point2 = new Vector2(15, 5);
@@ -30,12 +28,12 @@ public class BoundaryBoxTest
         Vector2 point5 = new Vector2(5, 10);
         Vector2 point6 = new Vector2(5, 0);
 
-        bool result1 = bb.IsPointInPolygon(point1, polygon); // returns true
-        bool result2 = bb.IsPointInPolygon(point2, polygon); // returns false
-        bool result3 = bb.IsPointInPolygon(point3, polygon); // returns true
-        bool result4 = bb.IsPointInPolygon(point4, polygon); // returns false
-        bool result5 = bb.IsPointInPolygon(point5, polygon); // returns true
-        bool result6 = bb.IsPointInPolygon(point6, polygon); // returns true
+        bool result1 = BoundaryBoxes.IsPointInPolygon(point1, polygon); // returns true
+        bool result2 = BoundaryBoxes.IsPointInPolygon(point2, polygon); // returns false
+        bool result3 = BoundaryBoxes.IsPointInPolygon(point3, polygon); // returns true
+        bool result4 = BoundaryBoxes.IsPointInPolygon(point4, polygon); // returns false
+        bool result5 = BoundaryBoxes.IsPointInPolygon(point5, polygon); // returns true
+        bool result6 = BoundaryBoxes.IsPointInPolygon(point6, polygon); // returns true
         Assert.IsTrue(result1 == true && result2 == false && result3 == true && result4 == false && result5 == true && result6 == true);
         
     }
@@ -43,7 +41,6 @@ public class BoundaryBoxTest
     [Test]
     public void BoundaryBoxTestAlwynPass()
     {
-        BoundaryBoxes bb = new BoundaryBoxes();
         Vector2[] polygon = new Vector2[]
         {
             new Vector2(55.8740145f,-4.2920211f),
@@ -59,17 +56,14 @@ public class BoundaryBoxTest
             new Vector2(55.8739961f,-4.2920208f),
             new Vector2(55.8740145f,-4.2920211f)
         };
-        Vector2[] exampleCartPolygon = bb.ConvertToCartesian(polygon);
-        Vector2[] examplePosition = { new Vector2(55.87393f, -4.29185f) };
-        Vector2 exampleCartPosition = bb.ConvertToCartesian(examplePosition)[0];
-        bool isinside = bb.IsPointInPolygon(exampleCartPosition, exampleCartPolygon);
+        Vector2 examplePosition = new Vector2(55.87393f, -4.29185f);
+        bool isinside = BoundaryBoxes.IsPointInPolygonGPS(examplePosition, polygon);
         Assert.IsTrue(isinside);
     }
 
     [Test]
     public void BoundaryBoxTestAlwynFail()
     {
-        BoundaryBoxes bb = new BoundaryBoxes();
         Vector2[] polygon = new Vector2[]
         {
             new Vector2(55.8740145f,-4.2920211f),
@@ -85,10 +79,8 @@ public class BoundaryBoxTest
             new Vector2(55.8739961f,-4.2920208f),
             new Vector2(55.8740145f,-4.2920211f)
         };
-        Vector2[] exampleCartPolygon = bb.ConvertToCartesian(polygon);
-        Vector2[] locationA = { new Vector2(55.87375f, -4.29185f) };
-        Vector2 location = bb.ConvertToCartesian(locationA)[0];
-        Assert.IsFalse(bb.IsPointInPolygon(location, polygon));
+        Vector2 locationA = new Vector2(55.87375f, -4.29185f);
+        Assert.IsFalse(BoundaryBoxes.IsPointInPolygonGPS(locationA, polygon));
     }
 
 }
