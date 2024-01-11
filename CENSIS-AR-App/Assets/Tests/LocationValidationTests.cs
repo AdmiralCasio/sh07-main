@@ -39,7 +39,7 @@ public class LocationValidationTests
     [Test]
     public void InLocation()
     {
-        Vector3 playerLoc = new Vector3(1, 3);
+        Vector3 playerLoc = new Vector3(55.68291f, -4.51589f);
         Assert.IsFalse(LocationValidator.AtLocation(playerLoc, loc));
     }
 
@@ -75,6 +75,18 @@ public class LocationValidationTests
         cam.transform.LookAt(loc.centre);
         Assert.IsFalse(LocationValidator.LookingAtLocation(playerLoc, loc));
     }
+
+    [Test]
+    public void IsLookingAtLocationInLocation()
+    {
+        Vector3 playerLoc = new Vector3(55.68291f, -4.51589f);
+        Camera cam = Camera.main;
+        cam.transform.position = playerLoc;
+        loc.centre = new Vector2(55.68286f, -4.51571f);
+        cam.transform.LookAt(loc.centre);
+        Assert.IsFalse(LocationValidator.LookingAtLocation(playerLoc, loc));
+    }
+
 
     //[UnityTest]
     //public IEnumerator LocationValidationTestsWithEnumeratorPasses()
