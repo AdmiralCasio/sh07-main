@@ -34,8 +34,8 @@
           ]
         }
       ],
-      "Clue": "this is a building",
-      "Information": "information about the building"
+      "Clue": "A place surrounded by some of the Universities less flattering buildings",
+      "Information": "The Sir Alwyn Williams Building at the University of Glasgow was opened on 22 June 2007 by Professor Anne Glover, Chief Scientific Adviser for Scotland, and Williams's widow, Joan. It was an extension to the facilities of the Department of Computing Science, located between the Department's pre-existing accommodation, in a row of interconnected Victorian townhouses on Lilybank Gardens, and the 1968-built Queen Margaret Union building. The Building contains offices and laboratories as well as informal 'break-out spaces'."
     },
     {
         "buildingName": "Advanced Research Centre",
@@ -67,8 +67,8 @@
         ]
       }
     ],
-    "Clue": "this is a building",
-    "Information": "information about the building"
+    "Clue": "Named after the founder of one of India's biggest biotechnology companies",
+    "Information": "The Mazumdar-Shaw Advanced Research Centre (ARC) building houses 500 multidisciplinary researchers and serves as a centerpiece of the University’s new campus development in Glasgow, Scotland."
     },
     {
       "buildingName": "Gilbert Scott",
@@ -743,8 +743,8 @@
 		]
         }
       ],
-      "Clue": "this is a building",
-       "Information": "information about the building"
+      "Clue": "Known for looking like hogwarts",
+       "Information": "The campus was designed by Sir George Gilbert Scott in the Gothic revival style. The largest of these buildings echoed, on a far grander scale, the original High Street campus's twin-quadrangle layout, and may have been inspired by Ypres' late-medieval cloth hall"
       }
    ]
 }
