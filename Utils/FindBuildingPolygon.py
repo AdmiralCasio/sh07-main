@@ -9,7 +9,7 @@ def extractNodesFromWay(WayID):
     way = api.query("way/{}".format(WayID))
     wayNodes = []
     for i in way.nodes():
-        node = (i.lat(), i.lon())
+        node = (" {{\"Latitude\" : \"{lat}\" , \"Longitude\" : \"{lon}\" }}, ".format(lat=i.lat(), lon=i.lon()))
         wayNodes.append(node)
     return wayNodes
 
@@ -32,7 +32,7 @@ try:
         nodes = extractNodesFromWay(building.split('/')[-1])
     else:
         print("Please enter a Way or Relation link")
-    with open("nodes.txt", 'w') as f:
+    with open("Utils/nodes.txt", 'w') as f:
         for i in nodes:
             f.write(str(i)+'\n')
 except:
