@@ -35,18 +35,21 @@ public class GameScript : MonoBehaviour
         var textComp = text.GetComponent<Text>();
         if (LocationValidator.AtLocation(location, curr) && !LocationValidator.LookingAtLocation(location, curr))
         {
+            Debug.Log($"At {curr.name}");
             textComp.enabled = true;
             textComp.text = curr.name;
         }
 
         if (LocationValidator.LookingAtLocation(location, curr))
         {
+            Debug.Log($"Looking At {curr.name}");
             textComp.enabled = true;
             textComp.text = curr.information;
         }
 
         if (!LocationValidator.AtLocation(location, curr))
         {
+            Debug.Log($"Not at {curr.name}");
             textComp.enabled = false;
         }
     }
