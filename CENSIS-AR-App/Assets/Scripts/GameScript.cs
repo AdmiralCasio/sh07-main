@@ -7,9 +7,9 @@ using UnityEngine.UI;
 public class GameScript : MonoBehaviour
 {
     [SerializeField] string filename;
-    Canvas clue = GameObject.Find("ClueOverlay").GetComponent<Canvas>();
-    Button nextButton = GameObject.Find("NextButton").GetComponent<Button>();
-    Button showClue = GameObject.Find("ShowClue").GetComponent<Button>();
+    Canvas clueOverlay;
+    Canvas nextButton;
+    Canvas showClue;
 
 
 
@@ -19,9 +19,14 @@ public class GameScript : MonoBehaviour
         // get locations from file
         List<Location> locations = FileHandler.ReadFromJSON<Location>(filename);
         LocationHandler.locations = locations;
-        clue.enabled = false;
+        clueOverlay = GameObject.Find("ClueOverlay").GetComponent<Canvas>();
+        nextButton = GameObject.Find("Next").GetComponent<Canvas>();
+        showClue = GameObject.Find("ShowClue").GetComponent<Canvas>();
+        clueOverlay.enabled = false;
         nextButton.enabled = false;
-        
+        Debug.Log($"clueOverlay.enabled {clueOverlay.enabled}");
+        Debug.Log($"nextButton.enabled {nextButton.enabled}");
+
     }
 
     public void LocationFound()
@@ -37,30 +42,32 @@ public class GameScript : MonoBehaviour
 
     public void Next()
     {
-        // switch to next location
-        if (LocationHandler.UpdateLocation())  {
+        if (LocationHandler.IsFinalLocation())  {
+            GameWon();
+        }
+        else
+        {
+            // switch to next location
+            LocationHandler.NextLocation();
             // show clue
             ShowClue();
             Debug.Log($"Locations clue: {LocationHandler.GetCurrLocation().clue}");
             nextButton.enabled = false;
             showClue.enabled = true;
         }
-        else
-        {
-            GameWon();
-        }
     }
 
     public void ShowClue()
     {
         // show clue;
-        clue.enabled = true;
+        clueOverlay.enabled = true;
     }
 
     public void CloseClue()
     {
         // close clue
-        clue.enabled = false;
+        clueOverlay.enabled = false;
+        Debug.Log($"clueOverlay.enabled {clueOverlay.enabled}");
     }
 
     void GameWon()
