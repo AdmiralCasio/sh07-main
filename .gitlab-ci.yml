@@ -9,9 +9,9 @@ variables:
   BUILD_NAME: AR
   UNITY_ACTIVATION_FILE: ./unity3d.alf
   IMAGE: unityci/editor # https://hub.docker.com/r/unityci/editor
-  IMAGE_VERSION: 1 # This will automatically use latest v1.x.x, see https://github.com/game-ci/docker/releases
+  IMAGE_VERSION: 3 # This will automatically use latest v1.x.x, see https://github.com/game-ci/docker/releases
   UNITY_DIR: $CI_PROJECT_DIR/CENSIS-AR-App # this needs to be an absolute path. Defaults to the root of your tree.
-  UNITY_VERSION: ubuntu-2022.3.11f1-android-3.0.1
+  UNITY_VERSION: 2022.3.11f1
   # You can expose this in Unity via Application.version
   VERSION_NUMBER_VAR: $CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID-$CI_JOB_ID
   VERSION_BUILD_VAR: $CI_PIPELINE_IID
