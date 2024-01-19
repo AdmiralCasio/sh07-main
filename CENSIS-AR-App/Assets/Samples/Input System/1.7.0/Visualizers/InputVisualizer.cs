@@ -69,14 +69,26 @@ namespace UnityEngine.InputSystem.Samples
                 m_Parent = parentTransform.GetComponent<InputControlVisualizer>();
         }
 
-        [SerializeField] internal string m_Label;
-        [SerializeField] internal int m_HistorySamples = 500;
-        [SerializeField] internal float m_TimeWindow = 3;
-        [SerializeField] internal Rect m_Rect = new Rect(10, 10, 300, 30);
+        [SerializeField]
+        internal string m_Label;
 
-        [NonSerialized] internal GUIContent m_LabelContent;
-        [NonSerialized] internal VisualizationHelpers.Visualizer m_Visualizer;
-        [NonSerialized] internal InputVisualizer m_Parent;
+        [SerializeField]
+        internal int m_HistorySamples = 500;
+
+        [SerializeField]
+        internal float m_TimeWindow = 3;
+
+        [SerializeField]
+        internal Rect m_Rect = new Rect(10, 10, 300, 30);
+
+        [NonSerialized]
+        internal GUIContent m_LabelContent;
+
+        [NonSerialized]
+        internal VisualizationHelpers.Visualizer m_Visualizer;
+
+        [NonSerialized]
+        internal InputVisualizer m_Parent;
 
         private static GUIStyle s_LabelStyle;
     }

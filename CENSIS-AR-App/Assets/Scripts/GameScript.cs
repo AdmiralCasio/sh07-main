@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class GameScript : MonoBehaviour
 {
-    [SerializeField] string filename;
-
+    [SerializeField]
+    string filename;
 
     // Start is called before the first frame update
     void Start()
@@ -19,14 +19,17 @@ public class GameScript : MonoBehaviour
     public void LocationFound()
     {
         // show info
-        Debug.Log($"Location name: {LocationHandler.GetCurrLocation().name}, Building info: {LocationHandler.GetCurrLocation().information}");
+        Debug.Log(
+            $"Location name: {LocationHandler.GetCurrLocation().name}, Building info: {LocationHandler.GetCurrLocation().information}"
+        );
         // show next button
     }
 
     private void Next()
     {
         // switch to next location
-        if (LocationHandler.UpdateLocation())  {
+        if (LocationHandler.UpdateLocation())
+        {
             // show clue
             ShowClue();
             Debug.Log($"Locations clue: {LocationHandler.GetCurrLocation().clue}");
@@ -47,5 +50,4 @@ public class GameScript : MonoBehaviour
         // display congradulations
         Debug.Log("Game finished, well done");
     }
-
 }

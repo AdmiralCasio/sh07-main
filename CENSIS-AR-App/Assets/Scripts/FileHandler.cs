@@ -1,9 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using System.IO;
 using System.Linq;
-using System;
+using UnityEngine;
 
 public static class FileHandler
 {
@@ -26,7 +26,6 @@ public static class FileHandler
         List<T> res = JsonHelper.FromJson<T>(content).ToList();
 
         return res;
-
     }
 
     private static string GetPath(string filename)
