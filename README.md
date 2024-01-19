@@ -35,3 +35,7 @@ If any issues are encountered please refer to documentation online or this youtu
 ## Visuals
 
 ## Usage
+
+## Acknowledgements
+
+game-ci/docker Copyright (c) 2020-present GameCI used under MIT License. See details at [GitHub](https://github.com/game-ci/docker)
