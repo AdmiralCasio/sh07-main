@@ -1,26 +1,16 @@
 #!/usr/bin/env bash
 
-activation_file=${UNITY_ACTIVATION_FILE:-./unity3d.alf}
-
-if [[ -z "${UNITY_USERNAME}" ]] || [[ -z "${UNITY_PASSWORD}" ]]; then
-  echo "UNITY_USERNAME or UNITY_PASSWORD environment variables are not set, please refer to instructions in the readme and add these to your secret environment variables."
-  exit 1
-fi
+activation_file=$UNITY_ACTIVATION_FILE
 
 xvfb-run --auto-servernum --server-args='-screen 0 640x480x24' \
   unity-editor \
     -logFile /dev/stdout \
     -batchmode \
     -nographics \
-    -username "$UNITY_USERNAME" -password "$UNITY_PASSWORD" |
-      tee ./unity-output.log
-
-cat ./unity-output.log |
-  grep 'LICENSE SYSTEM .* Posting *' |
-  sed 's/.*Posting *//' > "${activation_file}"
+    -createManualActivationFile
 
 # Fail job if unity.alf is empty
-ls "${UNITY_ACTIVATION_FILE:-./unity3d.alf}"
+ls $activation_file
 exit_code=$?
 
 if [[ ${exit_code} -eq 0 ]]; then
