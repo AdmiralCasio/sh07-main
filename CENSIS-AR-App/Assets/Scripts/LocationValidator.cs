@@ -19,7 +19,7 @@ public class LocationValidator
 
     public static bool AtLocation(Vector2 position,  Location location)
     {
-        return InBox(position, location.boundingBox.outer) && !InBox(position, location.boundingBox.inner);
+        return InBox(position, location.outer[0].points) && !InBox(position, location.inner[0].points);
     }
 
     public static bool LookingAtLocation(Vector2 position, Location location)
