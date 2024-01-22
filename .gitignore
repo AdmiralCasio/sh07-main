@@ -34,7 +34,10 @@ ExportedObj/
 *.pdb
 *.idea
 .vsconfig
-*.txt
+
+# OSM API files
+Utils/*.txt
+cache/
 
 # Unity3D generated meta files
 *.pidb.meta
