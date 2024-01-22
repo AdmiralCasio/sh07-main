@@ -6,7 +6,7 @@ public class Location
 {
     public struct BoundingBox
     {
-        public Vector2[] points;    
+        public Vector2[] points;
     }
 
     public BoundingBox[] inner;
@@ -20,7 +20,7 @@ public class Location
     {
         this.name = name;
         this.inner = new BoundingBox[inner.Length];
-        
+
         for (int i = 0; i < inner.Length; i++)
         {
             Vector2[] temp = new Vector2[inner[i].Length];
@@ -30,7 +30,7 @@ public class Location
             }
             this.inner[i].points = temp;
         }
-        
+
 
         this.outer = new BoundingBox[outer.Length];
         for (int i = 0; i < outer.Length; i++)
