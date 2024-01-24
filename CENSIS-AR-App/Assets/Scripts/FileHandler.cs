@@ -4,6 +4,7 @@ using UnityEngine;
 using System.IO;
 using System.Linq;
 using System;
+using Newtonsoft.Json;
 
 public static class FileHandler
 {
@@ -66,7 +67,8 @@ public static class JsonHelper
     public static T[] FromJson<T>(string json)
     {
 
-        Wrapper<T> wrapper = JsonUtility.FromJson<Wrapper<T>>(json);
+        //Wrapper<T> wrapper = JsonUtility.FromJson<Wrapper<T>>(json);
+        Wrapper<T> wrapper = JsonConvert.DeserializeObject<Wrapper<T>>(json);
         return wrapper.Items;
     }
 
