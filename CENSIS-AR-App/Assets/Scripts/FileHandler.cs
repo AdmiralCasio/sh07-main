@@ -10,17 +10,13 @@ public static class FileHandler
 {
     public static void SaveToJSON<T>(List<T> toSave, string filename)
     {
-        Debug.Log("JSON helper" + filename);
         string content = JsonHelper.ToJson<T>(toSave.ToArray());
-        Debug.Log(content);
         WriteFile(filename, content);
     }
 
     public static List<T> ReadFromJSON<T>(string filename)
     {
-        // Debug.Log("JSON helper" + GetPath(filename));
         string content = GetPath(filename).text;
-        Debug.Log("JSON helper" + content.Length);
         if (string.IsNullOrEmpty(content) || content == "{}")
         {
             return new List<T>();

@@ -23,16 +23,10 @@ public class Location
         
         for (int i = 0; i < inner.Length; i++)
         {
-            //Debug.Log("LOCATION INNER length: " + inner.Length);
-            //Debug.Log("LOCATION INNER i: " +  i);
             Vector2[] temp = new Vector2[inner[i].Length];
             for (int j = 0; j < inner[i].Length; j++)
             {
-                //Debug.Log("LOCATION INNER j: " + j);
-                //Debug.Log("LOCATION INNER  i length: " + inner[i].Length);
-                //Debug.Log("LOCATION INNER j[]: " + inner[i][j][0] + " , " + inner[i][j][1]);
                 temp[j] = new Vector2(inner[i][j][0], inner[i][j][1]);
-                //this.inner[i].points[j] = new Vector2(inner[i][j][0], inner[i][j][1]);
             }
             this.inner[i].points = temp;
         }
