@@ -2925,7 +2925,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8f5e3f4fbb9a2444904ca78313f9896, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  filename: Buildings.json
+  filename: LocationInformation
 --- !u!1 &1782207736
 GameObject:
   m_ObjectHideFlags: 0

@@ -30,7 +30,7 @@ public class LocationValidationTests
     }
 
     [Test]
-    public void IsNotAtLocation() 
+    public void IsNotAtLocation()
     {
         Vector3 playerLoc = new Vector3(-5, -5);
         Assert.IsFalse(LocationValidator.AtLocation(playerLoc, loc));

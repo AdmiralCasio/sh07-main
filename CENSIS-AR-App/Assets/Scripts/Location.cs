@@ -23,5 +23,6 @@ public class Location
         this.boundingBox.outer = outer;
         this.clue = clue;
         this.information = information;
+        this.centre = centre;
     }
 }
