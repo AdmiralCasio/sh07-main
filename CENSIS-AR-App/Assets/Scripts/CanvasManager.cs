@@ -17,6 +17,7 @@ public class CanvasManager : MonoBehaviour
     }
     void Awake()
     {
+        ActivateCanvas(1);
         ActivateCanvas(0);
     }
 
