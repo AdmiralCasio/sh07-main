@@ -12,13 +12,13 @@ public class LocationHandler : MonoBehaviour
     void Start()
     {
         // gets the index of the current building or 0 
-        int locationIndex = PlayerPrefs.GetInt("CurrentBuilding", 0);
+        int locationIndex = PlayerPrefs.GetInt("CurrentLocation", 0);
     }
     public static bool UpdateLocation()
     {
         if (locationIndex < locations.Count) {
             locationIndex += 1;
-            PlayerPrefs.SetInt("Current location", locationIndex);
+            PlayerPrefs.SetInt("CurrentLocation", locationIndex);
             PlayerPrefs.Save();
             return true;
         }

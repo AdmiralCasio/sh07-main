@@ -4,7 +4,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Android;
-using Unity.Plastic.Newtonsoft.Json;
+using Newtonsoft.Json;
 
 public class GameScript : MonoBehaviour
 {
@@ -22,15 +22,12 @@ public class GameScript : MonoBehaviour
         // get locations from file
         List<Location> locations = FileHandler.ReadFromJSON<Location>(filename);
         LocationHandler.locations = locations;
-        Debug.Log("Game script: Locations: " + locations[0].clue);
-        Debug.Log("Game script: Location count: " + locations.Count);
+
+
         string data = "";
         foreach (Location location in locations)
         {
-            Debug.Log("game script: Location: " +  location.name);
-            data += JsonConvert.SerializeObject(location, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });            
-            Debug.Log("GAMESCRIPT DATA: " + data);
-
+            data += JsonConvert.SerializeObject(location, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
         }
         using (StreamWriter sw = new StreamWriter("C:\\Users\\ahmed\\sh07-main\\CENSIS-AR-App\\Assets\\Resources\\Test.json"))
         {
@@ -51,29 +48,21 @@ public class GameScript : MonoBehaviour
 
     void Update()
     {
-        // 2024/01/16 18:42:40.574 23681 23707 Error Unity ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
-
         var location = new Vector2(Input.location.lastData.latitude, Input.location.lastData.longitude);
         var curr = LocationHandler.GetCurrLocation();
-        var textComp = text.GetComponent<Text>();
         if (LocationValidator.AtLocation(location, curr) && !LocationValidator.LookingAtLocation(location, curr))
         {
             Debug.Log($"Game script: At {curr.name}");
-            textComp.enabled = true;
-            textComp.text = curr.name;
         }
 
         if (LocationValidator.LookingAtLocation(location, curr))
         {
             Debug.Log($"Game script: Looking At {curr.name}");
-            textComp.enabled = true;
-            textComp.text = curr.information;
         }
 
         if (!LocationValidator.AtLocation(location, curr))
         {
             Debug.Log($"Game Script: Not at {curr.name}");
-            textComp.enabled = false;
         }
     }
 
