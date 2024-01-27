@@ -1,7 +1,7 @@
 stages:
   - prepare
   - build_and_test
-  - deploy
+  - lint
 
 # If you are looking for a place where to add 'UNITY_LICENSE_FILE' and other secrets, please visit your project's gitlab page:
 # settings > CI/CD > Variables instead
@@ -234,6 +234,15 @@ build-ios-xcode:
 #    - ios
 #    - mac
 #  needs: ["build-ios-xcode"]
+
+lint-csharp:
+  image: mono:latest
+  stage: lint
+  script:
+    - apt-get update
+    - apt-get install -y binutils curl mono-devel ca-certificates-mono fsharp mono-vbnc nuget referenceassemblies-pcl
+    - rm -rf /var/lib/apt/lists/* /tmp/*
+    - chmod +x ./ci/lint.sh && ./ci/lint.sh
 
 pages:
   image: alpine:latest
