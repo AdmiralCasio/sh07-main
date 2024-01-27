@@ -238,6 +238,7 @@ build-ios-xcode:
 #  needs: ["build-ios-xcode"]
 
 lint-csharp:
+  image: mono:latest
   stage: lint
   script:
     - apt-get update
