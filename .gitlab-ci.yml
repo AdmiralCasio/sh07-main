@@ -16,7 +16,6 @@ variables:
   # You can expose this in Unity via Application.version
   VERSION_NUMBER_VAR: $CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID-$CI_JOB_ID
   VERSION_BUILD_VAR: $CI_PIPELINE_IID
-  MONO_IMAGE: mono:latest
 
 image: $IMAGE:$UNITY_VERSION-base-$IMAGE_VERSION
 
@@ -238,17 +237,15 @@ build-ios-xcode:
 #  needs: ["build-ios-xcode"]
 
 lint-csharp:
-  image: mono:latest
+  image: mcr.microsoft.com/dotnet/sdk:8.0
   stage: lint
   script:
-    - apt-get update
-    - apt-get install -y binutils curl mono-devel ca-certificates-mono fsharp mono-vbnc nuget referenceassemblies-pcl
-    - rm -rf /var/lib/apt/lists/* /tmp/*
-    - docker run --rm -v $(pwd):/app -w /app $MONO_IMAGE dotnet tool install csharpier
-    - docker run --rm -v $(pwd):/app -w /app $MONO_IMAGE dotnet tool restore
-    - docker run --rm -v $(pwd):/app -w /app $MONO_IMAGE dotnet csharpier --check
+    - docker run --rm -it -v $(pwd):/app/ -w /app mcr.microsoft.com/dotnet/sdk:8.0 dotnet tool install csharpier
+    - docker run --rm -it -v $(pwd):/app/ -w /app mcr.microsoft.com/dotnet/sdk:8.0 dotnet tool restore
+    - docker run --rm -it -v $(pwd):/app/ -w /app mcr.microsoft.com/dotnet/sdk:8.0 dotnet csharpier --check
   tags:
     - docker
+    
 pages:
   image: alpine:latest
   stage: deploy
