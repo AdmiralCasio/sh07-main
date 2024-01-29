@@ -16,7 +16,7 @@ public class Location
     public string information;
     public Vector2 centre;
 
-    public Location(String name,string clue, string information, float [][][] inner, float[][][] outer)
+    public Location(String name, string clue, string information, float[] centre, float [][][] inner, float[][][] outer)
     {
         this.name = name;
         this.inner = new BoundingBox[inner.Length];
@@ -44,7 +44,7 @@ public class Location
         }
         this.clue = clue;
         this.information = information;
-        this.centre = centre;
+        this.centre = new Vector2(centre[0], centre[1]);
 
     }
 }
