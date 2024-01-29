@@ -1,7 +1,6 @@
 stages:
   - prepare
   - build_and_test
-  - lint
   - deploy
 
 # If you are looking for a place where to add 'UNITY_LICENSE_FILE' and other secrets, please visit your project's gitlab page:
@@ -236,16 +235,6 @@ build-ios-xcode:
 #    - mac
 #  needs: ["build-ios-xcode"]
 
-lint-csharp:
-  image: mcr.microsoft.com/dotnet/sdk:8.0
-  stage: lint
-  script:
-    - docker run --rm -it -v $(pwd):/app/ -w /app mcr.microsoft.com/dotnet/sdk:8.0 dotnet tool install csharpier
-    - docker run --rm -it -v $(pwd):/app/ -w /app mcr.microsoft.com/dotnet/sdk:8.0 dotnet tool restore
-    - docker run --rm -it -v $(pwd):/app/ -w /app mcr.microsoft.com/dotnet/sdk:8.0 dotnet csharpier --check
-  tags:
-    - docker
-    
 pages:
   image: alpine:latest
   stage: deploy
