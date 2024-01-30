@@ -2386,7 +2386,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8f5e3f4fbb9a2444904ca78313f9896, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  filename: Locations.json
+  filename: LocationInformation
 --- !u!4 &797189757
 Transform:
   m_ObjectHideFlags: 0
@@ -4376,6 +4376,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1734195070}
   - component: {fileID: 1734195069}
+  - component: {fileID: 1734195071}
   m_Layer: 0
   m_Name: CanvasManagerObject
   m_TagString: Untagged
@@ -5132,7 +5133,6 @@ GameObject:
   - component: {fileID: 2105607468}
   - component: {fileID: 2105607467}
   - component: {fileID: 2105607466}
-  - component: {fileID: 2105607465}
   - component: {fileID: 2105607464}
   - component: {fileID: 2105607463}
   m_Layer: 0
@@ -5173,18 +5173,6 @@ MonoBehaviour:
     type: 2}
   m_MaxNumberOfMovingImages: 10
   m_TrackedImagePrefab: {fileID: 0}
---- !u!114 &2105607465
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2105607462}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 788587e994f1943f3856c1c332db429b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2105607466
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5258,20 +5246,6 @@ Transform:
   - {fileID: 143733906}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2105607471
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2105607462}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e670f52a498c8a4c8287774b632ffe3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  polygonVertices: []
-  userLocation: {fileID: 0}
 --- !u!1 &2137709947
 GameObject:
   m_ObjectHideFlags: 0
@@ -5454,3 +5428,5 @@ SceneRoots:
   - {fileID: 1734195070}
   - {fileID: 385421238}
   - {fileID: 797189757}
+  - {fileID: 885010926}
+  - {fileID: 2014351280}
