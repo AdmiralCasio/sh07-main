@@ -4,29 +4,41 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Android;
-using Newtonsoft.Json;
 using TMPro;
+using Newtonsoft.Json;
+using System.IO.IsolatedStorage;
 
 public class GameScript : MonoBehaviour
 {
-    [SerializeField] 
+    [SerializeField]
     string filename;
     [SerializeField]
     TextMeshProUGUI clueText;
     Component text;
+    public GameObject BuildingText;
+    [SerializeField] public GameObject[] textItems;
+    public TMP_Text title;
+    public TMP_Text info;
 
     Canvas clueOverlay;
     Canvas nextButton;
     Canvas showClue;
-    
+
 
     // Start is called before the first frame update
     void Start()
     {
         Debug.Log("Game Script Start");
+
+        // Get user permissions and start location tracking
         Permission.RequestUserPermission(Permission.FineLocation);
         Input.location.Start();
         Input.compass.enabled = true;
+
+        // Define text mesh pro components
+        title = textItems[0].GetComponent<TMP_Text>();
+        info = textItems[1].GetComponent<TMP_Text>();
+        title.enabled = false; info.enabled = false;
 
         // get locations from file
         List<Location> locations = FileHandler.ReadFromJSON<Location>(filename);
@@ -74,11 +86,17 @@ public class GameScript : MonoBehaviour
         if (LocationValidator.AtLocation(location, curr) && !LocationValidator.LookingAtLocation(location, curr))
         {
             Debug.Log($"Game script: At {curr.name}");
+
+            info.text = curr.information;
         }
 
         if (LocationValidator.LookingAtLocation(location, curr))
         {
             Debug.Log($"Game script: Looking At {curr.name}");
+            title.enabled = true; info.enabled = true;
+            title.text = curr.name;
+            info.text = curr.information;
+
         }
 
         if (!LocationValidator.AtLocation(location, curr))
