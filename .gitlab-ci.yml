@@ -28,6 +28,8 @@ get-unity-version:
   artifacts:
     reports:
       dotenv: prepare.env
+  tags:
+    - docker
 
 .unity_before_script: &unity_before_script
   before_script:

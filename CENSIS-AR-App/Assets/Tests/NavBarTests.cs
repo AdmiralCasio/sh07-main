@@ -1,18 +1,15 @@
 using System.Collections;
-using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
-using UnityEditor;
 using UnityEditor.SceneManagement;
-using System.Web;
 using UnityEngine.UI;
 
-public class NavBarSuit : InputTestFixture
+namespace Tests
+{
+    public class NavBar : InputTestFixture
     {
-        Mouse mouse;
         public override void Setup()
         {
             base.Setup();
@@ -97,4 +94,4 @@ public class NavBarSuit : InputTestFixture
         }
     }
 
-
+}

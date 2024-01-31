@@ -11,6 +11,10 @@ public class GameScript : MonoBehaviour
     [SerializeField] string filename;
     Component text;
 
+    Canvas clueOverlay;
+    Canvas nextButton;
+    Canvas showClue;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -24,19 +28,27 @@ public class GameScript : MonoBehaviour
         LocationHandler.locations = locations;
 
 
-        string data = "";
-        foreach (Location location in locations)
-        {
-            data += JsonConvert.SerializeObject(location, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
-        }
-        using (StreamWriter sw = new StreamWriter("C:\\Users\\ahmed\\sh07-main\\CENSIS-AR-App\\Assets\\Resources\\Test.json"))
-        {
-            sw.Write(data);
-        }
+        // string data = "";
+        // foreach (Location location in locations)
+        // {
+        //     data += JsonConvert.SerializeObject(location, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
+        // }
+        // using (StreamWriter sw = new StreamWriter("C:\\Users\\ahmed\\sh07-main\\CENSIS-AR-App\\Assets\\Resources\\Test.json"))
+        // {
+        //     sw.Write(data);
+        // }
 
         var go = new GameObject();
         go.transform.parent = Camera.main.transform;
         text = go.AddComponent<Text>();
+
+        clueOverlay = GameObject.Find("ClueOverlay").GetComponent<Canvas>();
+        nextButton = GameObject.Find("Next").GetComponent<Canvas>();
+        showClue = GameObject.Find("ShowClue").GetComponent<Canvas>();
+        clueOverlay.enabled = false;
+        nextButton.enabled = false;
+        Debug.Log($"clueOverlay.enabled {clueOverlay.enabled}");
+        Debug.Log($"nextButton.enabled {nextButton.enabled}");
     }
 
     public void LocationFound()
@@ -44,6 +56,10 @@ public class GameScript : MonoBehaviour
         // show info
         Debug.Log($"Location name: {LocationHandler.GetCurrLocation().name}, Building info: {LocationHandler.GetCurrLocation().information}");
         // show next button
+        nextButton.enabled = true;
+        showClue.enabled = false;
+
+
     }
 
     void Update()
@@ -66,23 +82,34 @@ public class GameScript : MonoBehaviour
         }
     }
 
-    private void Next()
+    public void Next()
     {
-        // switch to next location
-        if (LocationHandler.UpdateLocation())  {
-            // show clue
-            ShowClue();
-            Debug.Log($"Locations clue: {LocationHandler.GetCurrLocation().clue}");
+        if (LocationHandler.IsFinalLocation())  {
+            GameWon();
         }
         else
         {
-            GameWon();
+            // switch to next location
+            LocationHandler.NextLocation();
+            // show clue
+            ShowClue();
+            Debug.Log($"Locations clue: {LocationHandler.GetCurrLocation().clue}");
+            nextButton.enabled = false;
+            showClue.enabled = true;
         }
     }
 
     private void ShowClue()
     {
         // show clue;
+        clueOverlay.enabled = true;
+    }
+
+    public void CloseClue()
+    {
+        // close clue
+        clueOverlay.enabled = false;
+        Debug.Log($"clueOverlay.enabled {clueOverlay.enabled}");
     }
 
     void GameWon()

@@ -20,9 +20,6 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/AppDesign/InfoSceneScavenger.unity
     guid: d30d183703ca25f47ac2d339a24eec42
-  - enabled: 0
-    path: Assets/AR_sample_view.unity
-    guid: bdb040c5dc1174179a5ed3ce12250ca8
   m_configObjects:
     Unity.XR.WindowsMR.Settings: {fileID: 11400000, guid: 744b813df90924c169af73489b8325de,
       type: 2}

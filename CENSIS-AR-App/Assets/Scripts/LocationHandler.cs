@@ -14,7 +14,7 @@ public class LocationHandler : MonoBehaviour
         // gets the index of the current building or 0 
         int locationIndex = PlayerPrefs.GetInt("CurrentLocation", 0);
     }
-    public static bool UpdateLocation()
+    public static bool NextLocation()
     {
         if (locationIndex < locations.Count) {
             locationIndex += 1;
@@ -27,6 +27,9 @@ public class LocationHandler : MonoBehaviour
             return false;
         }
     }
+
+    public static bool IsFinalLocation()
+    { return locationIndex == locations.Count-1; }
 
     public static Location GetCurrLocation()
     {

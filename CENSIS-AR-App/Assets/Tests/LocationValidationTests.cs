@@ -8,7 +8,7 @@ using UnityEngine.TestTools;
 public class LocationValidationTests
 {
 
-    Location loc = new Location("TestLoc", "Clue", "Info", new float[][][]{ new float[][]{
+    Location loc = new Location("TestLoc", "Clue", "Info", new float[] {55.87394f, -4.29181f}, new float[][][]{ new float[][]{
         new float[] {55.6829478f,-4.5160826f },
         new float[] {55.6830784f, -4.5155368f},
         new float[] {55.6827737f, -4.5153076f },
