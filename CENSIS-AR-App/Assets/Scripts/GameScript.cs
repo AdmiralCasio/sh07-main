@@ -5,15 +5,20 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Android;
 using Newtonsoft.Json;
+using TMPro;
 
 public class GameScript : MonoBehaviour
 {
-    [SerializeField] string filename;
+    [SerializeField] 
+    string filename;
+    [SerializeField]
+    TextMeshProUGUI clueText;
     Component text;
 
     Canvas clueOverlay;
     Canvas nextButton;
     Canvas showClue;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -102,6 +107,7 @@ public class GameScript : MonoBehaviour
     private void ShowClue()
     {
         // show clue;
+        clueText.text = LocationHandler.GetCurrLocation().clue;
         clueOverlay.enabled = true;
     }
 
