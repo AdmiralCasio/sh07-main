@@ -1611,10 +1611,10 @@ RectTransform:
   - {fileID: 487358230}
   m_Father: {fileID: 777630429}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.86574084, y: 0.8835625}
-  m_AnchorMax: {x: 0.86574084, y: 0.8835625}
-  m_AnchoredPosition: {x: 4, y: -9}
-  m_SizeDelta: {x: 230.0927, y: 75.599}
+  m_AnchorMin: {x: 0.87, y: 0.91}
+  m_AnchorMax: {x: 0.87, y: 0.91}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 230.09375, y: 76.59912}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &579465583
 MonoBehaviour:
@@ -2387,6 +2387,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   filename: LocationInformation
+  clueText: {fileID: 1306901233}
 --- !u!4 &797189757
 Transform:
   m_ObjectHideFlags: 0
@@ -2620,7 +2621,7 @@ GameObject:
   - component: {fileID: 885010926}
   - component: {fileID: 885010925}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: PlayerObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3486,10 +3487,10 @@ RectTransform:
   - {fileID: 1142230900}
   m_Father: {fileID: 492658642}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.86574084, y: 0.8835625}
-  m_AnchorMax: {x: 0.86574084, y: 0.8835625}
-  m_AnchoredPosition: {x: 4, y: -9}
-  m_SizeDelta: {x: 230.0927, y: 75.599}
+  m_AnchorMin: {x: 0.87, y: 0.91}
+  m_AnchorMax: {x: 0.87, y: 0.91}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 230.09277, y: 75.59961}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1264271176
 MonoBehaviour:
@@ -4376,7 +4377,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1734195070}
   - component: {fileID: 1734195069}
-  - component: {fileID: 1734195071}
   m_Layer: 0
   m_Name: CanvasManagerObject
   m_TagString: Untagged
@@ -4416,19 +4416,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1734195071
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1734195068}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8f5e3f4fbb9a2444904ca78313f9896, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  filename: LocationInformation
 --- !u!1 &1782207736
 GameObject:
   m_ObjectHideFlags: 0
