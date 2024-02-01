@@ -15,11 +15,10 @@ public class GameScript : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI clueText;
     Component text;
-    //Transform buildingTransform;
     public GameObject BuildingText;
     [SerializeField] public GameObject[] textItems;
-    TMP_Text title;
-    TMP_Text info;
+    public TMP_Text title;
+    public TMP_Text info;
 
     [SerializeField]
     GameObject[] debugText;
