@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.Android;
 using TMPro;
 using Newtonsoft.Json;
-using System.IO.IsolatedStorage;
+using UnityEngine.XR.ARFoundation;
 
 public class GameScript : MonoBehaviour
 {
@@ -15,10 +15,17 @@ public class GameScript : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI clueText;
     Component text;
+    //Transform buildingTransform;
     public GameObject BuildingText;
     [SerializeField] public GameObject[] textItems;
-    public TMP_Text title;
-    public TMP_Text info;
+    TMP_Text title;
+    TMP_Text info;
+
+    [SerializeField]
+    GameObject[] debugText;
+    
+
+    ARCameraManager arCameraManager;
 
     Canvas clueOverlay;
     Canvas nextButton;
@@ -34,11 +41,15 @@ public class GameScript : MonoBehaviour
         Permission.RequestUserPermission(Permission.FineLocation);
         Input.location.Start();
         Input.compass.enabled = true;
+        
 
         // Define text mesh pro components
         title = textItems[0].GetComponent<TMP_Text>();
         info = textItems[1].GetComponent<TMP_Text>();
         title.enabled = false; info.enabled = false;
+        textItems[0].SetActive(false); textItems[1].SetActive(false);
+
+        arCameraManager = FindAnyObjectByType<ARCameraManager>();
 
         // get locations from file
         List<Location> locations = FileHandler.ReadFromJSON<Location>(filename);
@@ -82,26 +93,65 @@ public class GameScript : MonoBehaviour
     void Update()
     {
         var location = new Vector2(Input.location.lastData.latitude, Input.location.lastData.longitude);
+        Camera.main.transform.position = BoundaryBoxes.ConvertToUnityCartesian(location);
         var curr = LocationHandler.GetCurrLocation();
+
+        Vector3 overlayLocation = new Vector3(BoundaryBoxes.ConvertToUnityCartesian(curr.centre).x,
+                                                       Camera.main.transform.position.y,
+                                                       BoundaryBoxes.ConvertToUnityCartesian(curr.centre).z);
+
+        BuildingText.transform.position = overlayLocation;
+        
         if (LocationValidator.AtLocation(location, curr) && !LocationValidator.LookingAtLocation(location, curr))
         {
             Debug.Log($"Game script: At {curr.name}");
 
+            // enable text items
+            title.enabled = true; info.enabled = true;
+            textItems[0].SetActive(true); textItems[1].SetActive(true);
+
+            // set text items to correct values
+            title.text = curr.name;
             info.text = curr.information;
+
+            // on screen debug
+            debugText[0].GetComponent<TMP_Text>().text = "At Location: true";
+            debugText[1].GetComponent<TMP_Text>().text = "Looking at Location : false";
+            debugText[2].GetComponent<TMP_Text>().text = "Overlay: " + info.enabled;
         }
 
         if (LocationValidator.LookingAtLocation(location, curr))
         {
             Debug.Log($"Game script: Looking At {curr.name}");
+
+            // enable text items
             title.enabled = true; info.enabled = true;
+            textItems[0].SetActive(true); textItems[1].SetActive(true);
+
+            // set text items to correct values
             title.text = curr.name;
             info.text = curr.information;
 
+            // on screen debug 
+            debugText[0].GetComponent<TMP_Text>().text = "At Location: true";
+            debugText[1].GetComponent<TMP_Text>().text = "Looking at Location : true";
+            debugText[2].GetComponent<TMP_Text>().text = "Overlay: " + info.enabled;
+
+            //LocationFound();
         }
 
         if (!LocationValidator.AtLocation(location, curr))
         {
             Debug.Log($"Game Script: Not at {curr.name}");
+
+            // disable text items
+            title.enabled = false; info.enabled = false;
+            textItems[0].SetActive(false); textItems[1].SetActive(false);
+
+            // on screen debug
+            debugText[0].GetComponent<TMP_Text>().text = "At Location: false";
+            debugText[1].GetComponent<TMP_Text>().text = "Looking at Location : false";
+            debugText[2].GetComponent<TMP_Text>().text = "Overlay: " + info.enabled;
         }
     }
 

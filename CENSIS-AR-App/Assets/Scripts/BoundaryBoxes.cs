@@ -65,7 +65,28 @@ public class BoundaryBoxes
 
         return new Vector2((float)x, (float)y);
     }
+    public static Vector3 ConvertToUnityCartesian(Vector2 latLong)
+    {
+        // WGS-84 ellipsoid constants
+        double a = 6378137; // equatorial radius in meters
+        double f = 1 / 298.257223563; // flattening
+        double b = a * (1 - f); // polar radius
+        double e = Math.Sqrt(1 - (b * b) / (a * a)); // eccentricity
 
+        // input in radians
+        double lat = latLong.x * Math.PI / 180;
+        double lon = latLong.y * Math.PI / 180;
+
+        // radius of curvature in the prime vertical
+        double N = a / Math.Sqrt(1 - e * e * Math.Sin(lat) * Math.Sin(lat));
+
+        // cartesian coordinates
+        double x = N * Math.Cos(lat) * Math.Cos(lon);
+        double y = N * Math.Cos(lat) * Math.Sin(lon);
+        double z = (b * b) / (a * a) * N * Math.Sin(lat) + 1;
+
+        return new Vector3((float)x, (float)z, (float)y);
+    }
     private void IsInsidePrint(bool isInside)
     {
         if (isInside)

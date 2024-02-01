@@ -42,7 +42,7 @@ public class LocationValidator
 
     public static bool LookingAtLocation(Vector2 position, Location location)
     {
-        return AtLocation(position, location) && LocationVisibility.IsVisible(location.centre, Camera.main);
+        return AtLocation(position, location) && LocationVisibility.IsVisible(BoundaryBoxes.ConvertToUnityCartesian(location.centre), Camera.main);
     }
 
     static bool InBox(Vector2 position, Vector2[] box)
