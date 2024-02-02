@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,18 +12,11 @@ public class LocationHandler : MonoBehaviour
         // gets the index of the current building or 0 
         int locationIndex = PlayerPrefs.GetInt("CurrentLocation", 0);
     }
-    public static bool NextLocation()
+    public static void NextLocation()
     {
-        if (locationIndex < locations.Count) {
-            locationIndex += 1;
-            PlayerPrefs.SetInt("CurrentLocation", locationIndex);
-            PlayerPrefs.Save();
-            return true;
-        }
-        else
-        {  
-            return false;
-        }
+        locationIndex += 1;
+        PlayerPrefs.SetInt("CurrentLocation", locationIndex);
+        PlayerPrefs.Save(); 
     }
 
     public static bool IsFinalLocation()
