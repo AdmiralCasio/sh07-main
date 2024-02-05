@@ -8,11 +8,24 @@
         "GUID:92703082f92b41ba80f0d6912de66115",
         "GUID:dfd0ce20189d48e5b22bb4134b558f5a"
     ],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Android",
+        "Editor",
+        "iOS"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
-    "precompiledReferences": [],
+    "precompiledReferences": [
+        "nunit.framework.dll",
+        "Mapbox.Json.dll",
+        "Mapbox.VectorTile.VectorTileReader.dll",
+        "Mapbox.VectorTile.Geometry.dll",
+        "MapboxAccountsUnity.dll",
+        "Mapbox.VectorTile.ExtensionMethods.dll",
+        "Mapbox.VectorTile.PbfReader.dll",
+        "Mapbox.IO.Compression.dll"
+    ],
     "autoReferenced": true,
     "defineConstraints": [],
     "versionDefines": [],

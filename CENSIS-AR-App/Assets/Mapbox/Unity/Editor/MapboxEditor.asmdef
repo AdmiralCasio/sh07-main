@@ -1,0 +1,26 @@
+{
+    "name": "MapboxEditor",
+    "rootNamespace": "",
+    "references": [
+        "NewAssembly"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "Mapbox.Json.dll",
+        "Mapbox.IO.Compression.dll",
+        "Mapbox.VectorTile.PbfReader.dll",
+        "Mapbox.VectorTile.VectorTileReader.dll",
+        "MapboxAccountsUnity.dll",
+        "Mapbox.VectorTile.Geometry.dll",
+        "Mapbox.VectorTile.ExtensionMethods.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
