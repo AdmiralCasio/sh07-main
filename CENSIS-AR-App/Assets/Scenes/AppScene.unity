@@ -4234,6 +4234,8 @@ MonoBehaviour:
   - {fileID: 1400813565}
   - {fileID: 1335970596}
   - {fileID: 943233427}
+  mapCamera: {fileID: 965989872}
+  map: {fileID: 589431875}
 --- !u!4 &1734195070
 Transform:
   m_ObjectHideFlags: 0
