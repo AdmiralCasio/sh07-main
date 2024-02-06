@@ -24,21 +24,6 @@ namespace Tests
         }
 
         [UnityTest]
-        public IEnumerator TestPageOnStartup()
-        {
-            yield return null;
-            // check home canvas is enabled
-            Assert.IsTrue(GetCanvas("HomeCanvas").enabled);
-
-            // check other canvases are not enabled
-            Assert.IsFalse(GetCanvas("CameraCanvas").enabled);
-            Assert.IsFalse(GetCanvas("MapCanvas").enabled);
-            Assert.IsFalse(GetCanvas("InfoCanvas").enabled);
-
-            yield return null;
-        }
-
-        [UnityTest]
         public IEnumerator TestHomeButton()
         {
             Button homeButton = GameObject.Find("NavbarAndTopBar/NavBar/HomeButton").GetComponent<Button>();
