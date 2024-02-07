@@ -93,6 +93,9 @@ public class GameScript : MonoBehaviour
         {
             // toggle game object states
             BuildingText.gameObject.SetActive(false);
+            info.gameObject.SetActive(false);
+            title.gameObject.SetActive(false);
+
 
             // set text items to correct values
             title.text = curr.name;
@@ -112,14 +115,15 @@ public class GameScript : MonoBehaviour
             // move overlay to be in front of camera
             if (Math.Abs(overlayLocation.y - Camera.main.transform.position.y) >= 10 || overlayLocation.y - Camera.main.transform.position.y < 0)
             {
-                overlayLocation.y = Camera.main.transform.position.y;
+                overlayLocation = new Vector3(overlayLocation.x, Camera.main.transform.position.y, overlayLocation.z);
             }
-            
+
             BuildingText.transform.position = overlayLocation;
  
             // toggle game object states
             BuildingText.gameObject.SetActive(true);
-
+            info.gameObject.SetActive(true);
+            title.gameObject.SetActive(true);
             // set text items to correct values
             title.text = curr.name;
             info.text = curr.information;
@@ -138,6 +142,8 @@ public class GameScript : MonoBehaviour
         {
             // toggle game object states
             BuildingText.gameObject.SetActive(false);
+            info.gameObject.SetActive(false);
+            title.gameObject.SetActive(false);
 
             // on screen debug
             debugText[0].GetComponent<TMP_Text>().text = "At Location: false";

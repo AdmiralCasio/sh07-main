@@ -62,7 +62,7 @@ public class LocationValidationTests
         Vector3 playerLoc = new Vector3(55.6830365f, -4.5154432f);
         Vector3 origin = BoundaryBoxes.ConvertToUnityCartesian(playerLoc);
         Camera cam = Camera.main;
-        cam.transform.position = playerLoc;
+        cam.transform.position = BoundaryBoxes.ConvertToUnityCartesian(playerLoc, origin);
         loc.centre = new Vector2(55.68286f, -4.51571f);
         cam.transform.LookAt(-loc.centre);
         Assert.IsFalse(LocationValidator.LookingAtLocation(playerLoc, loc, origin));
