@@ -16,6 +16,8 @@ public class GameScript : MonoBehaviour
     Component text;
 
     Canvas clueOverlay;
+    Canvas locationFoundOverlay;
+    Canvas gameCompleteOverlay;
     Canvas nextButton;
     Canvas showClue;
     
@@ -48,10 +50,14 @@ public class GameScript : MonoBehaviour
         text = go.AddComponent<Text>();
 
         clueOverlay = GameObject.Find("ClueOverlay").GetComponent<Canvas>();
+        locationFoundOverlay = GameObject.Find("LocationFoundOverlay").GetComponent<Canvas>();
+        gameCompleteOverlay = GameObject.Find("GameCompleteOverlay").GetComponent<Canvas>();
         nextButton = GameObject.Find("Next").GetComponent<Canvas>();
         showClue = GameObject.Find("ShowClue").GetComponent<Canvas>();
         clueOverlay.enabled = false;
         nextButton.enabled = false;
+        locationFoundOverlay.enabled = false;
+        gameCompleteOverlay.enabled = false;
         Debug.Log($"clueOverlay.enabled {clueOverlay.enabled}");
         Debug.Log($"nextButton.enabled {nextButton.enabled}");
     }
@@ -74,16 +80,20 @@ public class GameScript : MonoBehaviour
         if (LocationValidator.AtLocation(location, curr) && !LocationValidator.LookingAtLocation(location, curr))
         {
             Debug.Log($"Game script: At {curr.name}");
+            locationFoundOverlay.enabled = true;
+
         }
 
         if (LocationValidator.LookingAtLocation(location, curr))
         {
             Debug.Log($"Game script: Looking At {curr.name}");
+            locationFoundOverlay.enabled = false;
         }
 
         if (!LocationValidator.AtLocation(location, curr))
         {
             Debug.Log($"Game Script: Not at {curr.name}");
+            locationFoundOverlay.enabled = false;
         }
     }
 
@@ -120,8 +130,9 @@ public class GameScript : MonoBehaviour
 
     void GameWon()
     {
-        // display congradulations
+        // display congratulations
         Debug.Log("Game finished, well done");
+        gameCompleteOverlay.enabled = true;
     }
 
 }
