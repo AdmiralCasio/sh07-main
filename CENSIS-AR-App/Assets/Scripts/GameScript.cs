@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Android;
@@ -16,20 +17,23 @@ public class GameScript : MonoBehaviour
     TextMeshProUGUI clueText;
     Component text;
     public GameObject BuildingText;
-    [SerializeField] public GameObject[] textItems;
     public TMP_Text title;
     public TMP_Text info;
+    Vector3 origin;
 
     [SerializeField]
     GameObject[] debugText;
     
-
-    ARCameraManager arCameraManager;
-
     Canvas clueOverlay;
     Canvas nextButton;
     Canvas showClue;
 
+
+
+    IEnumerator wait()
+    {
+        yield return new WaitForSeconds(1);
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -38,37 +42,23 @@ public class GameScript : MonoBehaviour
 
         // Get user permissions and start location tracking
         Permission.RequestUserPermission(Permission.FineLocation);
-        Input.location.Start();
         Input.compass.enabled = true;
+        Input.location.Start();
+
+        wait();
+
+        // define origin point
+        origin = BoundaryBoxes.ConvertToUnityCartesian(new Vector2(Input.location.lastData.latitude, Input.location.lastData.longitude));
         
-
         // Define text mesh pro components
-        title = textItems[0].GetComponent<TMP_Text>();
-        info = textItems[1].GetComponent<TMP_Text>();
-        title.enabled = false; info.enabled = false;
-        textItems[0].SetActive(false); textItems[1].SetActive(false);
-
-        arCameraManager = FindAnyObjectByType<ARCameraManager>();
+        title.gameObject.SetActive(false);
+        info.gameObject.SetActive(false);
 
         // get locations from file
         List<Location> locations = FileHandler.ReadFromJSON<Location>(filename);
         LocationHandler.locations = locations;
 
-
-        // string data = "";
-        // foreach (Location location in locations)
-        // {
-        //     data += JsonConvert.SerializeObject(location, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
-        // }
-        // using (StreamWriter sw = new StreamWriter("C:\\Users\\ahmed\\sh07-main\\CENSIS-AR-App\\Assets\\Resources\\Test.json"))
-        // {
-        //     sw.Write(data);
-        // }
-
-        var go = new GameObject();
-        go.transform.parent = Camera.main.transform;
-        text = go.AddComponent<Text>();
-
+        // clue stuff 
         clueOverlay = GameObject.Find("ClueOverlay").GetComponent<Canvas>();
         nextButton = GameObject.Find("Next").GetComponent<Canvas>();
         showClue = GameObject.Find("ShowClue").GetComponent<Canvas>();
@@ -76,6 +66,7 @@ public class GameScript : MonoBehaviour
         nextButton.enabled = false;
         Debug.Log($"clueOverlay.enabled {clueOverlay.enabled}");
         Debug.Log($"nextButton.enabled {nextButton.enabled}");
+
     }
 
     public void LocationFound()
@@ -85,29 +76,23 @@ public class GameScript : MonoBehaviour
         // show next button
         nextButton.enabled = true;
         showClue.enabled = false;
-
-
     }
 
     void Update()
     {
+        // define user, current building, and overlay locations
         var location = new Vector2(Input.location.lastData.latitude, Input.location.lastData.longitude);
-        Camera.main.transform.position = BoundaryBoxes.ConvertToUnityCartesian(location);
         var curr = LocationHandler.GetCurrLocation();
 
-        Vector3 overlayLocation = new Vector3(BoundaryBoxes.ConvertToUnityCartesian(curr.centre).x,
-                                                       Camera.main.transform.position.y,
-                                                       BoundaryBoxes.ConvertToUnityCartesian(curr.centre).z);
-
-        BuildingText.transform.position = overlayLocation;
+        // calculate where the overlay should appear
+        Vector3 normalised_centre = BoundaryBoxes.ConvertToUnityCartesian(curr.centre, origin);
+        Vector3 overlayLocation = normalised_centre;
         
-        if (LocationValidator.AtLocation(location, curr) && !LocationValidator.LookingAtLocation(location, curr))
+        // check if user is within location but not looking at the right direction
+        if (LocationValidator.AtLocation(location, curr) && !LocationValidator.LookingAtLocation(location, curr, origin))
         {
-            Debug.Log($"Game script: At {curr.name}");
-
-            // enable text items
-            title.enabled = true; info.enabled = true;
-            textItems[0].SetActive(true); textItems[1].SetActive(true);
+            // toggle game object states
+            BuildingText.gameObject.SetActive(false);
 
             // set text items to correct values
             title.text = curr.name;
@@ -116,16 +101,24 @@ public class GameScript : MonoBehaviour
             // on screen debug
             debugText[0].GetComponent<TMP_Text>().text = "At Location: true";
             debugText[1].GetComponent<TMP_Text>().text = "Looking at Location : false";
-            debugText[2].GetComponent<TMP_Text>().text = "Overlay: " + info.enabled;
+            debugText[2].GetComponent<TMP_Text>().text = "building to see: " + curr.name;
+            debugText[3].GetComponent<TMP_Text>().text = "Overlay : "+ overlayLocation;
+            debugText[4].GetComponent<TMP_Text>().text = "Camera : "+ Camera.main.transform.position;
         }
-
-        if (LocationValidator.LookingAtLocation(location, curr))
+        // check if user is both in and looking at location
+        if (LocationValidator.LookingAtLocation(location, curr, origin))
         {
-            Debug.Log($"Game script: Looking At {curr.name}");
 
-            // enable text items
-            title.enabled = true; info.enabled = true;
-            textItems[0].SetActive(true); textItems[1].SetActive(true);
+            // move overlay to be in front of camera
+            if (Math.Abs(overlayLocation.y - Camera.main.transform.position.y) >= 10 || overlayLocation.y - Camera.main.transform.position.y < 0)
+            {
+                overlayLocation.y = Camera.main.transform.position.y;
+            }
+            
+            BuildingText.transform.position = overlayLocation;
+ 
+            // toggle game object states
+            BuildingText.gameObject.SetActive(true);
 
             // set text items to correct values
             title.text = curr.name;
@@ -134,23 +127,24 @@ public class GameScript : MonoBehaviour
             // on screen debug 
             debugText[0].GetComponent<TMP_Text>().text = "At Location: true";
             debugText[1].GetComponent<TMP_Text>().text = "Looking at Location : true";
-            debugText[2].GetComponent<TMP_Text>().text = "Overlay: " + info.enabled;
+            debugText[2].GetComponent<TMP_Text>().text = "building to see: " + curr.name;
+            debugText[3].GetComponent<TMP_Text>().text = "Overlay : " + overlayLocation;
+            debugText[4].GetComponent<TMP_Text>().text = "Camera : " + Camera.main.transform.position;
 
-            //LocationFound();
+            LocationFound();
         }
-
+        // check if user is not in the location
         if (!LocationValidator.AtLocation(location, curr))
         {
-            Debug.Log($"Game Script: Not at {curr.name}");
-
-            // disable text items
-            title.enabled = false; info.enabled = false;
-            textItems[0].SetActive(false); textItems[1].SetActive(false);
+            // toggle game object states
+            BuildingText.gameObject.SetActive(false);
 
             // on screen debug
             debugText[0].GetComponent<TMP_Text>().text = "At Location: false";
             debugText[1].GetComponent<TMP_Text>().text = "Looking at Location : false";
-            debugText[2].GetComponent<TMP_Text>().text = "Overlay: " + info.enabled;
+            debugText[2].GetComponent<TMP_Text>().text = "building to see: " + curr.name;
+            debugText[3].GetComponent<TMP_Text>().text = "Overlay : " + overlayLocation;
+            debugText[4].GetComponent<TMP_Text>().text = "Camera : "+ Camera.main.transform.position;
         }
     }
 
