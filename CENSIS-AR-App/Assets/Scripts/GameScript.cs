@@ -1,10 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.Android;
-using Newtonsoft.Json;
 using TMPro;
 
 public class GameScript : MonoBehaviour
@@ -13,7 +8,6 @@ public class GameScript : MonoBehaviour
     string filename;
     [SerializeField]
     TextMeshProUGUI clueText;
-    Component text;
 
     Canvas clueOverlay;
     Canvas locationFoundOverlay;
@@ -31,23 +25,8 @@ public class GameScript : MonoBehaviour
         Input.compass.enabled = true;
 
         // get locations from file
-        List<Location> locations = FileHandler.ReadFromJSON<Location>(filename);
-        LocationHandler.locations = locations;
+        LocationHandler.locations = FileHandler.ReadFromJSON<Location>(filename);
 
-
-        // string data = "";
-        // foreach (Location location in locations)
-        // {
-        //     data += JsonConvert.SerializeObject(location, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
-        // }
-        // using (StreamWriter sw = new StreamWriter("C:\\Users\\ahmed\\sh07-main\\CENSIS-AR-App\\Assets\\Resources\\Test.json"))
-        // {
-        //     sw.Write(data);
-        // }
-
-        var go = new GameObject();
-        go.transform.parent = Camera.main.transform;
-        text = go.AddComponent<Text>();
 
         clueOverlay = GameObject.Find("ClueOverlay").GetComponent<Canvas>();
         locationFoundOverlay = GameObject.Find("LocationFoundOverlay").GetComponent<Canvas>();
@@ -69,8 +48,6 @@ public class GameScript : MonoBehaviour
         // show next button
         nextButton.enabled = true;
         showClue.enabled = false;
-
-
     }
 
     void Update()
@@ -87,6 +64,7 @@ public class GameScript : MonoBehaviour
         if (LocationValidator.LookingAtLocation(location, curr))
         {
             Debug.Log($"Game script: Looking At {curr.name}");
+            LocationFound();
             locationFoundOverlay.enabled = false;
         }
 
@@ -108,7 +86,6 @@ public class GameScript : MonoBehaviour
             LocationHandler.NextLocation();
             // show clue
             ShowClue();
-            Debug.Log($"Locations clue: {LocationHandler.GetCurrLocation().clue}");
             nextButton.enabled = false;
             showClue.enabled = true;
         }
