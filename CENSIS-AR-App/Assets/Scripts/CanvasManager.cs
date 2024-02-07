@@ -34,8 +34,7 @@ public class CanvasManager : MonoBehaviour
         }
     }
     void Start()
-    { 
-
+    {
         ActivateCanvas(1);
         ActivateCanvas(0);
     }
