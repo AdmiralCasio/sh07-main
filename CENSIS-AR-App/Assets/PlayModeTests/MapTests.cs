@@ -9,12 +9,11 @@ using Moq;
 using NUnit.Framework;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 using UnityEngine.UI;
 
-public class MapTests : InputTestFixture
+public class MapTests
 {
     [UnitySetUp]
     public IEnumerator SetUp()
