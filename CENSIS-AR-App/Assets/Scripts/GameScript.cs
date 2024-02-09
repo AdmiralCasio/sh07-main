@@ -23,8 +23,10 @@ public class GameScript : MonoBehaviour
 
     [SerializeField]
     GameObject[] debugText;
-    
+
     Canvas clueOverlay;
+    Canvas locationFoundOverlay;
+    Canvas gameCompleteOverlay;
     Canvas nextButton;
     Canvas showClue;
 
@@ -49,24 +51,26 @@ public class GameScript : MonoBehaviour
 
         // define origin point
         origin = BoundaryBoxes.ConvertToUnityCartesian(new Vector2(Input.location.lastData.latitude, Input.location.lastData.longitude));
-        
+
         // Define text mesh pro components
         title.gameObject.SetActive(false);
         info.gameObject.SetActive(false);
 
         // get locations from file
-        List<Location> locations = FileHandler.ReadFromJSON<Location>(filename);
-        LocationHandler.locations = locations;
+        LocationHandler.locations = FileHandler.ReadFromJSON<Location>(filename);
 
-        // clue stuff 
+
         clueOverlay = GameObject.Find("ClueOverlay").GetComponent<Canvas>();
+        locationFoundOverlay = GameObject.Find("LocationFoundOverlay").GetComponent<Canvas>();
+        gameCompleteOverlay = GameObject.Find("GameCompleteOverlay").GetComponent<Canvas>();
         nextButton = GameObject.Find("Next").GetComponent<Canvas>();
         showClue = GameObject.Find("ShowClue").GetComponent<Canvas>();
         clueOverlay.enabled = false;
         nextButton.enabled = false;
+        locationFoundOverlay.enabled = false;
+        gameCompleteOverlay.enabled = false;
         Debug.Log($"clueOverlay.enabled {clueOverlay.enabled}");
         Debug.Log($"nextButton.enabled {nextButton.enabled}");
-
     }
 
     public void LocationFound()
@@ -87,7 +91,7 @@ public class GameScript : MonoBehaviour
         // calculate where the overlay should appear
         Vector3 normalised_centre = BoundaryBoxes.ConvertToUnityCartesian(curr.centre, origin);
         Vector3 overlayLocation = normalised_centre;
-        
+
         // check if user is within location but not looking at the right direction
         if (LocationValidator.AtLocation(location, curr) && !LocationValidator.LookingAtLocation(location, curr, origin))
         {
@@ -107,6 +111,9 @@ public class GameScript : MonoBehaviour
             debugText[2].GetComponent<TMP_Text>().text = "building to see: " + curr.name;
             debugText[3].GetComponent<TMP_Text>().text = "Overlay : "+ overlayLocation;
             debugText[4].GetComponent<TMP_Text>().text = "Camera : "+ Camera.main.transform.position;
+            Debug.Log($"Game script: At {curr.name}");
+            locationFoundOverlay.enabled = true;
+
         }
         // check if user is both in and looking at location
         if (LocationValidator.LookingAtLocation(location, curr, origin))
@@ -117,9 +124,15 @@ public class GameScript : MonoBehaviour
             {
                 overlayLocation = new Vector3(overlayLocation.x, Camera.main.transform.position.y, overlayLocation.z);
             }
-
             BuildingText.transform.position = overlayLocation;
- 
+
+
+            Debug.Log($"Game script: Looking At {curr.name}");
+            LocationFound();
+            locationFoundOverlay.enabled = false;
+
+
+
             // toggle game object states
             BuildingText.gameObject.SetActive(true);
             info.gameObject.SetActive(true);
@@ -128,14 +141,12 @@ public class GameScript : MonoBehaviour
             title.text = curr.name;
             info.text = curr.information;
 
-            // on screen debug 
+            // on screen debug
             debugText[0].GetComponent<TMP_Text>().text = "At Location: true";
             debugText[1].GetComponent<TMP_Text>().text = "Looking at Location : true";
             debugText[2].GetComponent<TMP_Text>().text = "building to see: " + curr.name;
             debugText[3].GetComponent<TMP_Text>().text = "Overlay : " + overlayLocation;
             debugText[4].GetComponent<TMP_Text>().text = "Camera : " + Camera.main.transform.position;
-
-            LocationFound();
         }
         // check if user is not in the location
         if (!LocationValidator.AtLocation(location, curr))
@@ -151,6 +162,8 @@ public class GameScript : MonoBehaviour
             debugText[2].GetComponent<TMP_Text>().text = "building to see: " + curr.name;
             debugText[3].GetComponent<TMP_Text>().text = "Overlay : " + overlayLocation;
             debugText[4].GetComponent<TMP_Text>().text = "Camera : "+ Camera.main.transform.position;
+            Debug.Log($"Game Script: Not at {curr.name}");
+            locationFoundOverlay.enabled = false;
         }
     }
 
@@ -165,7 +178,6 @@ public class GameScript : MonoBehaviour
             LocationHandler.NextLocation();
             // show clue
             ShowClue();
-            Debug.Log($"Locations clue: {LocationHandler.GetCurrLocation().clue}");
             nextButton.enabled = false;
             showClue.enabled = true;
         }
@@ -187,8 +199,9 @@ public class GameScript : MonoBehaviour
 
     void GameWon()
     {
-        // display congradulations
+        // display congratulations
         Debug.Log("Game finished, well done");
+        gameCompleteOverlay.enabled = true;
     }
 
 }
