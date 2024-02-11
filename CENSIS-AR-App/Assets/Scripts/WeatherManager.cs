@@ -74,11 +74,21 @@ public class WeatherManager : MonoBehaviour
             Debug.Log(fetchWeatherRequest.downloadHandler.text);
             var response = JSON.Parse(fetchWeatherRequest.downloadHandler.text);
             Debug.Log("Weather: "+ response["main"]["temp"]);
-            weather[0].text = "Temperature : " + response["main"]["temp"] + " C";
-            weather[1].text = "Humidity : " + response["main"]["humidity"] + " %";
-            weather[2].text = "Max : " + response["main"]["temp_max"] + " C";
-            weather[3].text = "Min : " + response["main"]["temp_min"] + " C";
+
+            var temp = format(response["main"]["temp"]);
+            var humidity = response["main"]["humidity"];
+            var max = format(response["main"]["temp_max"]);
+            var min = format(response["main"]["temp_min"]);
+            Debug.Log("Weather:" + temp + humidity + max + min);
+
+            weather[0].text = $"{temp}°";
+            weather[1].text = $"Humidity: {humidity}%\nMax: {max}°\nMin: {min}°";
         }
+    }
+
+    private string format(string str)
+    {
+        return str.Substring(0, str.Length - 3);
     }
 
     private void UpdateWeatherData()
