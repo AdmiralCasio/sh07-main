@@ -4,6 +4,11 @@ using UnityEngine;
 public class LocationHandler : MonoBehaviour
 {
     static int locationIndex;
+    public static int LocationIndex
+    {
+        get { return locationIndex; }
+        set { locationIndex = value; }
+    }
     public static List<Location> locations { get; set; }
 
     // Start is called before the first frame update
