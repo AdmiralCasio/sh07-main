@@ -43,6 +43,9 @@ public class LocationHandler : MonoBehaviour
         }
         else
         {
+
+            locationIndex = 0;
+            playerData.locationIndex = locationIndex;
             Debug.Log("No save files to load");
 
         }
