@@ -23,7 +23,6 @@ namespace Tests
             return GameObject.Find(canvas).GetComponent<Canvas>();
         }
 
-
         [UnityTest]
         public IEnumerator TestHomeButton()
         {
