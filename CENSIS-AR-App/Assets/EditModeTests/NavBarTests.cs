@@ -6,7 +6,9 @@ using UnityEngine.InputSystem;
 using UnityEditor.SceneManagement;
 using UnityEngine.UI;
 
-public class NavBarSuit : InputTestFixture
+namespace Tests
+{
+    public class NavBar : InputTestFixture
     {
         public override void Setup()
         {
@@ -20,7 +22,6 @@ public class NavBarSuit : InputTestFixture
         {
             return GameObject.Find(canvas).GetComponent<Canvas>();
         }
-
 
         [UnityTest]
         public IEnumerator TestHomeButton()
@@ -92,4 +93,4 @@ public class NavBarSuit : InputTestFixture
         }
     }
 
-
+}

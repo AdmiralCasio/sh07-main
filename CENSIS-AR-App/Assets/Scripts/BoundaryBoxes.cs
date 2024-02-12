@@ -33,40 +33,67 @@ public class BoundaryBoxes
         return inside;
     }
 
-    public static Vector2[] ConvertToCartesian(Vector2[] latLongs)
+    public static Vector2[] ConvertToCartesian(Vector2[] latlongs)
     {
-        double R = 6371000; // radius of the earth in meters
-        int n = latLongs.Length;
-        Vector2[] cartesians = new Vector2[n];
-
-        for (int i = 0; i < n; i++)
+        List<Vector2> carts = new List<Vector2>();
+        foreach (Vector2 latlong in latlongs)
         {
-            double latRad = latLongs[i].x * Math.PI / 180;
-            double lonRad = latLongs[i].y * Math.PI / 180;
-
-            double x = R * Math.Cos(latRad) * Math.Cos(lonRad);
-            double y = R * Math.Cos(latRad) * Math.Sin(lonRad);
-            double z = R * Math.Sin(latRad);
-
-            cartesians[i] = new Vector2((float)x, (float)y);
+            carts.Add(ConvertToCartesian(latlong));
         }
-
-        return cartesians;
+        return carts.ToArray();
     }
 
     public static Vector2 ConvertToCartesian(Vector2 latLong)
     {
-        double R = 6371000; // radius of the earth in meters
+        // WGS-84 ellipsoid constants
+        double a = 6378137; // equatorial radius in meters
+        double f = 1 / 298.257223563; // flattening
+        double b = a * (1 - f); // polar radius
+        double e = Math.Sqrt(1 - (b * b) / (a * a)); // eccentricity
 
-        double latRad = latLong.x * Math.PI / 180;
-        double lonRad = latLong.y * Math.PI / 180;
+        // input in radians
+        double lat = latLong.x * Math.PI / 180;
+        double lon = latLong.y * Math.PI / 180;
 
-        double x = R * Math.Cos(latRad) * Math.Cos(lonRad);
-        double y = R * Math.Cos(latRad) * Math.Sin(lonRad);
-        double z = R * Math.Sin(latRad);
+        // radius of curvature in the prime vertical
+        double N = a / Math.Sqrt(1 - e * e * Math.Sin(lat) * Math.Sin(lat));
 
-        Vector2 cartesian = new Vector2((float)x, (float)y);
-        return cartesian;
+        // cartesian coordinates
+        double x = N * Math.Cos(lat) * Math.Cos(lon);
+        double y = N * Math.Cos(lat) * Math.Sin(lon);
+        double z = (b * b) / (a * a) * N * Math.Sin(lat);
+
+        return new Vector2((float)x, (float)y);
+    }
+    public static Vector3 ConvertToUnityCartesian(Vector2 latLong)
+    {
+        // WGS-84 ellipsoid constants
+        double a = 6378137; // equatorial radius in meters
+        double f = 1 / 298.257223563; // flattening
+        double b = a * (1 - f); // polar radius
+        double e = Math.Sqrt(1 - (b * b) / (a * a)); // eccentricity
+
+        // input in radians
+        double lat = latLong.x * Math.PI / 180;
+        double lon = latLong.y * Math.PI / 180;
+
+        // radius of curvature in the prime vertical
+        double N = a / Math.Sqrt(1 - e * e * Math.Sin(lat) * Math.Sin(lat));
+
+        // cartesian coordinates
+        double x = N * Math.Cos(lat) * Math.Cos(lon);
+        double y = N * Math.Cos(lat) * Math.Sin(lon);
+        double z = (b * b) / (a * a) * N * Math.Sin(lat) + 1;
+
+        return new Vector3((float)x, (float)z, (float)y);
+    }
+
+    public static Vector3 ConvertToUnityCartesian(Vector2 latLong, Vector3 origin)
+    {
+        Debug.Log("(Origin) latlon before normalise : " + ConvertToUnityCartesian(latLong));
+        Debug.Log("(Origin) latlon after normalise : " + (ConvertToUnityCartesian(latLong) - origin));
+
+        return ConvertToUnityCartesian(latLong) - origin;
     }
 
     private void IsInsidePrint(bool isInside)

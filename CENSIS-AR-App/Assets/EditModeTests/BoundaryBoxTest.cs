@@ -13,7 +13,8 @@ public class BoundaryBoxTest
         Vector2 longlat = new Vector2(55.8740145f, -4.2920211f);
         Vector2 longlatAsCart = BoundaryBoxes.ConvertToCartesian(longlat);
         Vector2 cart = new Vector2(3576405.012f, -268410.39f);
-        var acceptableDiff = 15000;
+        Debug.Log("diffs : " + (Math.Abs(longlatAsCart.x - cart.x), Math.Abs(longlatAsCart.y - cart.y)));
+        var acceptableDiff = 0.5;
         Assert.IsTrue(Math.Abs(longlatAsCart.x - cart.x) < acceptableDiff && Math.Abs(longlatAsCart.y - cart.y) < acceptableDiff);
     }
 

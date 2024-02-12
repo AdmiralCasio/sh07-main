@@ -46,6 +46,10 @@ cache/
 # Unity3D Generated File On Crash Reports
 sysinfo.txt
 
+# OSM API
+Utils/*.txt
+cache/*
+
 # Builds
 *.apk
 *.unitypackage
