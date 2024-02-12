@@ -40,9 +40,9 @@ public class LocationValidator
         return inOuter && !inInner;
     }
 
-    public static bool LookingAtLocation(Vector2 position, Location location)
+    public static bool LookingAtLocation(Vector2 position, Location location, Vector3 origin)
     {
-        return AtLocation(position, location) && LocationVisibility.IsVisible(location.centre, Camera.main);
+        return AtLocation(position, location) && LocationVisibility.IsVisible(BoundaryBoxes.ConvertToUnityCartesian(location.centre,origin), Camera.main);
     }
 
     static bool InBox(Vector2 position, Vector2[] box)

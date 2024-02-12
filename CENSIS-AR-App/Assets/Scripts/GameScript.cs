@@ -1,28 +1,60 @@
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Android;
 using TMPro;
+using Newtonsoft.Json;
+using UnityEngine.XR.ARFoundation;
 
 public class GameScript : MonoBehaviour
 {
-    [SerializeField] 
+    [SerializeField]
     string filename;
     [SerializeField]
     TextMeshProUGUI clueText;
+    Component text;
+    public GameObject BuildingText;
+    public TMP_Text title;
+    public TMP_Text info;
+    Vector3 origin;
+
+    [SerializeField]
+    GameObject[] debugText;
 
     Canvas clueOverlay;
     Canvas locationFoundOverlay;
     Canvas gameCompleteOverlay;
     Canvas nextButton;
     Canvas showClue;
-    
+
+
+
+    IEnumerator wait()
+    {
+        yield return new WaitForSeconds(1);
+    }
 
     // Start is called before the first frame update
     void Start()
     {
         Debug.Log("Game Script Start");
+
+        // Get user permissions and start location tracking
         Permission.RequestUserPermission(Permission.FineLocation);
-        Input.location.Start();
         Input.compass.enabled = true;
+        Input.location.Start();
+
+        wait();
+
+        // define origin point
+        origin = BoundaryBoxes.ConvertToUnityCartesian(new Vector2(Input.location.lastData.latitude, Input.location.lastData.longitude));
+
+        // Define text mesh pro components
+        title.gameObject.SetActive(false);
+        info.gameObject.SetActive(false);
 
         // get locations from file
         LocationHandler.locations = FileHandler.ReadFromJSON<Location>(filename);
@@ -52,24 +84,84 @@ public class GameScript : MonoBehaviour
 
     void Update()
     {
+        // define user, current building, and overlay locations
         var location = new Vector2(Input.location.lastData.latitude, Input.location.lastData.longitude);
         var curr = LocationHandler.GetCurrLocation();
-        if (LocationValidator.AtLocation(location, curr) && !LocationValidator.LookingAtLocation(location, curr))
+
+        // calculate where the overlay should appear
+        Vector3 normalised_centre = BoundaryBoxes.ConvertToUnityCartesian(curr.centre, origin);
+        Vector3 overlayLocation = normalised_centre;
+
+        // check if user is within location but not looking at the right direction
+        if (LocationValidator.AtLocation(location, curr) && !LocationValidator.LookingAtLocation(location, curr, origin))
         {
+            // toggle game object states
+            BuildingText.gameObject.SetActive(false);
+            info.gameObject.SetActive(false);
+            title.gameObject.SetActive(false);
+
+
+            // set text items to correct values
+            title.text = curr.name;
+            info.text = curr.information;
+
+            // on screen debug
+            debugText[0].GetComponent<TMP_Text>().text = "At Location: true";
+            debugText[1].GetComponent<TMP_Text>().text = "Looking at Location : false";
+            debugText[2].GetComponent<TMP_Text>().text = "building to see: " + curr.name;
+            debugText[3].GetComponent<TMP_Text>().text = "Overlay : "+ overlayLocation;
+            debugText[4].GetComponent<TMP_Text>().text = "Camera : "+ Camera.main.transform.position;
             Debug.Log($"Game script: At {curr.name}");
             locationFoundOverlay.enabled = true;
 
         }
-
-        if (LocationValidator.LookingAtLocation(location, curr))
+        // check if user is both in and looking at location
+        if (LocationValidator.LookingAtLocation(location, curr, origin))
         {
+
+            // move overlay to be in front of camera
+            if (Math.Abs(overlayLocation.y - Camera.main.transform.position.y) >= 10 || overlayLocation.y - Camera.main.transform.position.y < 0)
+            {
+                overlayLocation = new Vector3(overlayLocation.x, Camera.main.transform.position.y, overlayLocation.z);
+            }
+            BuildingText.transform.position = overlayLocation;
+
+
             Debug.Log($"Game script: Looking At {curr.name}");
             LocationFound();
             locationFoundOverlay.enabled = false;
-        }
 
+
+
+            // toggle game object states
+            BuildingText.gameObject.SetActive(true);
+            info.gameObject.SetActive(true);
+            title.gameObject.SetActive(true);
+            // set text items to correct values
+            title.text = curr.name;
+            info.text = curr.information;
+
+            // on screen debug
+            debugText[0].GetComponent<TMP_Text>().text = "At Location: true";
+            debugText[1].GetComponent<TMP_Text>().text = "Looking at Location : true";
+            debugText[2].GetComponent<TMP_Text>().text = "building to see: " + curr.name;
+            debugText[3].GetComponent<TMP_Text>().text = "Overlay : " + overlayLocation;
+            debugText[4].GetComponent<TMP_Text>().text = "Camera : " + Camera.main.transform.position;
+        }
+        // check if user is not in the location
         if (!LocationValidator.AtLocation(location, curr))
         {
+            // toggle game object states
+            BuildingText.gameObject.SetActive(false);
+            info.gameObject.SetActive(false);
+            title.gameObject.SetActive(false);
+
+            // on screen debug
+            debugText[0].GetComponent<TMP_Text>().text = "At Location: false";
+            debugText[1].GetComponent<TMP_Text>().text = "Looking at Location : false";
+            debugText[2].GetComponent<TMP_Text>().text = "building to see: " + curr.name;
+            debugText[3].GetComponent<TMP_Text>().text = "Overlay : " + overlayLocation;
+            debugText[4].GetComponent<TMP_Text>().text = "Camera : "+ Camera.main.transform.position;
             Debug.Log($"Game Script: Not at {curr.name}");
             locationFoundOverlay.enabled = false;
         }
