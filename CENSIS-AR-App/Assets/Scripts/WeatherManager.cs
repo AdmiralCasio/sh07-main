@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,23 +8,29 @@ using SimpleJSON;
 
 public class WeatherManager : MonoBehaviour
 {
-    public string apiKey = "530fc21dd3934afbeb230b6edba1b2bf";
-    public string currentWeatherApi = "https://api.openweathermap.org/data/2.5/weather?";
+    public string apiKey;
+    public string currentWeatherApi;
+
     [SerializeField] TMP_Text[] weather;
     private LocationInfo lastLocation;
     // Start is called before the first frame update
     void Start()
     {
         Debug.Log("Weather : Get weather");
+        
+        // Config api
+        string config = Resources.Load<TextAsset>("OpenWeatherMap").text;
+        string[] openWeatherMap = config.Split(",");
+        apiKey = openWeatherMap[0].Trim();
+        currentWeatherApi = openWeatherMap[1].Trim();
+        Debug.Log("weather : " + apiKey);
+        Debug.Log("weather : " +  currentWeatherApi);
+        
+        Debug.Log("Weather : lastlocation set to "+ lastLocation);
         StartCoroutine(FetchLocationData());
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    
     private IEnumerator FetchLocationData()
     {
         Debug.Log("Weather : Getting Location Data");
@@ -67,7 +74,7 @@ public class WeatherManager : MonoBehaviour
         if (fetchWeatherRequest.result == UnityWebRequest.Result.ConnectionError|| fetchWeatherRequest.result == UnityWebRequest.Result.ProtocolError)
         {
             Debug.Log("Weather: Error getting weather");
-            Debug.Log(fetchWeatherRequest.error);
+            Debug.Log(fetchWeatherRequest.result);
         }
         else
         {
