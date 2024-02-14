@@ -34,11 +34,11 @@ def getVectors(url):
         else:
             print("Please enter a Way or Relation link")
     
-        out = "[ \n [ \n "
+        out = "[ \n "
         for i in nodes:
             out += (str(i) + '\n')
         out = out[:-3] if out[-3] == ',' else out
-        out += "\n]\n]"
+        out += "\n]"
         return out
     
     except Exception as error:

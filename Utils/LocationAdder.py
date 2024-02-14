@@ -1,47 +1,104 @@
 ﻿import tkinter as tk
+from tkinter import messagebox
 from tkinter import *
 from FindBuildingPolygon import *
+from shapely.geometry import Polygon
+from shapely.affinity import scale
+import json
 
-window = tk.Tk()
 
-
+# Read user input and write json
 def read():
-    title = (str(buildingEntry.get()))
-    clue = (str(clueEntry.get()))
-    info = (str(infoEntry.get()))
-    url = (str(osmUrlEntry.get()))
-    print(getVectors(url))
+    try:
+        # get user inputs
+        title = (str(buildingEntry.get()))
+        clue = (str(clueEntry.get("1.0", 'end-1c')))
+        info = (str(infoEntry.get("1.0", 'end-1c')))
+        url = (str(osmUrlEntry.get()))
+        scale_factor = (float(scaleEntry.get()))
+        inner = json.loads(getVectors(url))
 
+        # write to file
+        with open("Locations.txt", 'w') as f:
+            f.write(f"""
+            {{
+            \"name\" : \"{title}\",
+            \"clue\" : \"{clue}\",
+            \"info\" : \"{info}\",
+            \"centre\" : [{Polygon(inner).centroid.x}, {Polygon(inner).centroid.y}],
+            \"inner\" : [{inner}],
+            \"outer\" : [{get_outer(inner, scale_factor)}]
+            }}""")
+        # display success message
+        messagebox.showinfo("Success!", "Location added successfully, proceed to Locations.txt")
+
+        # clear text boxes
+        buildingEntry.delete(0, END)
+        clueEntry.delete("1.0", END)
+        infoEntry.delete("1.0", END)
+        osmUrlEntry.delete(0, END)
+        scaleEntry.delete(0, END)
+
+    except Exception as e:
+        # display error
+        print(e)
+        messagebox.showerror("Error!", "An Error occurred, please try again")
+
+
+def get_outer(vertices, factor):
+    # calculate outer boundary box
+    poly = Polygon(vertices)
+    centroid = poly.centroid
+    scaled = scale(poly, xfact=factor, yfact=factor, origin=centroid)
+    # convert outer boundary box to list of tuples, then list of lists
+    scaled = list(scaled.exterior.coords)
+    scaled_list = [list(ele) for ele in list(scaled)]
+    # return new polygon
+    return scaled_list
+
+
+# GUI window
+window = tk.Tk()
+window.geometry("500x500")
 window.title("Add Location")
 
-# Buildine Name
+# Building Name
 buildingLabel = tk.Label(window, text="Building Name")
-buildingLabel.grid(row=0, column=0)
+buildingLabel.pack(padx=10, pady=5)
 
-buildingEntry = tk.Entry(window)
-buildingEntry.grid(row=0, column=1)
+buildingEntry = tk.Entry(window, width=40)
+buildingEntry.pack(padx=10, pady=5)
 
 # Clue
 clueLabel = tk.Label(window, text="Clue")
-clueLabel.grid(row=1, column=0)
+clueLabel.pack(padx=10, pady=5)
 
-clueEntry = tk.Entry(window)
-clueEntry.grid(row=1, column=1)
+clueEntry = tk.Text(window, width=20, height=5)
+clueEntry.pack(padx=10, pady=5)
 
 # Info
 infoLabel = tk.Label(window, text="Information")
-infoLabel.grid(row=2, column=0)
+infoLabel.pack(padx=10, pady=5)
 
-infoEntry = tk.Entry(window)
-infoEntry.grid(row=2, column=1)
+infoEntry = tk.Text(window, width=20, height=5)
+infoEntry.pack(padx=10, pady=5)
 
 # Building URL
 osmUrlLabel = tk.Label(window, text="OSM Location link")
-osmUrlLabel.grid(row=3,column=0)
+osmUrlLabel.pack(padx=10, pady=5)
 
-osmUrlEntry = tk.Entry(window)
-osmUrlEntry.grid(row=3,column=1)
+osmUrlEntry = tk.Entry(window, width=40)
+osmUrlEntry.pack(padx=10, pady=5)
 
-button = tk.Button(window, text="submit", command=read).grid(row=4, column=1)
+# Boundary Box scale
+scaleLabel = tk.Label(window, text="Outer Boundary Box Scale")
+scaleLabel.pack(padx=10, pady=5)
+
+scaleEntry = tk.Entry(window, width=5, )
+scaleEntry.pack(padx=10, pady=5)
+
+# Submit button
+button = tk.Button(window, text="submit", command=read)
+button.pack(padx=10, pady=5)
 
 window.mainloop()
