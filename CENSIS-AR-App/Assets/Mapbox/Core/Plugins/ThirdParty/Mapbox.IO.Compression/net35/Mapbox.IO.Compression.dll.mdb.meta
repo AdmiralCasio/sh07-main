@@ -1,5 +1,10 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:CENSIS-AR-App/Assets/Mapbox/Core/Plugins/ThirdParty/Mapbox.IO.Compression/net35/Mapbox.IO.Compression.dll.mdb.meta
 guid: ffdfdd9db619fcc47b48fad2e445b357
+========
+guid: 06cee8f464bcaca4181f2066aa068636
+folderAsset: yes
+>>>>>>>> 88e3d19f8405f666e232f9bf70d4715aa06bfd9c:CENSIS-AR-App/Assets/Resources.meta
 DefaultImporter:
   externalObjects: {}
   userData: 

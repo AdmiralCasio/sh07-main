@@ -6,7 +6,8 @@
         "GUID:9e6bdf94fcb245c585c26819fa23a202",
         "GUID:a9420e37d7990b54abdef6688edbe313",
         "GUID:92703082f92b41ba80f0d6912de66115",
-        "GUID:dfd0ce20189d48e5b22bb4134b558f5a"
+        "GUID:dfd0ce20189d48e5b22bb4134b558f5a",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f"
     ],
     "includePlatforms": [
         "Android",
@@ -15,7 +16,7 @@
     ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
-    "overrideReferences": false,
+    "overrideReferences": true,
     "precompiledReferences": [
         "nunit.framework.dll",
         "Mapbox.Json.dll",
@@ -24,7 +25,8 @@
         "MapboxAccountsUnity.dll",
         "Mapbox.VectorTile.ExtensionMethods.dll",
         "Mapbox.VectorTile.PbfReader.dll",
-        "Mapbox.IO.Compression.dll"
+        "Mapbox.IO.Compression.dll",
+        "Newtonsoft.Json.dll"
     ],
     "autoReferenced": true,
     "defineConstraints": [],
