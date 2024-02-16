@@ -36,12 +36,20 @@ ExportedObj/
 *.idea
 .vsconfig
 
+# OSM API files
+Utils/*.txt
+cache/
+
 # Unity3D generated meta files
 *.pidb.meta
 *.pdb.meta
 
 # Unity3D Generated File On Crash Reports
 sysinfo.txt
+
+# OSM API
+Utils/*.txt
+cache/*
 
 # Builds
 *.apk
