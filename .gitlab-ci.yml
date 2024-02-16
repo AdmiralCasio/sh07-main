@@ -7,6 +7,7 @@ workflow:
 stages:          # List of stages for jobs, and their order of execution
   - build
   - test
+  - lint
   - deploy
 
 build-job:       # This job runs in the build stage, which runs first.
@@ -23,13 +24,32 @@ unit-test-job:   # This job runs in the test stage.
   tags:
     - unity
 
-lint-test-job:   # This job also runs in the test stage.
-  stage: test    # It can run at the same time as unit-test-job (in parallel).
-  script:
-    - dotnet tool restore
-    - dotnet csharpier --check CENSIS-AR-App/Assets
+mega-linter:
+  stage: lint
+
+  # You can override MegaLinter flavor used to have faster performances
+  # More info at https://megalinter.io/latest/flavors/
+  image: oxsecurity/megalinter-dotnet:v7
+
+  # if script: ["true"] does not work, you may try this instead:
+  #   script: [ "/bin/bash /entrypoint.sh" ]
+  script: ["true"]
+
+  variables:
+    # All available variables are described in documentation
+    # https://megalinter.io/latest/config-file/
+    DEFAULT_WORKSPACE: $CI_PROJECT_DIR
+
+    # ADD YOUR CUSTOM ENV VARIABLES HERE TO OVERRIDE VALUES OF .mega-linter.yml
+    # AT THE ROOT OF YOUR REPOSITORY
   tags:
-    - unity
+   - docker
+
+  artifacts:
+    when: always
+    paths:
+      - report
+    expire_in: 1 week
 
 deploy-job:      # This job runs in the deploy stage.
   stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
