@@ -7,7 +7,7 @@
 [Uu]serSettings/
 Assets/AssetStoreTools*
 Packages/packages-lock.json
-report
+megalinter-reports
 
 # Visual Studio 2015 cache directory
 **/.vs/
@@ -54,6 +54,9 @@ cache/*
 # Builds
 *.apk
 *.unitypackage
+
+#Caches
+*cache*
 
 #Test Results
 unit-tests.xml
