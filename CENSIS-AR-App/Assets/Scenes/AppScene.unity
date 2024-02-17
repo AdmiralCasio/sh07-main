@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44402242, g: 0.49316543, b: 0.5722324, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 6252275}
   - component: {fileID: 6252274}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: AppTitle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -556,7 +556,7 @@ GameObject:
   - component: {fileID: 181920003}
   - component: {fileID: 181920002}
   m_Layer: 5
-  m_Name: Image
+  m_Name: MapIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -765,7 +765,7 @@ GameObject:
   - component: {fileID: 211281189}
   - component: {fileID: 211281188}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: ClueStuckText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2143,15 +2143,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1111785780636424, guid: 18593aeac18474b49bebac9e072ef2ab, type: 3}
       propertyPath: m_Layer
-      value: 5
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1138502710912304, guid: 18593aeac18474b49bebac9e072ef2ab, type: 3}
       propertyPath: m_Layer
-      value: 5
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1138502710912304, guid: 18593aeac18474b49bebac9e072ef2ab, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1534900271134446, guid: 18593aeac18474b49bebac9e072ef2ab, type: 3}
       propertyPath: m_Layer
-      value: 5
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1534900271134446, guid: 18593aeac18474b49bebac9e072ef2ab, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4895895357916372, guid: 18593aeac18474b49bebac9e072ef2ab, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2210,7 +2218,7 @@ GameObject:
   - component: {fileID: 491607816}
   - component: {fileID: 491607815}
   m_Layer: 5
-  m_Name: Image
+  m_Name: CameraIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2592,7 +2600,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 54
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -3786,7 +3794,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   filename: LocationInformation
-  clueText: {fileID: 1142230901}
+  clueText: {fileID: 1306901233}
   BuildingText: {fileID: 295379840}
   title: {fileID: 237439878}
   info: {fileID: 1156712921}
@@ -3967,7 +3975,7 @@ GameObject:
   - component: {fileID: 854784313}
   - component: {fileID: 854784312}
   m_Layer: 5
-  m_Name: Image
+  m_Name: HomeIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4042,7 +4050,7 @@ GameObject:
   - component: {fileID: 871452169}
   - component: {fileID: 871452168}
   m_Layer: 5
-  m_Name: Logo
+  m_Name: CensisLogo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4839,7 +4847,7 @@ GameObject:
   - component: {fileID: 1142230902}
   - component: {fileID: 1142230901}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: ClueButtonText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5575,7 +5583,7 @@ GameObject:
   - component: {fileID: 1244250994}
   - component: {fileID: 1244250993}
   m_Layer: 5
-  m_Name: Text
+  m_Name: FoundLocationText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5843,7 +5851,7 @@ GameObject:
   - component: {fileID: 1306901234}
   - component: {fileID: 1306901233}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: ClueOverlayText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6647,7 +6655,7 @@ GameObject:
   - component: {fileID: 1699191708}
   - component: {fileID: 1699191707}
   m_Layer: 5
-  m_Name: Text
+  m_Name: GameCompleteText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7122,7 +7130,7 @@ GameObject:
   - component: {fileID: 1836538475}
   - component: {fileID: 1836538474}
   m_Layer: 5
-  m_Name: Image
+  m_Name: InfoIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7347,7 +7355,7 @@ GameObject:
   - component: {fileID: 1842158831}
   - component: {fileID: 1842158830}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: ClueCloseText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7561,7 +7569,7 @@ GameObject:
   - component: {fileID: 1903318466}
   - component: {fileID: 1903318465}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: ClueTitleText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8016,6 +8024,10 @@ PrefabInstance:
     - target: {fileID: 1257486800756004, guid: e6b749c6d877f4c19a5a5c3c0783d53b, type: 3}
       propertyPath: m_Name
       value: Map
+      objectReference: {fileID: 0}
+    - target: {fileID: 1257486800756004, guid: e6b749c6d877f4c19a5a5c3c0783d53b, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4867834046800562, guid: e6b749c6d877f4c19a5a5c3c0783d53b, type: 3}
       propertyPath: m_LocalPosition.x
