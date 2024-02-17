@@ -90,9 +90,6 @@ public class BoundaryBoxes
 
     public static Vector3 ConvertToUnityCartesian(Vector2 latLong, Vector3 origin)
     {
-        Debug.Log("(Origin) latlon before normalise : " + ConvertToUnityCartesian(latLong));
-        Debug.Log("(Origin) latlon after normalise : " + (ConvertToUnityCartesian(latLong) - origin));
-
         return ConvertToUnityCartesian(latLong) - origin;
     }
 
