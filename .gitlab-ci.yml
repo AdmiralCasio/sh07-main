@@ -255,7 +255,11 @@ mega-linter:
     # All available variables are described in documentation
     # https://megalinter.io/latest/config-file/
     DEFAULT_WORKSPACE: $CI_PROJECT_DIR
-
+  artifacts:
+    when: always
+    paths:
+      - megalinter-reports
+    expire_in: 1 day
     # ADD YOUR CUSTOM ENV VARIABLES HERE TO OVERRIDE VALUES OF .mega-linter.yml
     # AT THE ROOT OF YOUR REPOSITORY
   tags:
