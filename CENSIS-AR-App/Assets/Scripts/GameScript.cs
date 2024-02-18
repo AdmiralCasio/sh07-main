@@ -6,7 +6,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Android;
 using TMPro;
-using Newtonsoft.Json;
 using UnityEngine.XR.ARFoundation;
 
 public class GameScript : MonoBehaviour
