@@ -23,21 +23,21 @@ public class MapTests
     }
 
     [UnityTest]
-    public IEnumerator MapActiveOnSceneLoad()
+    public IEnumerator SceneLoad_GameStartup_MapActiveAndEnabled()
     {
         yield return null;
         Assert.IsTrue(GameObject.Find("Map").GetComponent<AbstractMap>().isActiveAndEnabled);
     }
 
     [UnityTest]
-    public IEnumerator MapNotNullOnSceneLoad()
+    public IEnumerator SceneLoad_GameStartup_MapNotNull()
     {
         yield return null;
         Assert.IsNotNull(GameObject.Find("Map").GetComponent<AbstractMap>());
     }
 
     [UnityTest]
-    public IEnumerator MapSmallOnHomeScreen()
+    public IEnumerator ActivateCanvas_MapScreen_MapHeight0Point4()
     {
         Button homeButton = GameObject.Find("NavbarAndTopBar/NavBar/HomeButton").GetComponent<Button>();
         homeButton.onClick.Invoke();
@@ -49,7 +49,7 @@ public class MapTests
     }
 
     [UnityTest]
-    public IEnumerator MapFullOnMapScreen()
+    public IEnumerator Start_HomeScreen_MapHeight1()
     {
         Button mapButton = GameObject.Find("NavbarAndTopBar/NavBar/MapButton").GetComponent<Button>();
         mapButton.onClick.Invoke();
@@ -61,7 +61,7 @@ public class MapTests
     }
 
     [UnityTest]
-    public IEnumerator MapSizeChangeMapToHome()
+    public IEnumerator ActivateCanvas_HomeButtonOnMap_MapHeight0Point4()
     {
         var map = GameObject.Find("MapCamera");
 
@@ -77,12 +77,11 @@ public class MapTests
 
         yield return null;
 
-
         Assert.AreEqual(0.4f, map.GetComponent<Camera>().rect.height);
     }
 
     [UnityTest]
-    public IEnumerator MapSizeChangeHomeToMap()
+    public IEnumerator ActivateCanvas_MapButtonOnHome_MapHeight1()
     {
         Button homeButton = GameObject.Find("NavbarAndTopBar/NavBar/HomeButton").GetComponent<Button>();
         homeButton.onClick.Invoke();
@@ -99,6 +98,35 @@ public class MapTests
 
         Assert.AreEqual(1f, map.GetComponent<Camera>().rect.height);
     }
+
+    [UnityTest]
+    public IEnumerator AddMarker_AbitraryLocation_InstantiatesPrefab()
+    {
+        MarkerHandler markerHandler = GameObject.Find("Map").GetComponent<MarkerHandler>();
+        Location loc = new Location("TestLoc", "Clue", "Info", new float[] { 5, 4 }, new float[][][] { }, new float[][][] { });
+        markerHandler.AddMarker(loc);
+
+        yield return null;
+
+        var result = GameObject.Find("TestLoc").gameObject;
+        Assert.IsNotNull(result);
+        Assert.IsTrue(result.activeSelf);
+    }
+
+    [UnityTest]
+    public IEnumerator AddMarker_LocationTestLoc_PrefabNameTestLoc()
+    {
+        MarkerHandler markerHandler = GameObject.Find("Map").GetComponent<MarkerHandler>();
+        Location loc = new Location("TestLoc", "Clue", "Info", new float[] { 5, 4 }, new float[][][] { }, new float[][][] { });
+        markerHandler.AddMarker(loc);
+
+        yield return null;
+
+        var result = GameObject.Find("TestLoc").gameObject;
+        Assert.AreEqual("TestLoc", result.name);
+    }
+
+
 
     [UnityTearDown]
     public IEnumerator TearDown()
