@@ -6,15 +6,15 @@ public class Location
 {
     public struct BoundingBox
     {
-        public Vector2[] points;
+        public Vector2[] points {  get; set; }
     }
 
-    public BoundingBox[] inner;
-    public BoundingBox[] outer;
-    public string name;
-    public string clue;
-    public string information;
-    public Vector2 centre;
+    public BoundingBox[] inner {  get; private set; }
+    public BoundingBox[] outer { get; private set; }
+    public string name { get; private set; }
+    public string clue { get; private set; }
+    public string information { get; private set; }
+    public Vector2 centre { get; set; }
 
     public Location(String name, string clue, string information, float[] centre, float [][][] inner, float[][][] outer)
     {
