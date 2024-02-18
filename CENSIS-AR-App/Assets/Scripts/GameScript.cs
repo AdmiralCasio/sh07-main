@@ -20,6 +20,8 @@ public class GameScript : MonoBehaviour
     public TMP_Text info;
     Vector3 origin;
 
+    [SerializeField] MarkerHandler markerHandler;
+
     [SerializeField]
     GameObject[] debugText;
 
@@ -58,7 +60,6 @@ public class GameScript : MonoBehaviour
         // get locations from file
         LocationHandler.locations = FileHandler.ReadFromJSON<Location>(filename);
 
-
         clueOverlay = GameObject.Find("ClueOverlay").GetComponent<Canvas>();
         locationFoundOverlay = GameObject.Find("LocationFoundOverlay").GetComponent<Canvas>();
         gameCompleteOverlay = GameObject.Find("GameCompleteOverlay").GetComponent<Canvas>();
@@ -77,6 +78,7 @@ public class GameScript : MonoBehaviour
         // show info
         Debug.Log($"Location name: {LocationHandler.GetCurrLocation().name}, Building info: {LocationHandler.GetCurrLocation().information}");
         // show next button
+        markerHandler.AddMarker(LocationHandler.GetCurrLocation());
         nextButton.enabled = true;
         showClue.enabled = false;
     }
