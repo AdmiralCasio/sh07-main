@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Mapbox.Examples;
 using Mapbox.Unity.Map;
 using Mapbox.Unity.MeshGeneration.Factories;
 using Mapbox.Unity.Utilities;
@@ -33,6 +34,7 @@ public class MarkerHandler : MonoBehaviour
         instance.transform.localPosition = _map.GeoToWorldPosition(convertedLocation, true);
         instance.transform.localScale = new Vector3(_spawnScale, _spawnScale, _spawnScale);
         instance.name = location.name;
+        instance.GetComponent<LabelTextSetter>().Set(new Dictionary<string, object> { { "name", location.name } });
         _spawnedObjects.Add(instance);
     }
 
