@@ -1,18 +1,30 @@
+using Mapbox.Unity.Location;
+using Mapbox.Unity.Map;
+using Mapbox.Unity.Utilities;
+using Mapbox.Utils;
+using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
-using NUnit.Framework;
+using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 using UnityEngine.UI;
-using System.IO;
 
 public class GameScriptPlayModeTests
 {
+    Transform editorLocation;
+    GameObject[] rootGameObjects;
+
     [UnitySetUp]
     public IEnumerator Setup()
     {
         SceneManager.LoadScene("Assets/Scenes/AppScene.unity");
+
+        yield return null;
+
+        rootGameObjects = SceneManager.GetActiveScene().GetRootGameObjects();
+        editorLocation = rootGameObjects[rootGameObjects.Length - 1].transform;
         string saveFilePath = Path.Combine(Application.persistentDataPath, "PlayerData.dat");
         if (File.Exists(saveFilePath))
         {
@@ -33,7 +45,7 @@ public class GameScriptPlayModeTests
         GameObject gameScriptObject = GameObject.Find("GameScriptObject");
         GameScript gameScript = gameScriptObject.GetComponent<GameScript>();
         gameScript.LocationFound();
-        
+
         Assert.IsTrue(GameObject.Find("Next").GetComponent<Canvas>().enabled);
         Assert.IsFalse(GameObject.Find("ShowClue").GetComponent<Canvas>().enabled);
         yield return null;
@@ -67,7 +79,7 @@ public class GameScriptPlayModeTests
     {
         Button nextButton = GameObject.Find("NextButton").GetComponent<Button>();
         nextButton.onClick.Invoke();
-        
+
         Assert.IsTrue(GetCanvas("ClueOverlay").enabled);
         Assert.IsFalse(GetCanvas("Next").enabled);
         Assert.IsTrue(GetCanvas("ShowClue").enabled);
@@ -111,5 +123,74 @@ public class GameScriptPlayModeTests
         yield return null;
     }
 
+    [UnityTest]
+    public IEnumerator Update_NotAtPreviousLocation_NoTextDisplayed()
+    {
+
+        var editorLocationProvider = (EditorLocationProvider)LocationProviderFactory.Instance.EditorLocationProvider;
+        var map = LocationProviderFactory.Instance.mapManager;
+        editorLocation.SetPositionAndRotation(VectorExtensions.ToVector3xz(Conversions.GeoToWorldPosition(new Vector2d(55.87383, -4.29214), map.CenterMercator, map.WorldRelativeScale)), Quaternion.identity);
+        editorLocationProvider.SendLocationEvent();
+
+        yield return null;
+
+        editorLocation.SetPositionAndRotation(VectorExtensions.ToVector3xz(Conversions.GeoToWorldPosition(new Vector2d(55.87412, -4.29383), map.CenterMercator, map.WorldRelativeScale)), Quaternion.identity);
+        editorLocationProvider.SendLocationEvent();
+
+        yield return null;
+
+        Assert.IsNull(GameObject.Find("BuildingText"));
+
+    }
+
+    [UnityTest]
+    public IEnumerator Update_AtPreviousLocation_TextDisplayed()
+    {
+        Debug.ClearDeveloperConsole();
+
+        yield return null;
+
+        var transformLocationProvider = (TransformLocationProvider)LocationProviderFactory.Instance.EditorLocationProvider;
+        var map = LocationProviderFactory.Instance.mapManager;
+        editorLocation.SetPositionAndRotation(VectorExtensions.ToVector3xz(Conversions.GeoToWorldPosition(new Vector2d(55.87388545492344, -4.292255711315057), map.CenterMercator, map.WorldRelativeScale)), Quaternion.identity);
+        Debug.Log(LocationValidator.AtLocation(LocationProviderFactory.Instance.DefaultLocationProvider.CurrentLocation.LatitudeLongitude.ToVector3xz(), LocationHandler.GetCurrLocation()));
+        transformLocationProvider.TargetTransform = editorLocation;
+        transformLocationProvider.SendLocationEvent();
+        Debug.Log(transformLocationProvider.CurrentLocation.LatitudeLongitude);
+        Debug.Log(LocationValidator.AtLocation(LocationProviderFactory.Instance.DefaultLocationProvider.CurrentLocation.LatitudeLongitude.ToVector3xz(), LocationHandler.GetCurrLocation()));
+
+        yield return null;
+        
+        Debug.Log(LocationHandler.GetCurrLocation().name);
+
+
+        editorLocation.SetPositionAndRotation(VectorExtensions.ToVector3xz(Conversions.GeoToWorldPosition(new Vector2d(55.87299574483832, -4.295382266171097), map.CenterMercator, map.WorldRelativeScale)), Quaternion.identity);
+        Debug.Log(editorLocation.position);
+        Debug.Log(Conversions.GeoToWorldPosition(transformLocationProvider.CurrentLocation.LatitudeLongitude, map.CenterMercator, map.WorldRelativeScale).ToVector3xz() + editorLocation.position);
+        Debug.Log(LocationHandler.GetCurrLocation().name);
+        transformLocationProvider.TargetTransform = editorLocation;
+        transformLocationProvider.SendLocationEvent();
+        Debug.Log(LocationProviderFactory.Instance.EditorLocationProvider.CurrentLocation.LatitudeLongitude);
+        Debug.Log(LocationValidator.AtLocation(LocationProviderFactory.Instance.DefaultLocationProvider.CurrentLocation.LatitudeLongitude.ToVector3xz(), LocationHandler.GetCurrLocation()));
+
+        yield return null;
+
+        editorLocation.SetPositionAndRotation(VectorExtensions.ToVector3xz(Conversions.GeoToWorldPosition(new Vector2d(55.87388545492344, -4.292255711315057), map.CenterMercator, map.WorldRelativeScale)), Quaternion.identity);
+        transformLocationProvider.TargetTransform = editorLocation;
+        transformLocationProvider.SendLocationEvent();
+        Debug.Log(LocationValidator.AtLocation(LocationProviderFactory.Instance.DefaultLocationProvider.CurrentLocation.LatitudeLongitude.ToVector3xz(), LocationHandler.GetCurrLocation()));
+        Debug.Log(transformLocationProvider.CurrentLocation.LatitudeLongitude);
+
+        yield return null;
+
+        Assert.IsNotNull(GameObject.Find("BuildingText"));
+        Assert.IsTrue(GameObject.Find("BuildingText").activeSelf);
+    }
+
+    [UnityTest]
+    public IEnumerator Update_AtFutureLocation_NoTextDisplayed()
+    {
+        throw new System.NotImplementedException();
+    }
 
 }
