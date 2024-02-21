@@ -1,12 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
 using System;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.Android;
 using TMPro;
-using UnityEngine.XR.ARFoundation;
+using Mapbox.Unity.Location;
+using Mapbox.Utils;
 
 public class GameScript : MonoBehaviour
 {
@@ -43,12 +40,8 @@ public class GameScript : MonoBehaviour
         // Get user permissions and start location tracking
         Permission.RequestUserPermission(Permission.FineLocation);
         Input.compass.enabled = true;
-        Input.location.Start();
-        Debug.Log("(ORIGIN) Location status : " + Input.location.status);
-
 
         // define origin point
-        Debug.Log("Origin before convert :" + new Vector2(Input.location.lastData.latitude, Input.location.lastData.longitude));
         Invoke("getOrigin", 2);
         // Define text mesh pro components
         title.gameObject.SetActive(false);
@@ -78,6 +71,11 @@ public class GameScript : MonoBehaviour
         // show next button
         nextButton.enabled = true;
         showClue.enabled = false;
+    }
+
+    private Vector2 Vector2dToVector2(Vector2d vector2D)
+    {
+        return new Vector2((float) vector2D.x, (float) vector2D.y);
     }
 
     void Update()
