@@ -7,10 +7,8 @@ from shapely.affinity import scale
 import json
 
 
-# Read user input and write json
 def read():
     try:
-        # get user inputs
         title = (str(buildingEntry.get()))
         clue = (str(clueEntry.get("1.0", 'end-1c')))
         info = (str(infoEntry.get("1.0", 'end-1c')))
@@ -18,7 +16,6 @@ def read():
         scale_factor = (float(scaleEntry.get()))
         inner = json.loads(getVectors(url))
 
-        # write to file
         with open("Locations.txt", 'w') as f:
             f.write(f"""
             {{
@@ -29,10 +26,8 @@ def read():
             \"inner\" : [{inner}],
             \"outer\" : [{get_outer(inner, scale_factor)}]
             }}""")
-        # display success message
         messagebox.showinfo("Success!", "Location added successfully, proceed to Locations.txt")
 
-        # clear text boxes
         buildingEntry.delete(0, END)
         clueEntry.delete("1.0", END)
         infoEntry.delete("1.0", END)
@@ -40,64 +35,53 @@ def read():
         scaleEntry.delete(0, END)
 
     except Exception as e:
-        # display error
         print(e)
         messagebox.showerror("Error!", "An Error occurred, please try again")
 
 
 def get_outer(vertices, factor):
-    # calculate outer boundary box
     poly = Polygon(vertices)
     centroid = poly.centroid
     scaled = scale(poly, xfact=factor, yfact=factor, origin=centroid)
-    # convert outer boundary box to list of tuples, then list of lists
     scaled = list(scaled.exterior.coords)
     scaled_list = [list(ele) for ele in list(scaled)]
-    # return new polygon
     return scaled_list
 
 
-# GUI window
 window = tk.Tk()
 window.geometry("500x500")
 window.title("Add Location")
 
-# Building Name
 buildingLabel = tk.Label(window, text="Building Name")
 buildingLabel.pack(padx=10, pady=5)
 
 buildingEntry = tk.Entry(window, width=40)
 buildingEntry.pack(padx=10, pady=5)
 
-# Clue
 clueLabel = tk.Label(window, text="Clue")
 clueLabel.pack(padx=10, pady=5)
 
 clueEntry = tk.Text(window, width=20, height=5)
 clueEntry.pack(padx=10, pady=5)
 
-# Info
 infoLabel = tk.Label(window, text="Information")
 infoLabel.pack(padx=10, pady=5)
 
 infoEntry = tk.Text(window, width=20, height=5)
 infoEntry.pack(padx=10, pady=5)
 
-# Building URL
 osmUrlLabel = tk.Label(window, text="OSM Location link")
 osmUrlLabel.pack(padx=10, pady=5)
 
 osmUrlEntry = tk.Entry(window, width=40)
 osmUrlEntry.pack(padx=10, pady=5)
 
-# Boundary Box scale
 scaleLabel = tk.Label(window, text="Outer Boundary Box Scale")
 scaleLabel.pack(padx=10, pady=5)
 
 scaleEntry = tk.Entry(window, width=5, )
 scaleEntry.pack(padx=10, pady=5)
 
-# Submit button
 button = tk.Button(window, text="submit", command=read)
 button.pack(padx=10, pady=5)
 
