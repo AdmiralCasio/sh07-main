@@ -28,7 +28,7 @@ public class GameScript : MonoBehaviour
     
     void getOrigin()
     {
-        origin = BoundaryBoxes.ConvertToUnityCartesian(Vector2dToVector2(LocationProviderFactory.Instance.DefaultLocationProvider.CurrentLocation.LatitudeLongitude));
+        origin = BoundaryBoxes.ConvertToUnityCartesian(Player.GetUserLocation());
         Debug.Log("Origin at start : " + origin);
 
     }
@@ -81,7 +81,7 @@ public class GameScript : MonoBehaviour
     void Update()
     {
         // define user, current building, and overlay locations
-        var location = Vector2dToVector2(LocationProviderFactory.Instance.DefaultLocationProvider.CurrentLocation.LatitudeLongitude);
+        var location = Player.GetUserLocation();  
         var curr = LocationHandler.GetCurrLocation();
 
         // calculate where the overlay should appear
