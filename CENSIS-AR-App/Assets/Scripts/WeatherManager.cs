@@ -5,6 +5,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.Networking;
 using SimpleJSON;
+using System;
 
 public class WeatherManager : MonoBehaviour
 {
@@ -81,11 +82,24 @@ public class WeatherManager : MonoBehaviour
             Debug.Log(fetchWeatherRequest.downloadHandler.text);
             var response = JSON.Parse(fetchWeatherRequest.downloadHandler.text);
             Debug.Log("Weather: "+ response["main"]["temp"]);
-            weather[0].text = "Temperature : " + response["main"]["temp"] + " C";
-            weather[1].text = "Humidity : " + response["main"]["humidity"] + " %";
-            weather[2].text = "Max : " + response["main"]["temp_max"] + " C";
-            weather[3].text = "Min : " + response["main"]["temp_min"] + " C";
+
+            var temp = Format(response["main"]["temp"]);
+            var humidity = response["main"]["humidity"];
+            var max = Format(response["main"]["temp_max"]);
+            var min = Format(response["main"]["temp_min"]);
+            Debug.Log("Weather:" + temp + humidity + max + min);
+
+            weather[0].text = $"{temp}°";
+            weather[1].text = $"Humidity: {humidity}%\nMax: {max}°\nMin: {min}°";
         }
+    }
+
+    private double Format(string str)
+    {
+        Debug.Log("Weather: " + str);
+        Debug.Log("Weather: "+ float.Parse(str));
+        Debug.Log("Weather: " + Math.Round(float.Parse(str)));
+        return Math.Round(float.Parse(str), 0);
     }
 
     private void UpdateWeatherData()
