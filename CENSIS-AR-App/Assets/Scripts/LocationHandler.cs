@@ -39,14 +39,14 @@ public class LocationHandler : MonoBehaviour
             playerData = (PlayerData)binaryFormatter.Deserialize(file);
             file.Close();
             locationIndex = playerData.locationIndex;
-            Debug.Log("Load complete, current location index " + playerData.locationIndex);
+            Debug.Log("FileLoad: Load complete, current location index " + playerData.locationIndex);
         }
         else
         {
 
             locationIndex = 0;
             playerData.locationIndex = locationIndex;
-            Debug.Log("No save files to load");
+            Debug.Log("FileLoad: No save files to load");
 
         }
     }
