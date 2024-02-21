@@ -2,7 +2,6 @@ using Mapbox.Unity.Location;
 using Mapbox.Unity.Map;
 using Mapbox.Unity.Utilities;
 using Mapbox.Utils;
-using Moq;
 using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,6 +10,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 using UnityEngine.UI;
+
 
 public class GameScriptPlayModeTests
 {
@@ -37,6 +37,7 @@ public class GameScriptPlayModeTests
         lp.TargetTransform = editorLocation;
         lp.SendLocationEvent();
         #endregion
+
         yield return null;
 
     }
@@ -225,5 +226,4 @@ public class GameScriptPlayModeTests
         }
         yield return null;
     }
-
 }

@@ -15,7 +15,7 @@ public class GameScript : MonoBehaviour
     public GameObject BuildingText;
     public TMP_Text title;
     public TMP_Text info;
-    Vector3 origin;
+    public Vector3 origin { get; private set;  }
 
     [SerializeField]
     GameObject[] debugText;
