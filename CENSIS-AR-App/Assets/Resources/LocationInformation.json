@@ -3,7 +3,7 @@
     {
       "name": "Sir Alwyn Williams",
       "clue": "The home of students who relish the net,\n adjacent to the designation of Queen Margaret.\n You wouldn’t expect that this place is connected,\n to a row of facades, interiors extended.",
-      "information": "The Sir Alwyn Williams Building at the University of Glasgow was opened on 22 June 2007 by Professor Anne Glover, Chief Scientific Adviser for Scotland, and Williams's widow, Joan. It was an extension to the facilities of the Department of Computing Science, located between the Department's pre-existing accommodation, in a row of interconnected Victorian townhouses on Lilybank Gardens, and the 1968-built Queen Margaret Union building. The Building contains offices and laboratories as well as informal 'break-out spaces'.",
+      "information": "The Sir Alwyn Williams Building at the University of Glasgow was opened on 22 June 2007 by Professor Anne Glover, Chief Scientific Adviser for Scotland, and Williams's widow, Joan. It was an extension to the facilities of the Department of Computing Science, located between the Department's pre-existing accommodation, in a row of interconnected Victorian townhouses on Lilybank Gardens, and the 1968-built Queen Margaret Union building. The Building contains offices and laboratories as well as informal 'break-out spaces', and is the home of the University's Department of Computer Science.",
       "centre": [55.87394 , -4.29181],
       "inner": [
           [
@@ -39,7 +39,7 @@
     {
       "name": "Advanced Research Centre",
       "clue": "This futuristic building was recently made,\n an acronym and a name, proudly displayed.\n Constructed for research and human relation,\n named after a sponsor, who made a sizeable donation.",
-      "information": "The Mazumdar-Shaw Advanced Research Centre (ARC) building houses 500 multidisciplinary researchers and serves as a centerpiece of the University’s new campus development in Glasgow, Scotland.",
+      "information": "The Mazumdar-Shaw Advanced Research Centre (ARC) building houses 500 multidisciplinary researchers and serves as a centerpiece of the University’s new campus development in Glasgow, Scotland. The ARC was officially opened in June of 2022, with the hope of providing a unique environment that supports the kind of collaborative research that leads to breakthrough and world changing innovations.",
       "centre": [55.87158, -4.29579],
       "inner": [
             [
@@ -72,7 +72,7 @@
     {
       "name": "Gilbert Scott",
       "clue": "A historic building, built on a hill,\n overlooking the park, sprouts daffodils.\n Magical looking, it’s got a marvellous hall,\n it’s said tales of wizardry, came from the walls.",
-      "information": "The campus was designed by Sir George Gilbert Scott in the Gothic revival style. The largest of these buildings echoed, on a far grander scale, the original High Street campus's twin-quadrangle layout, and may have been inspired by Ypres' late-medieval cloth hall",
+      "information": "The campus was designed by Sir George Gilbert Scott in the Gothic revival style and completed in 1891. The largest of these buildings echoed, on a far grander scale, the original High Street campus's twin-quadrangle layout, and may have been inspired by Ypres' late-medieval cloth hall. Today the building is truly multi-purpose, and is used for teaching, office-space, examinations, events and graduations.",
       "centre": [55.87144, -4.28850],
       "inner": [
         [
