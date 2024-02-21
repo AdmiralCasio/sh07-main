@@ -6,7 +6,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Android;
 using TMPro;
-using Newtonsoft.Json;
 using UnityEngine.XR.ARFoundation;
 
 public class GameScript : MonoBehaviour
@@ -31,12 +30,13 @@ public class GameScript : MonoBehaviour
     Canvas showClue;
     Canvas startUpOverlay;
 
-
-    IEnumerator wait()
+    void getOrigin()
     {
-        yield return new WaitForSeconds(1);
-    }
+        origin = BoundaryBoxes.ConvertToUnityCartesian(new Vector2(Input.location.lastData.latitude,
+            Input.location.lastData.longitude));
+        Debug.Log("Origin at start : " + origin);
 
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -46,12 +46,12 @@ public class GameScript : MonoBehaviour
         Permission.RequestUserPermission(Permission.FineLocation);
         Input.compass.enabled = true;
         Input.location.Start();
+        Debug.Log("(ORIGIN) Location status : " + Input.location.status);
 
-        wait();
 
         // define origin point
-        origin = BoundaryBoxes.ConvertToUnityCartesian(new Vector2(Input.location.lastData.latitude, Input.location.lastData.longitude));
-
+        Debug.Log("Origin before convert :" + new Vector2(Input.location.lastData.latitude, Input.location.lastData.longitude));
+        Invoke("getOrigin", 2);
         // Define text mesh pro components
         title.gameObject.SetActive(false);
         info.gameObject.SetActive(false);
@@ -95,8 +95,9 @@ public class GameScript : MonoBehaviour
         var curr = LocationHandler.GetCurrLocation();
 
         // calculate where the overlay should appear
-        Vector3 normalised_centre = BoundaryBoxes.ConvertToUnityCartesian(curr.centre, origin);
-        Vector3 overlayLocation = normalised_centre;
+        Vector3 normalisedCentre = BoundaryBoxes.ConvertToUnityCartesian(curr.centre, origin);
+        Vector3 overlayLocation = normalisedCentre;
+        //Debug.Log("(ORIGIN) normalised centre : "+ overlayLocation);
 
         // check if user is within location but not looking at the right direction
         if (LocationValidator.AtLocation(location, curr) && !LocationValidator.LookingAtLocation(location, curr, origin))
@@ -105,7 +106,6 @@ public class GameScript : MonoBehaviour
             BuildingText.gameObject.SetActive(false);
             info.gameObject.SetActive(false);
             title.gameObject.SetActive(false);
-
 
             // set text items to correct values
             title.text = curr.name;
@@ -124,7 +124,6 @@ public class GameScript : MonoBehaviour
         // check if user is both in and looking at location
         if (LocationValidator.LookingAtLocation(location, curr, origin))
         {
-
             // move overlay to be in front of camera
             if (Math.Abs(overlayLocation.y - Camera.main.transform.position.y) >= 10 || overlayLocation.y - Camera.main.transform.position.y < 0)
             {
@@ -132,17 +131,11 @@ public class GameScript : MonoBehaviour
             }
             BuildingText.transform.position = overlayLocation;
 
-
-            Debug.Log($"Game script: Looking At {curr.name}");
-            LocationFound();
-            locationFoundOverlay.enabled = false;
-
-
-
             // toggle game object states
             BuildingText.gameObject.SetActive(true);
             info.gameObject.SetActive(true);
             title.gameObject.SetActive(true);
+            
             // set text items to correct values
             title.text = curr.name;
             info.text = curr.information;
@@ -153,6 +146,11 @@ public class GameScript : MonoBehaviour
             debugText[2].GetComponent<TMP_Text>().text = "building to see: " + curr.name;
             debugText[3].GetComponent<TMP_Text>().text = "Overlay : " + overlayLocation;
             debugText[4].GetComponent<TMP_Text>().text = "Camera : " + Camera.main.transform.position;
+            
+            // Location Found
+            Debug.Log($"Game script: Looking At {curr.name}");
+            LocationFound();
+            locationFoundOverlay.enabled = false;
         }
         // check if user is not in the location
         if (!LocationValidator.AtLocation(location, curr))
