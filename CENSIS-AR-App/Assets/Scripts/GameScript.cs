@@ -92,14 +92,7 @@ public class GameScript : MonoBehaviour
         // check if user is within location but not looking at the right direction
         if (LocationValidator.AtLocation(location, curr) && !LocationValidator.LookingAtLocation(location, curr, origin))
         {
-            // toggle game object states
-            BuildingText.gameObject.SetActive(false);
-            info.gameObject.SetActive(false);
-            title.gameObject.SetActive(false);
-
-            // set text items to correct values
-            title.text = curr.name;
-            info.text = curr.information;
+            HideLocationInformation();
 
             // on screen debug
             debugText[0].GetComponent<TMP_Text>().text = "At Location: true";
@@ -114,22 +107,8 @@ public class GameScript : MonoBehaviour
         // check if user is both in and looking at location
         if (LocationValidator.LookingAtLocation(location, curr, origin))
         {
-            // move overlay to be in front of camera
-            if (Math.Abs(overlayLocation.y - Camera.main.transform.position.y) >= 10 || overlayLocation.y - Camera.main.transform.position.y < 0)
-            {
-                overlayLocation = new Vector3(overlayLocation.x, Camera.main.transform.position.y, overlayLocation.z);
-            }
-            BuildingText.transform.position = overlayLocation;
-
-            // toggle game object states
-            BuildingText.gameObject.SetActive(true);
-            info.gameObject.SetActive(true);
-            title.gameObject.SetActive(true);
+            ShowLocationInformation(overlayLocation, curr);
             
-            // set text items to correct values
-            title.text = curr.name;
-            info.text = curr.information;
-
             // on screen debug
             debugText[0].GetComponent<TMP_Text>().text = "At Location: true";
             debugText[1].GetComponent<TMP_Text>().text = "Looking at Location : true";
@@ -146,9 +125,7 @@ public class GameScript : MonoBehaviour
         if (!LocationValidator.AtLocation(location, curr))
         {
             // toggle game object states
-            BuildingText.gameObject.SetActive(false);
-            info.gameObject.SetActive(false);
-            title.gameObject.SetActive(false);
+            HideLocationInformation();
 
             // on screen debug
             debugText[0].GetComponent<TMP_Text>().text = "At Location: false";
@@ -159,6 +136,45 @@ public class GameScript : MonoBehaviour
             Debug.Log($"Game Script: Not at {curr.name}");
             locationFoundOverlay.enabled = false;
         }
+
+        int locationCheckIndex = 0;
+        foreach (Location loc in LocationHandler.locations)
+        {
+            if (locationCheckIndex == LocationHandler.LocationIndex) break;
+            if (LocationValidator.LookingAtLocation(Player.GetUserLocation(), loc, origin))
+            {
+                var displayLocation = BoundaryBoxes.ConvertToUnityCartesian(loc.centre, origin);
+                ShowLocationInformation(displayLocation, loc);
+                break;
+            }
+            locationCheckIndex++;
+        }
+    }
+
+    private void HideLocationInformation()
+    {
+        BuildingText.gameObject.SetActive(false);
+        info.enabled = false;
+        title.enabled = false;
+    }
+
+    private void ShowLocationInformation(Vector3 overlayLocation, Location loc)
+    {
+        if (Math.Abs(overlayLocation.y - Camera.main.transform.position.y) >= 10 || overlayLocation.y - Camera.main.transform.position.y < 0)
+        {
+            overlayLocation = new Vector3(overlayLocation.x, Camera.main.transform.position.y, overlayLocation.z);
+        }
+        BuildingText.transform.position = overlayLocation;
+
+        // toggle game object states
+        BuildingText.gameObject.SetActive(true);
+        info.enabled = true;
+        title.enabled = true;
+
+        // set text items to correct values
+        title.text = loc.name;
+        info.text = loc.information;
+
     }
 
     public void Next()
