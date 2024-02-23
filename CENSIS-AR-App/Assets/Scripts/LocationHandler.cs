@@ -28,7 +28,6 @@ public class LocationHandler : MonoBehaviour
     void Start()
     {
         // gets the index of the current building or 0 
-        //int locationIndex = PlayerPrefs.GetInt("CurrentLocation", 0);
         playerData = new PlayerData();
         binaryFormatter = new BinaryFormatter();
         saveFilePath = Path.Combine(Application.persistentDataPath, "PlayerData.dat");
