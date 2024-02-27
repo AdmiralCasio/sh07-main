@@ -22,10 +22,14 @@ public class Player : MonoBehaviour
         }
     }
 
+    
+    /// <returns>The current GPS location of the user's device</returns>
     static public Vector2 getUserLocation()
     {
         return new Vector2(Input.location.lastData.latitude, Input.location.lastData.longitude);
     }
+
+    /// <returns>The current compass heading of the user's device</returns>
     static public float getUserDirection()
     {
         return Input.compass.trueHeading;

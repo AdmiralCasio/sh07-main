@@ -3,8 +3,7 @@ using UnityEngine;
 using System.Linq;
 using System;
 using Newtonsoft.Json;
-
-public static class FileHandler
+static class FileHandler
 {
 
     public static List<T> ReadFromJSON<T>(string filename)

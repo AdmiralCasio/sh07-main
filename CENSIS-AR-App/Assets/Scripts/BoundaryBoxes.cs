@@ -5,6 +5,12 @@ using UnityEngine;
 
 public class BoundaryBoxes
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="point"></param>
+    /// <param name="polygon"></param>
+    /// <returns></returns>
     public static bool IsPointInPolygonGPS(Vector2 point, Vector2[] polygon)
     {
         Vector2 pointCart = ConvertToCartesian(point);
@@ -12,6 +18,12 @@ public class BoundaryBoxes
         return IsPointInPolygon(pointCart, polygonCart);
     }
     
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="point"></param>
+    /// <param name="polygon"></param>
+    /// <returns></returns>
     public static bool IsPointInPolygon(Vector2 point, Vector2[] polygon)
     {
         bool inside = false;
@@ -33,6 +45,11 @@ public class BoundaryBoxes
         return inside;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="latlongs"></param>
+    /// <returns></returns>
     public static Vector2[] ConvertToCartesian(Vector2[] latlongs)
     {
         List<Vector2> carts = new List<Vector2>();
@@ -43,6 +60,11 @@ public class BoundaryBoxes
         return carts.ToArray();
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="latLong"></param>
+    /// <returns></returns>
     public static Vector2 ConvertToCartesian(Vector2 latLong)
     {
         // WGS-84 ellipsoid constants
@@ -65,6 +87,12 @@ public class BoundaryBoxes
 
         return new Vector2((float)x, (float)y);
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="latLong"></param>
+    /// <returns></returns>
     public static Vector3 ConvertToUnityCartesian(Vector2 latLong)
     {
         // WGS-84 ellipsoid constants
@@ -88,6 +116,12 @@ public class BoundaryBoxes
         return new Vector3((float)x, (float)z, (float)y);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="latLong"></param>
+    /// <param name="origin"></param>
+    /// <returns></returns>
     public static Vector3 ConvertToUnityCartesian(Vector2 latLong, Vector3 origin)
     {
         Debug.Log("(Origin) latlon before normalise : " + ConvertToUnityCartesian(latLong));

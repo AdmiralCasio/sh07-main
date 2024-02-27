@@ -1,6 +1,9 @@
 using System;
 using UnityEngine;
 
+/// <summary>
+/// Represents a real-world location which forms part of the scavenger hunt.
+/// </summary>
 [Serializable]
 public class Location
 {

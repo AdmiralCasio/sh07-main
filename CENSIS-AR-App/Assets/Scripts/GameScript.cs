@@ -126,6 +126,7 @@ public class GameScript : MonoBehaviour
             }
             BuildingText.transform.position = overlayLocation;
 
+            LocationValidator.AtLocation(location, LocationHandler.GetCurrLocation());
 
             Debug.Log($"Game script: Looking At {curr.name}");
             LocationFound();

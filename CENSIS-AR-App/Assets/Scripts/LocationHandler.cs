@@ -11,6 +11,11 @@ public class PlayerData
     public int locationIndex;
 }
 
+/**
+ * <summary>
+ *  Keeps track of and provides methods to manipulate locations.
+ * </summary> 
+**/
 public class LocationHandler : MonoBehaviour
 {
     private static PlayerData playerData;
@@ -24,11 +29,8 @@ public class LocationHandler : MonoBehaviour
     }
     public static List<Location> locations { get; set; }
 
-    // Start is called before the first frame update
     void Start()
     {
-        // gets the index of the current building or 0 
-        //int locationIndex = PlayerPrefs.GetInt("CurrentLocation", 0);
         playerData = new PlayerData();
         binaryFormatter = new BinaryFormatter();
         saveFilePath = Path.Combine(Application.persistentDataPath, "PlayerData.dat");
@@ -50,20 +52,30 @@ public class LocationHandler : MonoBehaviour
 
         }
     }
+
+    /// <summary>
+    ///     Advances the current location to the next in the list.
+    /// </summary>
     public static void NextLocation()
     {
         locationIndex += 1;
-        //PlayerPrefs.SetInt("CurrentLocation", locationIndex);
-        //PlayerPrefs.Save(); 
         playerData.locationIndex = locationIndex;
         FileStream file = File.Create(saveFilePath);
         binaryFormatter.Serialize(file, playerData);
         file.Close();
     }
 
+    /// <summary>
+    ///  Has the final location in the list been reached.
+    /// </summary>
+    /// <returns>A boolean representing whether the final location in the list has been reached.</returns>
     public static bool IsFinalLocation()
     { return locationIndex == locations.Count-1; }
 
+    /// <summary>
+    /// Gets the current location in the list of locations.
+    /// </summary>
+    /// <returns>The current location in the scavenger hunt.</returns>
     public static Location GetCurrLocation()
     {
         return locations[locationIndex];

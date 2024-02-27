@@ -4,14 +4,17 @@ using UnityEngine.UI;
 
 public class CanvasManager : MonoBehaviour
 {
-    public Canvas[] canvases; // Array to hold your different canvases
+    public Canvas[] canvases;
 
+    /// <summary>
+    /// Activates the canvas at index <paramref name="canvasIndex"/> of <see cref="canvases"/>.
+    /// </summary>
+    /// <seealso cref="Canvas"/>
+    /// <param name="canvasIndex">the index of the canvas to be activated</param>
     public void ActivateCanvas(int canvasIndex)
     {
-        // Loop through all canvases
         for (int i = 0; i < canvases.Length; i++)
         {
-            // Activate the selected canvas and deactivate others
             canvases[i].enabled = (i == canvasIndex);
         }
     }
