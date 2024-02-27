@@ -149,11 +149,6 @@ public class GameScriptPlayModeTests
 
         var location = LocationHandler.locations.Find(location => location.name == "Sir Alwyn Williams");
 
-        GameObject n = new GameObject();
-        Camera.main.transform.parent = n.transform;
-        n.transform.position = BoundaryBoxes.ConvertToUnityCartesian(Player.GetUserLocation(), gameScript.origin);
-        n.transform.LookAt(BoundaryBoxes.ConvertToUnityCartesian(location.centre));
-
         yield return null;
 
         Assert.IsFalse(gameScript.BuildingText.activeSelf);
@@ -208,6 +203,8 @@ public class GameScriptPlayModeTests
         Camera.main.transform.parent = n.transform;
         n.transform.position = BoundaryBoxes.ConvertToUnityCartesian(Player.GetUserLocation(), gameScript.origin);
         n.transform.LookAt(BoundaryBoxes.ConvertToUnityCartesian(location.centre));
+        Camera.main.transform.position = BoundaryBoxes.ConvertToUnityCartesian(Player.GetUserLocation(), gameScript.origin);
+        Camera.main. transform.LookAt(BoundaryBoxes.ConvertToUnityCartesian(location.centre));
 
         yield return null;
 
@@ -216,8 +213,47 @@ public class GameScriptPlayModeTests
         Assert.IsFalse(gameScript.title.enabled);
     }
 
+    [UnityTest]
+    public IEnumerator Update_WasAtPreviousLocation_NoTextDisplayed()
+    {
+
+        GameScript gameScript = GameObject.Find("GameScriptObject").GetComponent<GameScript>();
+
+        gameScript.LocationFound();
+        gameScript.Next();
+
+        #region
+        editorLocation.SetPositionAndRotation(Conversions.GeoToWorldPosition(new Vector2d(55.87389437464513, -4.292198433520163), map.CenterMercator, map.WorldRelativeScale).ToVector3xz(), Quaternion.identity);
+        var lp = (TransformLocationProvider)LocationProviderFactory.Instance.DefaultLocationProvider;
+        lp.TargetTransform = editorLocation;
+        lp.SendLocationEvent();
+        #endregion
+
+        var location = LocationHandler.locations.Find(location => location.name == "Sir Alwyn Williams");
+
+        GameObject n = new GameObject();
+        Camera.main.transform.parent = n.transform;
+        n.transform.position = BoundaryBoxes.ConvertToUnityCartesian(Player.GetUserLocation(), gameScript.origin);
+        n.transform.LookAt(BoundaryBoxes.ConvertToUnityCartesian(location.centre));
+
+        yield return null;
+
+        #region
+        editorLocation.SetPositionAndRotation(Conversions.GeoToWorldPosition(new Vector2d(55.893793849785176, -4.324952777065971), map.CenterMercator, map.WorldRelativeScale).ToVector3xz(), Quaternion.identity);
+        lp = (TransformLocationProvider)LocationProviderFactory.Instance.DefaultLocationProvider;
+        lp.TargetTransform = editorLocation;
+        lp.SendLocationEvent();
+
+        yield return null;
+        #endregion
+
+        Assert.IsFalse(gameScript.BuildingText.activeSelf);
+        Assert.IsFalse(gameScript.info.enabled);
+        Assert.IsFalse(gameScript.title.enabled);
+    }
+
     [UnityTearDown]
-    IEnumerator TearDown()
+    private IEnumerator TearDown()
     {
         string saveFilePath = Path.Combine(Application.persistentDataPath, "PlayerData.dat");
         if (File.Exists(saveFilePath))
