@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     {
         return Vector2dToVector2(LocationProviderFactory.Instance.DefaultLocationProvider.CurrentLocation.LatitudeLongitude);
     }
+
     /// <returns>The current compass heading of the user's device</returns>
     static public float GetUserDirection()
     {
@@ -21,5 +22,6 @@ public class Player : MonoBehaviour
     {
         return new Vector2((float)vector2D.x, (float)vector2D.y);
     }
+
 
 }
