@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44402185, g: 0.49316466, b: 0.57223153, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -8860,11 +8860,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2105607470}
   - component: {fileID: 2105607469}
-  - component: {fileID: 2105607468}
-  - component: {fileID: 2105607467}
-  - component: {fileID: 2105607466}
-  - component: {fileID: 2105607464}
-  - component: {fileID: 2105607463}
   m_Layer: 0
   m_Name: XR Origin
   m_TagString: Untagged
@@ -8872,76 +8867,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &2105607463
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2105607462}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bb3f97a0c61d646b9a9e66efdd69b8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  placedPrefab:
-  - {fileID: 2380701641875856155, guid: 743c843602f1c364abdaf5472ac72208, type: 3}
-  - {fileID: 726897787556432767, guid: 25a71eeb0b09e414ea9769d67e2cb1bb, type: 3}
---- !u!114 &2105607464
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2105607462}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4dea56a9eaadd1c439095de4f9a371cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SerializedLibrary: {fileID: 11400000, guid: 4bec2f192ac222b408d30c7807a64d72, type: 2}
-  m_MaxNumberOfMovingImages: 10
-  m_TrackedImagePrefab: {fileID: 0}
---- !u!114 &2105607466
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2105607462}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa17d122634046b4a8e23048891fafc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_RaycastPrefab: {fileID: 0}
---- !u!114 &2105607467
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2105607462}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 728ad7fae8e460a4ba41265c7308d757, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_AnchorPrefab: {fileID: 0}
---- !u!114 &2105607468
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2105607462}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1760703bbd54c04488a8d10600262ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_PlanePrefab: {fileID: 0}
-  m_DetectionMode: -1
 --- !u!114 &2105607469
 MonoBehaviour:
   m_ObjectHideFlags: 0
