@@ -41,6 +41,7 @@ public class BoundaryBoxes
             carts.Add(ConvertToCartesian(latlong));
         }
         return carts.ToArray();
+        
     }
 
     public static Vector2 ConvertToCartesian(Vector2 latLong)
@@ -83,7 +84,7 @@ public class BoundaryBoxes
         // cartesian coordinates
         double x = N * Math.Cos(lat) * Math.Cos(lon);
         double y = N * Math.Cos(lat) * Math.Sin(lon);
-        double z = (b * b) / (a * a) * N * Math.Sin(lat) + 1;
+        double z = (b * b) / (a * a) * N * Math.Sin(lat);
 
         return new Vector3((float)x, (float)z, (float)y);
     }
