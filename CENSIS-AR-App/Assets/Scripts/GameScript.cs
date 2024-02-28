@@ -25,7 +25,8 @@ public class GameScript : MonoBehaviour
     Canvas gameCompleteOverlay;
     Canvas nextButton;
     Canvas showClue;
-    
+    Canvas startUpOverlay;
+
     void getOrigin()
     {
         origin = BoundaryBoxes.ConvertToUnityCartesian(Player.GetUserLocation());
@@ -56,6 +57,12 @@ public class GameScript : MonoBehaviour
         gameCompleteOverlay = GameObject.Find("GameCompleteOverlay").GetComponent<Canvas>();
         nextButton = GameObject.Find("Next").GetComponent<Canvas>();
         showClue = GameObject.Find("ShowClue").GetComponent<Canvas>();
+        startUpOverlay = GameObject.Find("StartOverlay").GetComponent <Canvas>();
+        // check if save file exists to check if user has opened the app before
+        if (File.Exists(Path.Combine(Application.persistentDataPath, "PlayerData.dat")))
+        {
+            startUpOverlay.enabled = false;
+        }
         clueOverlay.enabled = false;
         nextButton.enabled = false;
         locationFoundOverlay.enabled = false;
@@ -179,18 +186,20 @@ public class GameScript : MonoBehaviour
 
     private void ShowClue()
     {
-        // show clue;
         clueText.text = LocationHandler.GetCurrLocation().clue;
         clueOverlay.enabled = true;
     }
 
     public void CloseClue()
     {
-        // close clue
         clueOverlay.enabled = false;
         Debug.Log($"clueOverlay.enabled {clueOverlay.enabled}");
     }
 
+    public void CloseStartUpPopUp()
+    {
+        startUpOverlay.enabled = false;
+    }
     void GameWon()
     {
         // display congratulations
