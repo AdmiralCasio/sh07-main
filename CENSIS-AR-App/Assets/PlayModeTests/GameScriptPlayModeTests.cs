@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 using UnityEngine.UI;
+using System.IO;
 
 public class GameScriptPlayModeTests
 {
@@ -12,6 +13,11 @@ public class GameScriptPlayModeTests
     public IEnumerator Setup()
     {
         SceneManager.LoadScene("Assets/Scenes/AppScene.unity");
+        string saveFilePath = Path.Combine(Application.persistentDataPath, "PlayerData.dat");
+        if (File.Exists(saveFilePath))
+        {
+            File.Delete(saveFilePath);
+        }
         yield return null;
 
     }

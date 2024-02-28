@@ -55,8 +55,9 @@ cache/*
 *.apk
 *.unitypackage
 
-#Caches
-*cache*
+#Megalinter
+megalinter-reports
+.ruff-cache
 
 #Test Results
 unit-tests.xml
