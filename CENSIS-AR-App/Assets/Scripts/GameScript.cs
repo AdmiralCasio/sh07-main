@@ -199,4 +199,3 @@ public class GameScript : MonoBehaviour
     }
 
 }
->>>>>>> f139f73aa80934eab19e6b041114b4580b70ecf5
