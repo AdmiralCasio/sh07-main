@@ -1,23 +1,24 @@
-﻿import tkinter as tk
-from tkinter import messagebox
-from tkinter import *
-from FindBuildingPolygon import *
-from shapely.geometry import Polygon
+﻿import json
+import tkinter as tk
+from tkinter import END, messagebox
+
+from FindBuildingPolygon import getVectors
 from shapely.affinity import scale
-import json
+from shapely.geometry import Polygon
 
 
 def read():
     try:
-        title = (str(buildingEntry.get()))
-        clue = (str(clueEntry.get("1.0", 'end-1c')))
-        info = (str(infoEntry.get("1.0", 'end-1c')))
-        url = (str(osmUrlEntry.get()))
-        scale_factor = (float(scaleEntry.get()))
+        title = str(buildingEntry.get())
+        clue = str(clueEntry.get("1.0", "end-1c"))
+        info = str(infoEntry.get("1.0", "end-1c"))
+        url = str(osmUrlEntry.get())
+        scale_factor = float(scaleEntry.get())
         inner = json.loads(getVectors(url))
 
-        with open("Locations.txt", 'w') as f:
-            f.write(f"""
+        with open("Locations.txt", "w") as f:
+            f.write(
+                f"""
             {{
             \"name\" : \"{title}\",
             \"clue\" : \"{clue}\",
@@ -25,8 +26,11 @@ def read():
             \"centre\" : [{Polygon(inner).centroid.x}, {Polygon(inner).centroid.y}],
             \"inner\" : [{inner}],
             \"outer\" : [{get_outer(inner, scale_factor)}]
-            }}""")
-        messagebox.showinfo("Success!", "Location added successfully, proceed to Locations.txt")
+            }}"""
+            )
+        messagebox.showinfo(
+            "Success!", "Location added successfully, proceed to Locations.txt"
+        )
 
         buildingEntry.delete(0, END)
         clueEntry.delete("1.0", END)
@@ -79,7 +83,10 @@ osmUrlEntry.pack(padx=10, pady=5)
 scaleLabel = tk.Label(window, text="Outer Boundary Box Scale")
 scaleLabel.pack(padx=10, pady=5)
 
-scaleEntry = tk.Entry(window, width=5, )
+scaleEntry = tk.Entry(
+    window,
+    width=5,
+)
 scaleEntry.pack(padx=10, pady=5)
 
 button = tk.Button(window, text="submit", command=read)

@@ -1,12 +1,11 @@
-using System.Collections.Generic;
-using UnityEngine;
-using System.Linq;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json;
+using UnityEngine;
 
 public static class FileHandler
 {
-
     public static List<T> ReadFromJSON<T>(string filename)
     {
         string content = Resources.Load<TextAsset>(filename).text;
@@ -25,7 +24,6 @@ public static class JsonHelper
 {
     public static T[] FromJson<T>(string json)
     {
-
         Wrapper<T> wrapper = JsonConvert.DeserializeObject<Wrapper<T>>(json);
         return wrapper.Items;
     }

@@ -15,9 +15,11 @@ public class LocationValidator
         bool inInner = false;
         bool inOuter = false;
 
-        foreach (var box in location.outer) {
+        foreach (var box in location.outer)
+        {
             int boxNumber = 0;
-            if (InBox(position, location.outer[boxNumber].points)){
+            if (InBox(position, location.outer[boxNumber].points))
+            {
                 inOuter = true;
             }
         }
@@ -25,7 +27,8 @@ public class LocationValidator
         foreach (var box in location.inner)
         {
             int boxNumber = 0;
-            if (InBox(position, location.inner[boxNumber].points)){
+            if (InBox(position, location.inner[boxNumber].points))
+            {
                 inInner = true;
             }
         }
@@ -35,7 +38,11 @@ public class LocationValidator
 
     public static bool LookingAtLocation(Vector2 position, Location location, Vector3 origin)
     {
-        return AtLocation(position, location) && LocationVisibility.IsVisible(BoundaryBoxes.ConvertToUnityCartesian(location.centre,origin), Camera.main);
+        return AtLocation(position, location)
+            && LocationVisibility.IsVisible(
+                BoundaryBoxes.ConvertToUnityCartesian(location.centre, origin),
+                Camera.main
+            );
     }
 
     static bool InBox(Vector2 position, Vector2[] box)

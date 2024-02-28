@@ -249,7 +249,10 @@ mega-linter:
 
   # if script: ["true"] does not work, you may try this instead:
   #   script: [ "/bin/bash /entrypoint.sh" ]
-  script: ["true"]
+  script: 
+    - pip install -r Utils/requirements.txt
+    - "true"
+
 
   variables:
     # All available variables are described in documentation

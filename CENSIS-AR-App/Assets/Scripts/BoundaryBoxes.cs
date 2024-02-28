@@ -82,6 +82,7 @@ public class BoundaryBoxes
 
         return new Vector2((float)x, (float)y);
     }
+
     public static Vector3 ConvertToUnityCartesian(Vector2 latLong)
     {
         // WGS-84 ellipsoid constants
