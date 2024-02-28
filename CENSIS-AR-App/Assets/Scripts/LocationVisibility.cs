@@ -17,23 +17,23 @@ public class LocationVisibility
         int[] array; // Declare array here for scope visibility
         if (screenPoint.x > 0 && screenPoint.x < 1)
         {
-            array = new int[] {0}; // Corrected array initialization
+            array = new int[] { 0 }; // Corrected array initialization
         }
         else if (screenPoint.x < 0 && screenPoint.x > -1)
         {
-            array = new int[] {3, 4}; // Corrected array initialization
+            array = new int[] {7, 8}; // Amber left arrows
         }
         else if (screenPoint.x > 1 && screenPoint.x < 2)
         {
-            array = new int[] {7, 8}; // Corrected array initialization
+            array = new int[] {3, 4}; // Amber right arrows
         }
         else if (screenPoint.x < -2)
         {
-            array = new int[] {1, 2}; // Corrected array initialization
+            array = new int[] {5, 6}; // Red left arrows
         }
         else
         {
-            array = new int[] {5, 6}; // Corrected array initialization
+            array = new int[] {1, 2}; // Red right arrows
         }
         return array;
     }
