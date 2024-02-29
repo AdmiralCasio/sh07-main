@@ -28,14 +28,18 @@ public class MarkerHandler : MonoBehaviour
 
     public void AddMarker(Location location)
     {
-        Vector2d convertedLocation = new Vector2d(location.centre.x, location.centre.y);
-        vectorLocations.Add(convertedLocation);
-        var instance = Instantiate(_markerPrefab);
-        instance.transform.localPosition = _map.GeoToWorldPosition(convertedLocation, true);
-        instance.transform.localScale = new Vector3(_spawnScale, _spawnScale, _spawnScale);
-        instance.name = location.name;
-        instance.GetComponent<LabelTextSetter>().Set(new Dictionary<string, object> { { "name", location.name } });
-        _spawnedObjects.Add(instance);
+        if (_spawnedObjects.Find(obj => obj.name == location.name) == null)
+        {
+            Vector2d convertedLocation = new Vector2d(location.centre.x, location.centre.y);
+            vectorLocations.Add(convertedLocation);
+            var instance = Instantiate(_markerPrefab);
+            instance.transform.localPosition = _map.GeoToWorldPosition(convertedLocation, true);
+            instance.transform.localScale = new Vector3(_spawnScale, _spawnScale, _spawnScale);
+            instance.name = location.name;
+            instance.GetComponent<LabelTextSetter>().Set(new Dictionary<string, object> { { "name", location.name } });
+            _spawnedObjects.Add(instance);
+        }
+        
     }
 
     void Update()

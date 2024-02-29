@@ -5,20 +5,34 @@ using Mapbox.Map;
 using Mapbox.Unity.Location;
 using Mapbox.Unity.Map;
 using Mapbox.Utils;
-using Moq;
+using Mapbox.Unity.Utilities;
 using NUnit.Framework;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 using UnityEngine.UI;
+using System.IO;
 
 public class MapTests
 {
+    Transform editorLocation;
+
+
     [UnitySetUp]
     public IEnumerator SetUp()
     {
         SceneManager.LoadScene("AppScene", LoadSceneMode.Single);
+
+        yield return null;
+        var saveFilePath = Path.Combine(Application.persistentDataPath, "PlayerData.dat");
+        if (File.Exists(saveFilePath))
+        {
+            File.Delete(saveFilePath);
+        }
+
+        editorLocation = GameObject.Find("EditorLocationObject").transform;
+
         yield return new EnterPlayModeOptions();
     }
 
@@ -126,6 +140,57 @@ public class MapTests
         Assert.AreEqual("TestLoc", result.name);
     }
 
+    [UnityTest]
+    public IEnumerator AddMarker_SirAlwynWilliams_InstantiatesPrefab()
+    {
+        AbstractMap map = GameObject.Find("Map").GetComponent<AbstractMap>();
+        GameScript gs = GameObject.Find("GameScriptObject").GetComponent<GameScript>();
+        #region
+        editorLocation.SetPositionAndRotation(Conversions.GeoToWorldPosition(new Vector2d(55.873900, -4.292276), map.CenterMercator, map.WorldRelativeScale).ToVector3xz(), Quaternion.identity);
+        TransformLocationProvider lp = (TransformLocationProvider)LocationProviderFactory.Instance.DefaultLocationProvider;
+        lp.TargetTransform = editorLocation;
+        lp.SendLocationEvent();
+        #endregion
+
+        GameObject o = new GameObject();
+        Camera.main.transform.parent = o.transform;
+        o.transform.position = BoundaryBoxes.ConvertToUnityCartesian(Player.GetUserLocation(), gs.origin);
+        o.transform.LookAt(BoundaryBoxes.ConvertToUnityCartesian(LocationHandler.GetCurrLocation().centre));
+
+        yield return null;
+
+        GameObject marker = GameObject.Find("Sir Alwyn Williams").gameObject;
+        Assert.IsNotNull(marker);
+        Assert.IsTrue(marker.activeSelf);
+
+
+    }
+
+    [UnityTest]
+    public IEnumerator AddMarker_SirAlwynWilliams_PrefabNameSirAlwynWilliams()
+    {
+        AbstractMap map = GameObject.Find("Map").GetComponent<AbstractMap>();
+        GameScript gs = GameObject.Find("GameScriptObject").GetComponent<GameScript>();
+        #region
+        editorLocation.SetPositionAndRotation(Conversions.GeoToWorldPosition(new Vector2d(55.873900, -4.292276), map.CenterMercator, map.WorldRelativeScale).ToVector3xz(), Quaternion.identity);
+        TransformLocationProvider lp = (TransformLocationProvider)LocationProviderFactory.Instance.DefaultLocationProvider;
+        lp.TargetTransform = editorLocation;
+        lp.SendLocationEvent();
+        #endregion
+
+        yield return null;
+
+        GameObject o = new GameObject();
+        Camera.main.transform.parent = o.transform;
+        o.transform.position = BoundaryBoxes.ConvertToUnityCartesian(new Vector2((float)lp.CurrentLocation.LatitudeLongitude.x, (float)lp.CurrentLocation.LatitudeLongitude.y), gs.origin);
+        o.transform.LookAt(BoundaryBoxes.ConvertToUnityCartesian(LocationHandler.GetCurrLocation().centre));
+
+        yield return null;
+
+        GameObject marker = GameObject.Find("Sir Alwyn Williams").gameObject;
+        Assert.AreEqual(marker.name, LocationHandler.GetCurrLocation().name);
+
+    }
 
 
     [UnityTearDown]

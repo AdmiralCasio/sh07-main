@@ -4,6 +4,7 @@ using UnityEngine.Android;
 using TMPro;
 using Mapbox.Unity.Location;
 using Mapbox.Utils;
+using System.IO;
 
 public class GameScript : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class GameScript : MonoBehaviour
     public GameObject BuildingText;
     public TMP_Text title;
     public TMP_Text info;
-    Vector3 origin;
+    public Vector3 origin { get; private set; }
 
     [SerializeField] MarkerHandler markerHandler;
 
