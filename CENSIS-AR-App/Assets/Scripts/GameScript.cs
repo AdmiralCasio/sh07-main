@@ -30,6 +30,7 @@ public class GameScript : MonoBehaviour
     public TMP_Text info;
     
     Vector3 origin;
+    Vector2 originPreConvert;
 
     [SerializeField]
     GameObject[] debugText;
@@ -39,20 +40,23 @@ public class GameScript : MonoBehaviour
     Canvas gameCompleteOverlay;
     Canvas nextButton;
     Canvas showClue;
+    private Camera cam;
     
-    string coordinates;
-
+    //string coordinates;
     
     void getOrigin()
     {
-        origin = BoundaryBoxes.ConvertToUnityCartesian( (Player.GetUserLocation()));
+        originPreConvert = Player.GetUserLocation();
+        origin = BoundaryBoxes.ConvertToUnityCartesian(originPreConvert) - cam.transform.position;
         Debug.Log("ORIGIN : " + BoundaryBoxes.ConvertToCartesian(Player.GetUserLocation()));
         Debug.Log("ORIGIN : " + Vector2dToVector2(LocationProviderFactory.Instance.DefaultLocationProvider.CurrentLocation.LatitudeLongitude));
     }
      
     // Start is called before the first frame update
     void Start()
-    {
+    {    
+        cam = Camera.main;
+
         Debug.Log("Game Script Start");
 
         // Get user permissions and start location tracking
@@ -60,10 +64,17 @@ public class GameScript : MonoBehaviour
         Input.compass.enabled = true;
 
         // define origin point
-        InvokeRepeating("getOrigin", 2,5);
+        // InvokeRepeating("getOrigin", 2,5);
+        Invoke("getOrigin",1);
         // Define text mesh pro components
+        
+        BuildingText.gameObject.SetActive(false);
         title.gameObject.SetActive(false);  
         info.gameObject.SetActive(false);
+        
+        // BuildingText.gameObject.SetActive(true);
+        // title.gameObject.SetActive(true);
+        // info.gameObject.SetActive(true);
 
         // get locations from file
         LocationHandler.locations = FileHandler.ReadFromJSON<Location>(filename);
@@ -80,20 +91,20 @@ public class GameScript : MonoBehaviour
         Debug.Log($"clueOverlay.enabled {clueOverlay.enabled}");
         Debug.Log($"nextButton.enabled {nextButton.enabled}");
 
-        Vector2[] outerconvert = BoundaryBoxes.ConvertToCartesian(LocationHandler.locations[2].outer[0].points);
-        foreach (Vector2 coord in outerconvert)
-        {
-            Debug.Log(coord.ToString("F8"));
-            coordinates += (coord.ToString("F8")) + "\n";
-        }
-        Debug.Log("CENTRE : " + BoundaryBoxes.ConvertToCartesian(LocationHandler.locations[2].centre));
-        Debug.Log("CENTRE (user): " + BoundaryBoxes.ConvertToCartesian(new Vector2(55.872146f, -4.289161f)));
-
-        string path = "C:/Users/ahmed/sh07-main/CENSIS-AR-App/Assets/Resources/test2.txt";
-        using (StreamWriter writer = File.CreateText(path))
-        {
-            writer.Write(coordinates);
-        }
+        // Vector2[] outerconvert = BoundaryBoxes.ConvertToCartesian(LocationHandler.locations[2].outer[0].points);
+        // foreach (Vector2 coord in outerconvert)
+        // {
+        //     Debug.Log(coord.ToString("F8"));
+        //     coordinates += (coord.ToString("F8")) + "\n";
+        // }
+        // Debug.Log("CENTRE : " + BoundaryBoxes.ConvertToCartesian(LocationHandler.locations[2].centre));
+        // Debug.Log("CENTRE (user): " + BoundaryBoxes.ConvertToCartesian(new Vector2(55.872146f, -4.289161f)));
+        //
+        // string path = "C:/Users/ahmed/sh07-main/CENSIS-AR-App/Assets/Resources/test2.txt";
+        // using (StreamWriter writer = File.CreateText(path))
+        // {
+        //     writer.Write(coordinates);
+        // }
 
     }
 
@@ -111,15 +122,15 @@ public class GameScript : MonoBehaviour
         return new Vector2((float) vector2D.x, (float) vector2D.y);
     }
 
-    private Vector2 stringToVector2(string vectorString)
-    {
-        string[] temp = vectorString.Split(",");
-        Debug.Log("ORIGIN: " + temp[0]);
-        float x = float.Parse(temp[0]);
-        float y = float.Parse(temp[1]);
-        Debug.Log("(ORIGIN) x:" + x);
-        return new Vector2(x, y);
-    }
+    // private Vector2 stringToVector2(string vectorString)
+    // {
+    //     string[] temp = vectorString.Split(",");
+    //     Debug.Log("ORIGIN: " + temp[0]);
+    //     float x = float.Parse(temp[0]);
+    //     float y = float.Parse(temp[1]);
+    //     Debug.Log("(ORIGIN) x:" + x);
+    //     return new Vector2(x, y);
+    // }
 
     void Update()
     {
@@ -131,6 +142,9 @@ public class GameScript : MonoBehaviour
         Vector3 normalisedCentre = BoundaryBoxes.ConvertToUnityCartesian(curr.centre, origin);
         Vector3 overlayLocation = normalisedCentre;
 
+        String strOriginPreConvert = originPreConvert.ToString("N8");
+        String strOriginConverted = origin.ToString("N8");
+        
         // check if user is within location but not looking at the right direction
         if (LocationValidator.AtLocation(location, curr) && !LocationValidator.LookingAtLocation(location, curr, origin))
         {
@@ -147,11 +161,12 @@ public class GameScript : MonoBehaviour
             debugText[0].GetComponent<TMP_Text>().text = "At Location: true";
             debugText[1].GetComponent<TMP_Text>().text = "Looking at Location : false";
             debugText[2].GetComponent<TMP_Text>().text = "dist from location:" +
-                                                         Math.Abs(Camera.main.transform.position.x - overlayLocation.x) + " " + 
-                                                         Math.Abs(Camera.main.transform.position.y - overlayLocation.y) + " " +
-                                                         Math.Abs(Camera.main.transform.position.z - overlayLocation.z) + " " ;
-            debugText[3].GetComponent<TMP_Text>().text = "overlay is at : "+ overlayLocation;
+                                                         Math.Abs(cam.transform.position.x - overlayLocation.x) + " " + 
+                                                         Math.Abs(cam.transform.position.y - overlayLocation.y) + " " +
+                                                         Math.Abs(cam.transform.position.z - overlayLocation.z) + " " ;
+            debugText[3].GetComponent<TMP_Text>().text = "overlay is at : "+ BoundaryBoxes.ConvertToUnityCartesian(curr.centre) + " | Normalised : " + overlayLocation;
             debugText[4].GetComponent<TMP_Text>().text = "Location accuracy : "+ LocationProviderFactory.Instance.DefaultLocationProvider.CurrentLocation.Accuracy;
+            debugText[5].GetComponent<TMP_Text>().text = "origin is : " + strOriginPreConvert + "  |  Converted to : " + strOriginConverted; 
             Debug.Log($"Game script: At {curr.name}");
             locationFoundOverlay.enabled = true;
 
@@ -160,9 +175,9 @@ public class GameScript : MonoBehaviour
         if (LocationValidator.LookingAtLocation((location), curr, origin))
         {
             // move overlay to be in front of camera
-            if (Math.Abs(overlayLocation.y - Camera.main.transform.position.y) >= 10 || overlayLocation.y - Camera.main.transform.position.y < 0)
+            if (Math.Abs(overlayLocation.y - cam.transform.position.y) >= 10 || overlayLocation.y - cam.transform.position.y < 0)
             {
-                overlayLocation = new Vector3(overlayLocation.x, Camera.main.transform.position.y, overlayLocation.z);
+                overlayLocation = new Vector3(overlayLocation.x, cam.transform.position.y, overlayLocation.z);
             }
             BuildingText.transform.position = overlayLocation;
 
@@ -179,12 +194,13 @@ public class GameScript : MonoBehaviour
             debugText[0].GetComponent<TMP_Text>().text = "At Location: true";
             debugText[1].GetComponent<TMP_Text>().text = "Looking at Location : true";
             debugText[2].GetComponent<TMP_Text>().text = "dist from location:" +
-                                                         Math.Abs(Camera.main.transform.position.x - overlayLocation.x) + " " + 
-                                                         Math.Abs(Camera.main.transform.position.y - overlayLocation.y) + " " +
-                                                         Math.Abs(Camera.main.transform.position.z - overlayLocation.z) + " " ;      
-            debugText[3].GetComponent<TMP_Text>().text = "overlay is at : "+ overlayLocation;
+                                                         Math.Abs(cam.transform.position.x - overlayLocation.x) + " " + 
+                                                         Math.Abs(cam.transform.position.y - overlayLocation.y) + " " +
+                                                         Math.Abs(cam.transform.position.z - overlayLocation.z) + " " ;      
+            debugText[3].GetComponent<TMP_Text>().text = "overlay is at : "+ BoundaryBoxes.ConvertToUnityCartesian(curr.centre) + " | Normalised : " + overlayLocation;
             debugText[4].GetComponent<TMP_Text>().text = "Location accuracy : "+ LocationProviderFactory.Instance.DefaultLocationProvider.CurrentLocation.Accuracy;
-            
+            debugText[5].GetComponent<TMP_Text>().text = "origin is : " + strOriginPreConvert + "  |  Converted to : " + strOriginConverted; 
+
             // Location Found
             Debug.Log($"Game script: Looking At {curr.name}");
             LocationFound();
@@ -202,11 +218,13 @@ public class GameScript : MonoBehaviour
             debugText[0].GetComponent<TMP_Text>().text = "At Location: false";
             debugText[1].GetComponent<TMP_Text>().text = "Looking at Location : false";
             debugText[2].GetComponent<TMP_Text>().text = "dist from location:" +
-                                                         Math.Abs(Camera.main.transform.position.x - overlayLocation.x) + " " + 
-                                                         Math.Abs(Camera.main.transform.position.y - overlayLocation.y) + " " +
-                                                         Math.Abs(Camera.main.transform.position.z - overlayLocation.z) + " " ;
-            debugText[3].GetComponent<TMP_Text>().text = "overlay is at : "+ overlayLocation;
+                                                         Math.Abs(cam.transform.position.x - overlayLocation.x) + " " + 
+                                                         Math.Abs(cam.transform.position.y - overlayLocation.y) + " " +
+                                                         Math.Abs(cam.transform.position.z - overlayLocation.z) + " " ;
+            debugText[3].GetComponent<TMP_Text>().text = "overlay is at : "+ BoundaryBoxes.ConvertToUnityCartesian(curr.centre) + " | Normalised : " + overlayLocation;
             debugText[4].GetComponent<TMP_Text>().text = "Location accuracy : "+ LocationProviderFactory.Instance.DefaultLocationProvider.CurrentLocation.Accuracy;
+            debugText[5].GetComponent<TMP_Text>().text = "origin is : " + strOriginPreConvert + "  |  Converted to : " + strOriginConverted; 
+
             Debug.Log($"Game Script: Not at {curr.name}");
             locationFoundOverlay.enabled = false;
         }
