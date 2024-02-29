@@ -1,8 +1,9 @@
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
+using System;
+using System.IO;
+
 
 [Serializable]
 public class PlayerData
@@ -26,7 +27,7 @@ public class LocationHandler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // gets the index of the current building or 0
+        // gets the index of the current building or 0 
         playerData = new PlayerData();
         binaryFormatter = new BinaryFormatter();
         saveFilePath = Path.Combine(Application.persistentDataPath, "PlayerData.dat");
@@ -37,21 +38,22 @@ public class LocationHandler : MonoBehaviour
             playerData = (PlayerData)binaryFormatter.Deserialize(file);
             file.Close();
             locationIndex = playerData.locationIndex;
-            Debug.Log("Load complete, current location index " + playerData.locationIndex);
+            Debug.Log("FileLoad: Load complete, current location index " + playerData.locationIndex);
         }
         else
         {
+
             locationIndex = 0;
             playerData.locationIndex = locationIndex;
-            Debug.Log("No save files to load");
+            Debug.Log("FileLoad: No save files to load");
+
         }
     }
-
     public static void NextLocation()
     {
         locationIndex += 1;
         //PlayerPrefs.SetInt("CurrentLocation", locationIndex);
-        //PlayerPrefs.Save();
+        //PlayerPrefs.Save(); 
         playerData.locationIndex = locationIndex;
         FileStream file = File.Create(saveFilePath);
         binaryFormatter.Serialize(file, playerData);
@@ -59,9 +61,7 @@ public class LocationHandler : MonoBehaviour
     }
 
     public static bool IsFinalLocation()
-    {
-        return locationIndex == locations.Count - 1;
-    }
+    { return locationIndex == locations.Count-1; }
 
     public static Location GetCurrLocation()
     {
