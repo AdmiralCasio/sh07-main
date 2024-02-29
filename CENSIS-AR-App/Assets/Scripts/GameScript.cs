@@ -1,12 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
 using System;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.Android;
 using TMPro;
-using UnityEngine.XR.ARFoundation;
+using Mapbox.Unity.Location;
+using Mapbox.Utils;
 
 public class GameScript : MonoBehaviour
 {
@@ -30,11 +27,11 @@ public class GameScript : MonoBehaviour
     Canvas gameCompleteOverlay;
     Canvas nextButton;
     Canvas showClue;
-    
+    Canvas startUpOverlay;
+
     void getOrigin()
     {
-        origin = BoundaryBoxes.ConvertToUnityCartesian(new Vector2(Input.location.lastData.latitude,
-            Input.location.lastData.longitude));
+        origin = BoundaryBoxes.ConvertToUnityCartesian(Player.GetUserLocation());
         Debug.Log("Origin at start : " + origin);
 
     }
@@ -46,12 +43,8 @@ public class GameScript : MonoBehaviour
         // Get user permissions and start location tracking
         Permission.RequestUserPermission(Permission.FineLocation);
         Input.compass.enabled = true;
-        Input.location.Start();
-        Debug.Log("(ORIGIN) Location status : " + Input.location.status);
-
 
         // define origin point
-        Debug.Log("Origin before convert :" + new Vector2(Input.location.lastData.latitude, Input.location.lastData.longitude));
         Invoke("getOrigin", 2);
         // Define text mesh pro components
         title.gameObject.SetActive(false);
@@ -65,6 +58,12 @@ public class GameScript : MonoBehaviour
         gameCompleteOverlay = GameObject.Find("GameCompleteOverlay").GetComponent<Canvas>();
         nextButton = GameObject.Find("Next").GetComponent<Canvas>();
         showClue = GameObject.Find("ShowClue").GetComponent<Canvas>();
+        startUpOverlay = GameObject.Find("StartOverlay").GetComponent <Canvas>();
+        // check if save file exists to check if user has opened the app before
+        if (File.Exists(Path.Combine(Application.persistentDataPath, "PlayerData.dat")))
+        {
+            startUpOverlay.enabled = false;
+        }
         clueOverlay.enabled = false;
         nextButton.enabled = false;
         locationFoundOverlay.enabled = false;
@@ -83,10 +82,15 @@ public class GameScript : MonoBehaviour
         showClue.enabled = false;
     }
 
+    private Vector2 Vector2dToVector2(Vector2d vector2D)
+    {
+        return new Vector2((float) vector2D.x, (float) vector2D.y);
+    }
+
     void Update()
     {
         // define user, current building, and overlay locations
-        var location = new Vector2(Input.location.lastData.latitude, Input.location.lastData.longitude);
+        var location = Player.GetUserLocation();  
         var curr = LocationHandler.GetCurrLocation();
 
         // calculate where the overlay should appear
@@ -184,18 +188,20 @@ public class GameScript : MonoBehaviour
 
     private void ShowClue()
     {
-        // show clue;
         clueText.text = LocationHandler.GetCurrLocation().clue;
         clueOverlay.enabled = true;
     }
 
     public void CloseClue()
     {
-        // close clue
         clueOverlay.enabled = false;
         Debug.Log($"clueOverlay.enabled {clueOverlay.enabled}");
     }
 
+    public void CloseStartUpPopUp()
+    {
+        startUpOverlay.enabled = false;
+    }
     void GameWon()
     {
         // display congratulations
