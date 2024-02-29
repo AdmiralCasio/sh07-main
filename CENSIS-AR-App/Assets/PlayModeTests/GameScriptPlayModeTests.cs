@@ -17,20 +17,23 @@ public class GameScriptPlayModeTests
     Transform editorLocation;
     AbstractMap map;
 
+
     [UnitySetUp]
     public IEnumerator Setup()
     {
+        string saveFilePath = Path.Combine(Application.persistentDataPath, "PlayerData.dat");
+        if (File.Exists(saveFilePath))
+        {
+            File.Delete(saveFilePath);
+        }
+
         SceneManager.LoadScene("Assets/Scenes/AppScene.unity");
 
         yield return null;
 
         editorLocation = GameObject.Find("EditorLocationObject").GetComponent<Transform>();
         map = GameObject.Find("Map").GetComponent<AbstractMap>();
-        string saveFilePath = Path.Combine(Application.persistentDataPath, "PlayerData.dat");
-        if (File.Exists(saveFilePath))
-        {
-            File.Delete(saveFilePath);
-        }
+        
         #region
         editorLocation.SetPositionAndRotation(Conversions.GeoToWorldPosition(new Vector2d(55.8732190726261, -4.29288021410597), map.CenterMercator, map.WorldRelativeScale).ToVector3xz(), Quaternion.identity);
         var lp = (TransformLocationProvider)LocationProviderFactory.Instance.DefaultLocationProvider;
@@ -116,17 +119,59 @@ public class GameScriptPlayModeTests
         Button nextButton = GameObject.Find("NextButton").GetComponent<Button>();
         nextButton.onClick.Invoke();
         // test overlay 
+        Assert.IsTrue(GetCanvas("GameCompleteOverlay").enabled);
 
         yield return null;
     }
 
     [UnityTest]
-    public IEnumerator TestCorrectOverlayOnStart()
+    public IEnumerator Start_FirstStart_LocationsPopulatedShowClueButtonAndStartOverlay()
     {
+        string saveFilePath = Path.Combine(Application.persistentDataPath, "PlayerData.dat");
+        if (File.Exists(saveFilePath))
+        {
+            File.Delete(saveFilePath);
+        }
+
+        yield return null;
+
         Assert.IsTrue(LocationHandler.locations.Count > 0);
         Assert.IsFalse(GetCanvas("ClueOverlay").enabled);
         Assert.IsFalse(GetCanvas("Next").enabled);
         Assert.IsTrue(GetCanvas("ShowClue").enabled);
+        Assert.IsTrue(GetCanvas("StartOverlay").enabled);
+        
+        yield return null;
+    }
+
+    [UnityTest]
+    public IEnumerator Start_NotFirstStart_LocationsPopulatedShowClueButtonNoStartOverlay()
+    {
+        //LocationHandler.locations = new List<Location>();
+        //LocationHandler.locations.Add(new Location("testLocation", "clue text", "information", new float[] { 55.87394f, -4.29181f }, new float[][][]{ new float[][]{
+        //new float[] {55.6829478f,-4.5160826f },
+        //new float[] {55.6830784f, -4.5155368f},
+        //new float[] {55.6827737f, -4.5153076f },
+        //new float[] {55.6826432f, -4.5158534f },
+        //new float[] {55.6829478f,-4.5160826f }, }
+        //}, new float[][][]{ new float [][]{
+        //new float[] {55.6827422f, -4.5150968f },
+        //new float[] {55.6831358f, -4.5154564f },
+        //new float[] {55.6829316f, -4.5165759f },
+        //new float[] {55.6824903f, -4.5160380f },
+        //new float[] {55.6827422f, -4.5150968f } } }
+        //));
+        Button nextButton = GameObject.Find("NextButton").GetComponent<Button>();
+        nextButton.onClick.Invoke();
+
+        SceneManager.LoadScene("Assets/Scenes/AppScene.unity");
+        yield return null;
+        
+        Assert.IsTrue(LocationHandler.locations.Count > 0);
+        Assert.IsFalse(GetCanvas("ClueOverlay").enabled);
+        Assert.IsFalse(GetCanvas("Next").enabled);
+        Assert.IsTrue(GetCanvas("ShowClue").enabled);
+        Assert.IsFalse(GetCanvas("StartOverlay").enabled);
 
         yield return null;
     }
@@ -253,7 +298,7 @@ public class GameScriptPlayModeTests
     }
 
     [UnityTearDown]
-    private IEnumerator TearDown()
+    public IEnumerator TearDown()
     {
         string saveFilePath = Path.Combine(Application.persistentDataPath, "PlayerData.dat");
         if (File.Exists(saveFilePath))
