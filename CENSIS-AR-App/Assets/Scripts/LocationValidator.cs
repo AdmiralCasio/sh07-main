@@ -45,7 +45,7 @@ public class LocationValidator
         return AtLocation(position, location) && LocationVisibility.IsVisible(BoundaryBoxes.ConvertToUnityCartesian(location.centre,origin), Camera.main);
     }
 
-    static bool InBox(Vector2 position, Vector2[] box)
+    public static bool InBox(Vector2 position, Vector2[] box)
     {
         return BoundaryBoxes.IsPointInPolygonGPS(position, box);
     }
