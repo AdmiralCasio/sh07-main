@@ -5,14 +5,34 @@ using UnityEngine;
 
 public class BoundaryBoxes
 {
-    public static bool IsPointInPolygonGPS(Vector2 point, Vector2[] polygon)
+    public static bool IsPointInPolygonGPS(Vector2 point, Vector2[] polygon, Vector3 origin)
     {
-        Vector2 pointCart = ConvertToCartesian(point);
-        Vector2[] polygonCart = ConvertToCartesian(polygon);
+        Vector3 pointCart = ConvertToUnityCartesian(point,origin);
+        Vector3[] polygonCart = ConvertToUnityCartesian(polygon,origin);
         return IsPointInPolygon(pointCart, polygonCart);
     }
     
     public static bool IsPointInPolygon(Vector2 point, Vector2[] polygon)
+    {
+        bool inside = false;
+        float tolerance = 0.001f; // Add a small tolerance value
+
+        for (int i = 0, j = polygon.Length - 1; i < polygon.Length; j = i++)
+        {
+            if (((polygon[i].y <= point.y + tolerance && point.y < polygon[j].y + tolerance) || (polygon[j].y <= point.y + tolerance && point.y < polygon[i].y + tolerance)) &&
+                (point.x < (polygon[j].x - polygon[i].x) * (point.y - polygon[i].y) / (polygon[j].y - polygon[i].y) + polygon[i].x + tolerance))
+            {
+                inside = !inside;
+            }
+            else if (polygon[i].y == point.y && polygon[j].y == point.y && point.x >= Math.Min(polygon[i].x, polygon[j].x) - tolerance && point.x <= Math.Max(polygon[i].x, polygon[j].x) + tolerance)
+            {
+                inside = true;
+                break; // Exit the loop if the point is on an edge of the polygon
+            }
+        }
+        return inside;
+    }
+    public static bool IsPointInPolygon(Vector3 point, Vector3[] polygon)
     {
         bool inside = false;
         float tolerance = 0.001f; // Add a small tolerance value
@@ -92,6 +112,16 @@ public class BoundaryBoxes
     public static Vector3 ConvertToUnityCartesian(Vector2 latLong, Vector3 origin)
     {
         return ConvertToUnityCartesian(latLong) - origin;
+    }
+    public static Vector3[] ConvertToUnityCartesian(Vector2[] latlongs, Vector3 origin)
+    {
+        List<Vector3> carts = new List<Vector3>();
+        foreach (Vector2 latlong in latlongs)
+        {
+            carts.Add(ConvertToUnityCartesian(latlong) - origin);
+        }
+
+        return carts.ToArray();
     }
 
     private void IsInsidePrint(bool isInside)

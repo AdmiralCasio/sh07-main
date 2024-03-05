@@ -145,8 +145,16 @@ public class GameScript : MonoBehaviour
         String strOriginPreConvert = originPreConvert.ToString("N8");
         String strOriginConverted = origin.ToString("N8");
         
+        debugText[2].GetComponent<TMP_Text>().text = "dist from location:" +
+                                                     Math.Abs(cam.transform.position.x - overlayLocation.x) + " " + 
+                                                     Math.Abs(cam.transform.position.y - overlayLocation.y) + " " +
+                                                     Math.Abs(cam.transform.position.z - overlayLocation.z) + " " ;
+        debugText[3].GetComponent<TMP_Text>().text = "overlay is at : "+ BoundaryBoxes.ConvertToUnityCartesian(curr.centre) + " | Normalised : " + overlayLocation;
+        debugText[4].GetComponent<TMP_Text>().text = "Location accuracy : "+ LocationProviderFactory.Instance.DefaultLocationProvider.CurrentLocation.Accuracy;
+        debugText[5].GetComponent<TMP_Text>().text = "origin is : " + strOriginPreConvert + "  |  Converted to : " + strOriginConverted; 
+        
         // check if user is within location but not looking at the right direction
-        if (LocationValidator.AtLocation(location, curr) && !LocationValidator.LookingAtLocation(location, curr, origin))
+        if (LocationValidator.AtLocation(location, curr,origin) && !LocationValidator.LookingAtLocation(location, curr, origin))
         {
             // toggle game object states
             BuildingText.gameObject.SetActive(false);
@@ -160,19 +168,12 @@ public class GameScript : MonoBehaviour
             // on screen debug
             debugText[0].GetComponent<TMP_Text>().text = "At Location: true";
             debugText[1].GetComponent<TMP_Text>().text = "Looking at Location : false";
-            debugText[2].GetComponent<TMP_Text>().text = "dist from location:" +
-                                                         Math.Abs(cam.transform.position.x - overlayLocation.x) + " " + 
-                                                         Math.Abs(cam.transform.position.y - overlayLocation.y) + " " +
-                                                         Math.Abs(cam.transform.position.z - overlayLocation.z) + " " ;
-            debugText[3].GetComponent<TMP_Text>().text = "overlay is at : "+ BoundaryBoxes.ConvertToUnityCartesian(curr.centre) + " | Normalised : " + overlayLocation;
-            debugText[4].GetComponent<TMP_Text>().text = "Location accuracy : "+ LocationProviderFactory.Instance.DefaultLocationProvider.CurrentLocation.Accuracy;
-            debugText[5].GetComponent<TMP_Text>().text = "origin is : " + strOriginPreConvert + "  |  Converted to : " + strOriginConverted; 
             Debug.Log($"Game script: At {curr.name}");
             locationFoundOverlay.enabled = true;
 
         }
         // check if user is both in and looking at location
-        if (LocationValidator.LookingAtLocation((location), curr, origin))
+        if (LocationValidator.LookingAtLocation(location, curr, origin))
         {
             // move overlay to be in front of camera
             if (Math.Abs(overlayLocation.y - cam.transform.position.y) >= 10 || overlayLocation.y - cam.transform.position.y < 0)
@@ -193,21 +194,13 @@ public class GameScript : MonoBehaviour
             // on screen debug
             debugText[0].GetComponent<TMP_Text>().text = "At Location: true";
             debugText[1].GetComponent<TMP_Text>().text = "Looking at Location : true";
-            debugText[2].GetComponent<TMP_Text>().text = "dist from location:" +
-                                                         Math.Abs(cam.transform.position.x - overlayLocation.x) + " " + 
-                                                         Math.Abs(cam.transform.position.y - overlayLocation.y) + " " +
-                                                         Math.Abs(cam.transform.position.z - overlayLocation.z) + " " ;      
-            debugText[3].GetComponent<TMP_Text>().text = "overlay is at : "+ BoundaryBoxes.ConvertToUnityCartesian(curr.centre) + " | Normalised : " + overlayLocation;
-            debugText[4].GetComponent<TMP_Text>().text = "Location accuracy : "+ LocationProviderFactory.Instance.DefaultLocationProvider.CurrentLocation.Accuracy;
-            debugText[5].GetComponent<TMP_Text>().text = "origin is : " + strOriginPreConvert + "  |  Converted to : " + strOriginConverted; 
-
             // Location Found
             Debug.Log($"Game script: Looking At {curr.name}");
             LocationFound();
             locationFoundOverlay.enabled = false;
         }
         // check if user is not in the location
-        if (!LocationValidator.AtLocation((location), curr))
+        if (!LocationValidator.AtLocation(location, curr, origin))
         {
             // toggle game object states
             BuildingText.gameObject.SetActive(false);
@@ -217,13 +210,6 @@ public class GameScript : MonoBehaviour
             // on screen debug
             debugText[0].GetComponent<TMP_Text>().text = "At Location: false";
             debugText[1].GetComponent<TMP_Text>().text = "Looking at Location : false";
-            debugText[2].GetComponent<TMP_Text>().text = "dist from location:" +
-                                                         Math.Abs(cam.transform.position.x - overlayLocation.x) + " " + 
-                                                         Math.Abs(cam.transform.position.y - overlayLocation.y) + " " +
-                                                         Math.Abs(cam.transform.position.z - overlayLocation.z) + " " ;
-            debugText[3].GetComponent<TMP_Text>().text = "overlay is at : "+ BoundaryBoxes.ConvertToUnityCartesian(curr.centre) + " | Normalised : " + overlayLocation;
-            debugText[4].GetComponent<TMP_Text>().text = "Location accuracy : "+ LocationProviderFactory.Instance.DefaultLocationProvider.CurrentLocation.Accuracy;
-            debugText[5].GetComponent<TMP_Text>().text = "origin is : " + strOriginPreConvert + "  |  Converted to : " + strOriginConverted; 
 
             Debug.Log($"Game Script: Not at {curr.name}");
             locationFoundOverlay.enabled = false;
