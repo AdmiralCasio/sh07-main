@@ -11,7 +11,7 @@ public class BoundaryBoxes
         Vector2[] polygonCart = ConvertToCartesian(polygon);
         return IsPointInPolygon(pointCart, polygonCart);
     }
-    
+
     public static bool IsPointInPolygon(Vector2 point, Vector2[] polygon)
     {
         bool inside = false;
@@ -19,12 +19,29 @@ public class BoundaryBoxes
 
         for (int i = 0, j = polygon.Length - 1; i < polygon.Length; j = i++)
         {
-            if (((polygon[i].y <= point.y + tolerance && point.y < polygon[j].y + tolerance) || (polygon[j].y <= point.y + tolerance && point.y < polygon[i].y + tolerance)) &&
-                (point.x < (polygon[j].x - polygon[i].x) * (point.y - polygon[i].y) / (polygon[j].y - polygon[i].y) + polygon[i].x + tolerance))
+            if (
+                (
+                    (polygon[i].y <= point.y + tolerance && point.y < polygon[j].y + tolerance)
+                    || (polygon[j].y <= point.y + tolerance && point.y < polygon[i].y + tolerance)
+                )
+                && (
+                    point.x
+                    < (polygon[j].x - polygon[i].x)
+                        * (point.y - polygon[i].y)
+                        / (polygon[j].y - polygon[i].y)
+                        + polygon[i].x
+                        + tolerance
+                )
+            )
             {
                 inside = !inside;
             }
-            else if (polygon[i].y == point.y && polygon[j].y == point.y && point.x >= Math.Min(polygon[i].x, polygon[j].x) - tolerance && point.x <= Math.Max(polygon[i].x, polygon[j].x) + tolerance)
+            else if (
+                polygon[i].y == point.y
+                && polygon[j].y == point.y
+                && point.x >= Math.Min(polygon[i].x, polygon[j].x) - tolerance
+                && point.x <= Math.Max(polygon[i].x, polygon[j].x) + tolerance
+            )
             {
                 inside = true;
                 break; // Exit the loop if the point is on an edge of the polygon
@@ -65,6 +82,7 @@ public class BoundaryBoxes
 
         return new Vector2((float)x, (float)y);
     }
+
     public static Vector3 ConvertToUnityCartesian(Vector2 latLong)
     {
         // WGS-84 ellipsoid constants
@@ -104,5 +122,4 @@ public class BoundaryBoxes
             Debug.Log("BOUNDARY BOX: User is not within this boundary box");
         }
     }
-
 }
