@@ -211,7 +211,7 @@ public class GameScript : MonoBehaviour
         title.enabled = false;
         title.transform.localScale = defaultInfoTitleScale;
         info.transform.localScale = defaultInfoTitleScale;
-        BuildingText.transform.localScale = defaultBuildingTextScale
+        BuildingText.transform.localScale = defaultBuildingTextScale;
     }
 
     private void ShowLocationInformation(Vector3 overlayLocation, Location loc)
