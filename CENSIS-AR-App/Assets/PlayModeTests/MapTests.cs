@@ -53,7 +53,9 @@ public class MapTests
     [UnityTest]
     public IEnumerator ActivateCanvas_MapScreen_MapHeight0Point4()
     {
-        Button homeButton = GameObject.Find("NavbarAndTopBar/NavBar/HomeButton").GetComponent<Button>();
+        Button homeButton = GameObject
+            .Find("NavbarAndTopBar/NavBar/HomeButton")
+            .GetComponent<Button>();
         homeButton.onClick.Invoke();
 
         yield return null;
@@ -65,7 +67,9 @@ public class MapTests
     [UnityTest]
     public IEnumerator Start_HomeScreen_MapHeight1()
     {
-        Button mapButton = GameObject.Find("NavbarAndTopBar/NavBar/MapButton").GetComponent<Button>();
+        Button mapButton = GameObject
+            .Find("NavbarAndTopBar/NavBar/MapButton")
+            .GetComponent<Button>();
         mapButton.onClick.Invoke();
 
         yield return null;
@@ -79,14 +83,18 @@ public class MapTests
     {
         var map = GameObject.Find("MapCamera");
 
-        Button mapButton = GameObject.Find("NavbarAndTopBar/NavBar/MapButton").GetComponent<Button>();
+        Button mapButton = GameObject
+            .Find("NavbarAndTopBar/NavBar/MapButton")
+            .GetComponent<Button>();
         mapButton.onClick.Invoke();
 
         yield return null;
 
         Assert.AreEqual(1f, map.GetComponent<Camera>().rect.height);
 
-        Button homeButton = GameObject.Find("NavbarAndTopBar/NavBar/HomeButton").GetComponent<Button>();
+        Button homeButton = GameObject
+            .Find("NavbarAndTopBar/NavBar/HomeButton")
+            .GetComponent<Button>();
         homeButton.onClick.Invoke();
 
         yield return null;
@@ -97,7 +105,9 @@ public class MapTests
     [UnityTest]
     public IEnumerator ActivateCanvas_MapButtonOnHome_MapHeight1()
     {
-        Button homeButton = GameObject.Find("NavbarAndTopBar/NavBar/HomeButton").GetComponent<Button>();
+        Button homeButton = GameObject
+            .Find("NavbarAndTopBar/NavBar/HomeButton")
+            .GetComponent<Button>();
         homeButton.onClick.Invoke();
 
         yield return null;
@@ -105,7 +115,9 @@ public class MapTests
         var map = GameObject.Find("MapCamera");
         Assert.AreEqual(0.4f, map.GetComponent<Camera>().rect.height);
 
-        Button mapButton = GameObject.Find("NavbarAndTopBar/NavBar/MapButton").GetComponent<Button>();
+        Button mapButton = GameObject
+            .Find("NavbarAndTopBar/NavBar/MapButton")
+            .GetComponent<Button>();
         mapButton.onClick.Invoke();
 
         yield return null;
@@ -198,5 +210,4 @@ public class MapTests
     {
         yield return null;
     }
-
 }
