@@ -129,16 +129,26 @@ namespace UnityEngine.InputSystem.Samples
         }
 
         [Tooltip("The type of visualization to perform for the control.")]
-        [SerializeField] private Mode m_Visualization;
-        [Tooltip("Path of the control that should be visualized. If at runtime, multiple "
-            + "controls match the given path, the 'Control Index' property can be used to decide "
-            + "which of the controls to visualize.")]
-        [InputControl, SerializeField] private string m_ControlPath;
-        [Tooltip("If multiple controls match 'Control Path' at runtime, this property decides "
-            + "which control to visualize from the list of candidates. It is a zero-based index.")]
-        [SerializeField] private int m_ControlIndex;
+        [SerializeField]
+        private Mode m_Visualization;
 
-        [NonSerialized] private InputControl m_Control;
+        [Tooltip(
+            "Path of the control that should be visualized. If at runtime, multiple "
+                + "controls match the given path, the 'Control Index' property can be used to decide "
+                + "which of the controls to visualize."
+        )]
+        [InputControl, SerializeField]
+        private string m_ControlPath;
+
+        [Tooltip(
+            "If multiple controls match 'Control Path' at runtime, this property decides "
+                + "which control to visualize from the list of candidates. It is a zero-based index."
+        )]
+        [SerializeField]
+        private int m_ControlIndex;
+
+        [NonSerialized]
+        private InputControl m_Control;
 
         private static List<InputControlVisualizer> s_EnabledInstances;
 
@@ -176,14 +186,18 @@ namespace UnityEngine.InputSystem.Samples
                     if (valueType == typeof(Vector2))
                         m_Visualizer = new VisualizationHelpers.Vector2Visualizer(m_HistorySamples);
                     else if (valueType == typeof(float))
-                        m_Visualizer = new VisualizationHelpers.ScalarVisualizer<float>(m_HistorySamples)
+                        m_Visualizer = new VisualizationHelpers.ScalarVisualizer<float>(
+                            m_HistorySamples
+                        )
                         {
                             ////TODO: pass actual min/max limits of control
                             limitMax = 1,
                             limitMin = 0
                         };
                     else if (valueType == typeof(int))
-                        m_Visualizer = new VisualizationHelpers.ScalarVisualizer<int>(m_HistorySamples)
+                        m_Visualizer = new VisualizationHelpers.ScalarVisualizer<int>(
+                            m_HistorySamples
+                        )
                         {
                             ////TODO: pass actual min/max limits of control
                             limitMax = 1,
@@ -206,8 +220,11 @@ namespace UnityEngine.InputSystem.Samples
                         limitsY = new Vector2(0, 5) // Will expand upward automatically
                     };
                     m_Visualizer = visualizer;
-                    visualizer.AddTimeline("Events", Color.green,
-                        VisualizationHelpers.TimelineVisualizer.PlotType.BarChart);
+                    visualizer.AddTimeline(
+                        "Events",
+                        Color.green,
+                        VisualizationHelpers.TimelineVisualizer.PlotType.BarChart
+                    );
                     break;
                 }
 
@@ -222,8 +239,11 @@ namespace UnityEngine.InputSystem.Samples
                         limitsY = new Vector2(0, 6)
                     };
                     m_Visualizer = visualizer;
-                    visualizer.AddTimeline("MaxLag", Color.red,
-                        VisualizationHelpers.TimelineVisualizer.PlotType.BarChart);
+                    visualizer.AddTimeline(
+                        "MaxLag",
+                        Color.red,
+                        VisualizationHelpers.TimelineVisualizer.PlotType.BarChart
+                    );
                     break;
                 }
 
@@ -238,8 +258,11 @@ namespace UnityEngine.InputSystem.Samples
                         limitsY = new Vector2(0, 64)
                     };
                     m_Visualizer = visualizer;
-                    visualizer.AddTimeline("Bytes", Color.red,
-                        VisualizationHelpers.TimelineVisualizer.PlotType.BarChart);
+                    visualizer.AddTimeline(
+                        "Bytes",
+                        Color.red,
+                        VisualizationHelpers.TimelineVisualizer.PlotType.BarChart
+                    );
                     break;
                 }
 
@@ -262,8 +285,11 @@ namespace UnityEngine.InputSystem.Samples
             for (var i = 0; i < s_EnabledInstances.Count; ++i)
             {
                 var component = s_EnabledInstances[i];
-                if (change == InputDeviceChange.Removed && component.m_Control != null &&
-                    component.m_Control.device == device)
+                if (
+                    change == InputDeviceChange.Removed
+                    && component.m_Control != null
+                    && component.m_Control.device == device
+                )
                     component.ResolveControl();
                 else if (change == InputDeviceChange.Added)
                     component.ResolveControl();
@@ -315,8 +341,7 @@ namespace UnityEngine.InputSystem.Samples
                     ref var valueRef = ref visualizer.GetOrCreateSample(0, frame);
                     var value = valueRef.ToInt32() + 1;
                     valueRef = value;
-                    visualizer.limitsY =
-                        new Vector2(0, Mathf.Max(value, visualizer.limitsY.y));
+                    visualizer.limitsY = new Vector2(0, Mathf.Max(value, visualizer.limitsY.y));
                     break;
                 }
 
@@ -343,8 +368,7 @@ namespace UnityEngine.InputSystem.Samples
                     ref var valueRef = ref visualizer.GetOrCreateSample(0, frame);
                     var value = valueRef.ToInt32() + eventPtr.sizeInBytes;
                     valueRef = value;
-                    visualizer.limitsY =
-                        new Vector2(0, Mathf.Max(value, visualizer.limitsY.y));
+                    visualizer.limitsY = new Vector2(0, Mathf.Max(value, visualizer.limitsY.y));
                     break;
                 }
 
