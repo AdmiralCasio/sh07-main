@@ -22,8 +22,7 @@ public class GameScript : MonoBehaviour
     public GameObject BuildingText;
     public TMP_Text title;
     public TMP_Text info;
-    
-    Vector3 origin;
+    public Vector3 origin { get; private set; }
     Vector2 originPreConvert;
 
     [SerializeField]
@@ -132,14 +131,7 @@ public class GameScript : MonoBehaviour
             && !LocationValidator.LookingAtLocation(location, curr, origin)
         )
         {
-            // toggle game object states
-            BuildingText.gameObject.SetActive(false);
-            info.gameObject.SetActive(false);
-            title.gameObject.SetActive(false);
-
-            // set text items to correct values
-            title.text = curr.name;
-            info.text = curr.information;
+            HideLocationInformation();
 
             // on screen debug
             debugText[0].GetComponent<TMP_Text>().text = "At Location: true";
@@ -151,28 +143,7 @@ public class GameScript : MonoBehaviour
         // check if user is both in and looking at location
         if (LocationValidator.LookingAtLocation(location, curr, origin))
         {
-            // move overlay to be in front of camera
-            if (
-                Math.Abs(overlayLocation.y - cam.transform.position.y) >= 10
-                || overlayLocation.y - cam.transform.position.y < 0
-            )
-            {
-                overlayLocation = new Vector3(
-                    overlayLocation.x,
-                    cam.transform.position.y,
-                    overlayLocation.z
-                );
-            }
-            BuildingText.transform.position = overlayLocation;
-
-            // toggle game object states
-            BuildingText.gameObject.SetActive(true);
-            info.gameObject.SetActive(true);
-            title.gameObject.SetActive(true);
-
-            // set text items to correct values
-            title.text = curr.name;
-            info.text = curr.information;
+            ShowLocationInformation(overlayLocation, curr);
 
             // on screen debug
             debugText[0].GetComponent<TMP_Text>().text = "At Location: true";
@@ -188,9 +159,7 @@ public class GameScript : MonoBehaviour
         if (!LocationValidator.AtLocation(location, curr, origin))
         {
             // toggle game object states
-            BuildingText.gameObject.SetActive(false);
-            info.gameObject.SetActive(false);
-            title.gameObject.SetActive(false);
+            HideLocationInformation();
 
             // on screen debug
             debugText[0].GetComponent<TMP_Text>().text = "At Location: false";
@@ -207,6 +176,52 @@ public class GameScript : MonoBehaviour
                 InsideLocationOverlay.enabled = true;
             }
         }
+
+        int locationCheckIndex = 0;
+        foreach (Location loc in LocationHandler.locations)
+        {
+            if (locationCheckIndex == LocationHandler.LocationIndex)
+                break;
+            if (LocationValidator.LookingAtLocation(Player.GetUserLocation(), loc, origin))
+            {
+                var displayLocation = BoundaryBoxes.ConvertToUnityCartesian(loc.centre, origin);
+                ShowLocationInformation(displayLocation, loc);
+                break;
+            }
+            locationCheckIndex++;
+        }
+    }
+
+    private void HideLocationInformation()
+    {
+        BuildingText.gameObject.SetActive(false);
+        info.enabled = false;
+        title.enabled = false;
+    }
+
+    private void ShowLocationInformation(Vector3 overlayLocation, Location loc)
+    {
+        if (
+            Math.Abs(overlayLocation.y - cam.transform.position.y) >= 10
+            || overlayLocation.y - cam.transform.position.y < 0
+        )
+        {
+            overlayLocation = new Vector3(
+                overlayLocation.x,
+                cam.transform.position.y,
+                overlayLocation.z
+            );
+        }
+        BuildingText.transform.position = overlayLocation;
+
+        // toggle game object states
+        BuildingText.gameObject.SetActive(true);
+        info.enabled = true;
+        title.enabled = true;
+
+        // set text items to correct values
+        title.text = loc.name;
+        info.text = loc.information;
     }
 
     public void Next()
