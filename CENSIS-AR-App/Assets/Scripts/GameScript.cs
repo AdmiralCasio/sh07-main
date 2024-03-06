@@ -22,8 +22,7 @@ public class GameScript : MonoBehaviour
     public GameObject BuildingText;
     public TMP_Text title;
     public TMP_Text info;
-    
-    Vector3 origin;
+    public Vector3 origin { get; private set; }
     Vector2 originPreConvert;
     Vector3 defaultInfoTitleScale;
     Vector3 defaultBuildingTextScale;
@@ -134,14 +133,8 @@ public class GameScript : MonoBehaviour
             && !LocationValidator.LookingAtLocation(location, curr, origin)
         )
         {
-            DeactivateText();
+            HideLocationInformation();
 
-            // set text items to correct values
-            title.text = curr.name;
-            info.text = curr.information;
-            title.transform.localScale = defaultInfoTitleScale;
-            info.transform.localScale = defaultInfoTitleScale;
-            BuildingText.transform.localScale = defaultBuildingTextScale;
             // on screen debug
             debugText[0].GetComponent<TMP_Text>().text = "At Location: true";
             debugText[1].GetComponent<TMP_Text>().text = "Looking at Location : false";
@@ -152,19 +145,6 @@ public class GameScript : MonoBehaviour
         // check if user is both in and looking at location
         if (LocationValidator.LookingAtLocation(location, curr, origin))
         {
-            // move overlay to be in front of camera
-            if (
-                Math.Abs(overlayLocation.y - cam.transform.position.y) >= 10
-                || overlayLocation.y - cam.transform.position.y < 0
-            )
-            {
-                overlayLocation = new Vector3(
-                    overlayLocation.x,
-                    cam.transform.position.y,
-                    overlayLocation.z
-                );
-            }
-            BuildingText.transform.position = overlayLocation;
             if (!BuildingText.gameObject.activeSelf)
             {
                 title.transform.LookAt(BoundaryBoxes.ConvertToUnityCartesian(location,origin));
@@ -174,11 +154,8 @@ public class GameScript : MonoBehaviour
                 info.transform.forward = -info.transform.forward;
                 ScaleText(new Vector3(scale,scale,1));
             }
-            ActivateText();
-
-            // set text items to correct values
-            title.text = curr.name;
-            info.text = curr.information;
+            
+            ShowLocationInformation(overlayLocation, curr);
 
             // on screen debug
             debugText[0].GetComponent<TMP_Text>().text = "At Location: true";
@@ -193,7 +170,10 @@ public class GameScript : MonoBehaviour
         // check if user is not in the location
         if (!LocationValidator.AtLocation(location, curr, origin))
         {
-            DeactivateText();
+            // toggle game object states
+            HideLocationInformation();
+
+            // on screen debug
             debugText[0].GetComponent<TMP_Text>().text = "At Location: false";
             debugText[1].GetComponent<TMP_Text>().text = "Looking at Location : false";
             Debug.Log($"Game Script: Not at {curr.name}");
@@ -208,6 +188,55 @@ public class GameScript : MonoBehaviour
                 InsideLocationOverlay.enabled = true;
             }
         }
+
+        int locationCheckIndex = 0;
+        foreach (Location loc in LocationHandler.locations)
+        {
+            if (locationCheckIndex == LocationHandler.LocationIndex)
+                break;
+            if (LocationValidator.LookingAtLocation(Player.GetUserLocation(), loc, origin))
+            {
+                var displayLocation = BoundaryBoxes.ConvertToUnityCartesian(loc.centre, origin);
+                ShowLocationInformation(displayLocation, loc);
+                break;
+            }
+            locationCheckIndex++;
+        }
+    }
+
+    private void HideLocationInformation()
+    {
+        BuildingText.gameObject.SetActive(false);
+        info.enabled = false;
+        title.enabled = false;
+        title.transform.localScale = defaultInfoTitleScale;
+        info.transform.localScale = defaultInfoTitleScale;
+        BuildingText.transform.localScale = defaultBuildingTextScale
+    }
+
+    private void ShowLocationInformation(Vector3 overlayLocation, Location loc)
+    {
+        if (
+            Math.Abs(overlayLocation.y - cam.transform.position.y) >= 10
+            || overlayLocation.y - cam.transform.position.y < 0
+        )
+        {
+            overlayLocation = new Vector3(
+                overlayLocation.x,
+                cam.transform.position.y,
+                overlayLocation.z
+            );
+        }
+        BuildingText.transform.position = overlayLocation;
+
+        // toggle game object states
+        BuildingText.gameObject.SetActive(true);
+        info.enabled = true;
+        title.enabled = true;
+
+        // set text items to correct values
+        title.text = loc.name;
+        info.text = loc.information;
     }
 
     public void Next()
@@ -225,20 +254,6 @@ public class GameScript : MonoBehaviour
             nextButton.enabled = false;
             showClue.enabled = true;
         }
-    }
-
-    private void DeactivateText()
-    {
-        BuildingText.gameObject.SetActive(false);
-        info.gameObject.SetActive(false);
-        title.gameObject.SetActive(false);
-    }
-
-    private void ActivateText()
-    {
-        BuildingText.gameObject.SetActive(true);
-        info.gameObject.SetActive(true);
-        title.gameObject.SetActive(true);
     }
 
     private void ScaleText(Vector3 scale)
