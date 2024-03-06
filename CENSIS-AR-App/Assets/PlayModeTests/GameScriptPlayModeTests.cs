@@ -371,6 +371,57 @@ public class GameScriptPlayModeTests
         Assert.IsFalse(gameScript.title.enabled);
     }
 
+    [UnityTest]
+    public IEnumerator ShowInsidePopup_TooCloseToBuilding_PopupVisible()
+    {
+        #region
+        editorLocation.SetPositionAndRotation(
+            Conversions
+                .GeoToWorldPosition(
+                    new Vector2d(LocationHandler.GetCurrLocation().centre.x,LocationHandler.GetCurrLocation().centre.y),
+                    map.CenterMercator,
+                    map.WorldRelativeScale
+                )
+                .ToVector3xz(),
+            Quaternion.identity
+        );
+        var lp = (TransformLocationProvider)LocationProviderFactory.Instance.DefaultLocationProvider;
+        lp.TargetTransform = editorLocation;
+        lp.SendLocationEvent();
+        yield return null;
+
+        #endregion
+
+        Assert.IsNotNull(GameObject.Find("InsideLocationOverlay"));
+        Assert.IsTrue(GameObject.Find("InsideLocationOverlay").GetComponent<Canvas>().enabled);
+        yield return null;
+    }
+    [UnityTest]
+    public IEnumerator ShowInsidePopup_NotTooCloseToBuilding_PopupNotVisible()
+    {
+        #region
+        editorLocation.SetPositionAndRotation(
+            Conversions
+                .GeoToWorldPosition(
+                    new Vector2d(LocationHandler.GetCurrLocation().outer[0].points[0].x,LocationHandler.GetCurrLocation().outer[0].points[0].y),
+                    map.CenterMercator,
+                    map.WorldRelativeScale
+                )
+                .ToVector3xz(),
+            Quaternion.identity
+        );
+        var lp = (TransformLocationProvider)LocationProviderFactory.Instance.DefaultLocationProvider;
+        lp.TargetTransform = editorLocation;
+        lp.SendLocationEvent();
+        yield return null;
+
+        #endregion
+
+        Assert.IsNotNull(GameObject.Find("InsideLocationOverlay"));
+        Assert.IsFalse(GameObject.Find("InsideLocationOverlay").GetComponent<Canvas>().enabled);
+        yield return null;
+    }
+
     [UnityTearDown]
     public IEnumerator TearDown()
     {

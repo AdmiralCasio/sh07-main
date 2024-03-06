@@ -30,6 +30,7 @@ public class GameScript : MonoBehaviour
 
     Canvas clueOverlay;
     Canvas locationFoundOverlay;
+    Canvas InsideLocationOverlay;
     Canvas gameCompleteOverlay;
     Canvas nextButton;
     Canvas showClue;
@@ -69,6 +70,7 @@ public class GameScript : MonoBehaviour
 
         clueOverlay = GameObject.Find("ClueOverlay").GetComponent<Canvas>();
         locationFoundOverlay = GameObject.Find("LocationFoundOverlay").GetComponent<Canvas>();
+        InsideLocationOverlay = GameObject.Find("InsideLocationOverlay").GetComponent<Canvas>();
         gameCompleteOverlay = GameObject.Find("GameCompleteOverlay").GetComponent<Canvas>();
         nextButton = GameObject.Find("Next").GetComponent<Canvas>();
         showClue = GameObject.Find("ShowClue").GetComponent<Canvas>();
@@ -136,6 +138,7 @@ public class GameScript : MonoBehaviour
             debugText[1].GetComponent<TMP_Text>().text = "Looking at Location : false";
             Debug.Log($"Game script: At {curr.name}");
             locationFoundOverlay.enabled = true;
+            InsideLocationOverlay.enabled = false;
         }
         // check if user is both in and looking at location
         if (LocationValidator.LookingAtLocation(location, curr, origin))
@@ -149,6 +152,8 @@ public class GameScript : MonoBehaviour
             Debug.Log($"Game script: Looking At {curr.name}");
             LocationFound();
             locationFoundOverlay.enabled = false;
+            InsideLocationOverlay.enabled = false;
+
         }
         // check if user is not in the location
         if (!LocationValidator.AtLocation(location, curr, origin))
@@ -161,6 +166,15 @@ public class GameScript : MonoBehaviour
             debugText[1].GetComponent<TMP_Text>().text = "Looking at Location : false";
             Debug.Log($"Game Script: Not at {curr.name}");
             locationFoundOverlay.enabled = false;
+            InsideLocationOverlay.enabled = false;
+        }
+
+        foreach (var inner in curr.inner)
+        {
+            if (LocationValidator.InBox(location, inner.points,origin))
+            {
+                InsideLocationOverlay.enabled = true;
+            }
         }
 
         int locationCheckIndex = 0;
