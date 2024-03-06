@@ -202,7 +202,7 @@ public class GameScript : MonoBehaviour
 
         foreach (var inner in curr.inner)
         {
-            if (LocationValidator.InBox(location, inner.points))
+            if (LocationValidator.InBox(location, inner.points,origin))
             {
                 InsideLocationOverlay.enabled = true;
             }
