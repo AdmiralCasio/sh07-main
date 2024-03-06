@@ -89,8 +89,8 @@ public class WeatherManager : MonoBehaviour
             var min = Format(response["main"]["temp_min"]);
             Debug.Log("Weather:" + temp + humidity + max + min);
 
-            weather[0].text = $"{temp}°";
-            weather[1].text = $"Humidity: {humidity}%\nMax: {max}°\nMin: {min}°";
+            weather[0].text = $"{temp}Â°";
+            weather[1].text = $"Humidity: {humidity}%\nMax: {max}Â°\nMin: {min}Â°";
         }
     }
 
