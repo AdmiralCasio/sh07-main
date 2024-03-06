@@ -25,6 +25,8 @@ public class GameScript : MonoBehaviour
     
     Vector3 origin;
     Vector2 originPreConvert;
+    Vector3 defaultInfoTitleScale;
+    Vector3 defaultBuildingTextScale;
 
     [SerializeField]
     GameObject[] debugText;
@@ -65,6 +67,8 @@ public class GameScript : MonoBehaviour
         BuildingText.gameObject.SetActive(false);
         title.gameObject.SetActive(false);  
         info.gameObject.SetActive(false);
+        defaultInfoTitleScale = title.transform.localScale;
+        defaultBuildingTextScale = BuildingText.transform.localScale;
 
         // get locations from file
         LocationHandler.locations = FileHandler.ReadFromJSON<Location>(filename);
@@ -117,30 +121,27 @@ public class GameScript : MonoBehaviour
 
         String strOriginPreConvert = originPreConvert.ToString("N8");
         String strOriginConverted = origin.ToString("N8");
-        
-        debugText[2].GetComponent<TMP_Text>().text = "dist from location:" +
-                                                     Math.Abs(cam.transform.position.x - overlayLocation.x) + " " + 
-                                                     Math.Abs(cam.transform.position.y - overlayLocation.y) + " " +
-                                                     Math.Abs(cam.transform.position.z - overlayLocation.z) + " " ;
+
+        float distanceFromOverlay = Vector3.Distance(cam.transform.position, overlayLocation);
+        debugText[2].GetComponent<TMP_Text>().text = "dist from location:" + distanceFromOverlay;
         debugText[3].GetComponent<TMP_Text>().text = "overlay is at : "+ BoundaryBoxes.ConvertToUnityCartesian(curr.centre) + " | Normalised : " + overlayLocation;
         debugText[4].GetComponent<TMP_Text>().text = "Location accuracy : "+ LocationProviderFactory.Instance.DefaultLocationProvider.CurrentLocation.Accuracy;
         debugText[5].GetComponent<TMP_Text>().text = "origin is : " + strOriginPreConvert + "  |  Converted to : " + strOriginConverted; 
-        
+        float scale = distanceFromOverlay / 5;
         // check if user is within location but not looking at the right direction
         if (
             LocationValidator.AtLocation(location, curr,origin)
             && !LocationValidator.LookingAtLocation(location, curr, origin)
         )
         {
-            // toggle game object states
-            BuildingText.gameObject.SetActive(false);
-            info.gameObject.SetActive(false);
-            title.gameObject.SetActive(false);
+            DeactivateText();
 
             // set text items to correct values
             title.text = curr.name;
             info.text = curr.information;
-
+            title.transform.localScale = defaultInfoTitleScale;
+            info.transform.localScale = defaultInfoTitleScale;
+            BuildingText.transform.localScale = defaultBuildingTextScale;
             // on screen debug
             debugText[0].GetComponent<TMP_Text>().text = "At Location: true";
             debugText[1].GetComponent<TMP_Text>().text = "Looking at Location : false";
@@ -164,11 +165,16 @@ public class GameScript : MonoBehaviour
                 );
             }
             BuildingText.transform.position = overlayLocation;
+            if (!BuildingText.gameObject.activeSelf)
+            {
+                title.transform.LookAt(BoundaryBoxes.ConvertToUnityCartesian(location,origin));
+                info.transform.LookAt(BoundaryBoxes.ConvertToUnityCartesian(location,origin));
 
-            // toggle game object states
-            BuildingText.gameObject.SetActive(true);
-            info.gameObject.SetActive(true);
-            title.gameObject.SetActive(true);
+                title.transform.forward = -title.transform.forward;
+                info.transform.forward = -info.transform.forward;
+                ScaleText(new Vector3(scale,scale,1));
+            }
+            ActivateText();
 
             // set text items to correct values
             title.text = curr.name;
@@ -187,12 +193,7 @@ public class GameScript : MonoBehaviour
         // check if user is not in the location
         if (!LocationValidator.AtLocation(location, curr, origin))
         {
-            // toggle game object states
-            BuildingText.gameObject.SetActive(false);
-            info.gameObject.SetActive(false);
-            title.gameObject.SetActive(false);
-
-            // on screen debug
+            DeactivateText();
             debugText[0].GetComponent<TMP_Text>().text = "At Location: false";
             debugText[1].GetComponent<TMP_Text>().text = "Looking at Location : false";
             Debug.Log($"Game Script: Not at {curr.name}");
@@ -224,6 +225,27 @@ public class GameScript : MonoBehaviour
             nextButton.enabled = false;
             showClue.enabled = true;
         }
+    }
+
+    private void DeactivateText()
+    {
+        BuildingText.gameObject.SetActive(false);
+        info.gameObject.SetActive(false);
+        title.gameObject.SetActive(false);
+    }
+
+    private void ActivateText()
+    {
+        BuildingText.gameObject.SetActive(true);
+        info.gameObject.SetActive(true);
+        title.gameObject.SetActive(true);
+    }
+
+    private void ScaleText(Vector3 scale)
+    {
+        BuildingText.transform.localScale.Scale(scale);
+        info.gameObject.transform.localScale.Scale(scale);
+        title.gameObject.transform.localScale.Scale(scale);
     }
 
     private void ShowClue()
