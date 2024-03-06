@@ -1,7 +1,7 @@
 using System;
-using UnityEngine.InputSystem.Utilities;
 using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine.InputSystem.LowLevel;
+using UnityEngine.InputSystem.Utilities;
 
 ////REVIEW: for vector2 visualizers of sticks, it could be useful to also visualize deadzones and raw values
 
@@ -9,7 +9,12 @@ namespace UnityEngine.InputSystem.Samples
 {
     internal static class VisualizationHelpers
     {
-        public enum Axis { X, Y, Z }
+        public enum Axis
+        {
+            X,
+            Y,
+            Z
+        }
 
         public abstract class Visualizer
         {
@@ -38,7 +43,8 @@ namespace UnityEngine.InputSystem.Samples
                     if (!(value is TValue val))
                         throw new ArgumentException(
                             $"Expecting value of type '{typeof(TValue).Name}' but value of type '{value?.GetType().Name}' instead",
-                            nameof(value));
+                            nameof(value)
+                        );
                     v = val;
                 }
 
@@ -57,9 +63,7 @@ namespace UnityEngine.InputSystem.Samples
             public TValue max;
 
             public ScalarVisualizer(int numSamples = 10)
-                : base(numSamples)
-            {
-            }
+                : base(numSamples) { }
 
             public override void OnDraw(Rect rect)
             {
@@ -149,7 +153,11 @@ namespace UnityEngine.InputSystem.Samples
                 DrawRectangle(rect, new Color(1, 1, 1, 0.1f));
 
                 var name = m_CurrentDevice != null ? m_CurrentDevice.name : "null";
-                DrawText(name, new Vector2(rect.xMin + 4, (rect.yMin + rect.yMax) / 2.0f), ValueTextStyle);
+                DrawText(
+                    name,
+                    new Vector2(rect.xMin + 4, (rect.yMin + rect.yMax) / 2.0f),
+                    ValueTextStyle
+                );
             }
 
             public override void AddSample(object value, double time)
@@ -165,7 +173,8 @@ namespace UnityEngine.InputSystem.Samples
                     m_CurrentDevice = Pointer.current;
                 else
                     throw new ArgumentException(
-                        $"Expected device type that implements .current, but got '{device.name}' (deviceId: {device.deviceId}) instead ");
+                        $"Expected device type that implements .current, but got '{device.name}' (deviceId: {device.deviceId}) instead "
+                    );
             }
         }
 
@@ -183,9 +192,7 @@ namespace UnityEngine.InputSystem.Samples
             private GUIContent limitsYText;
 
             public Vector2Visualizer(int numSamples = 10)
-                : base(numSamples)
-            {
-            }
+                : base(numSamples) { }
 
             public override void AddSample(object value, double time)
             {
@@ -297,8 +304,7 @@ namespace UnityEngine.InputSystem.Samples
                 var y = Mathf.Abs(value.y) / limits.y * Mathf.Sign(value.y) * -1; // GUI Y is upside down.
                 var xInPixels = x * rect.width / 2;
                 var yInPixels = y * rect.height / 2;
-                return new Vector2(center.x + xInPixels,
-                    center.y + yInPixels);
+                return new Vector2(center.x + xInPixels, center.y + yInPixels);
             }
         }
 
@@ -309,6 +315,7 @@ namespace UnityEngine.InputSystem.Samples
             public bool showLimits { get; set; }
             public TimeUnit timeUnit { get; set; } = TimeUnit.Seconds;
             public GUIContent valueUnit { get; set; }
+
             ////REVIEW: should this be per timeline?
             public int timelineCount => m_Timelines != null ? m_Timelines.Length : 0;
             public int historyDepth { get; set; } = 100;
@@ -339,9 +346,10 @@ namespace UnityEngine.InputSystem.Samples
                 for (var i = 0; i < timelineCount; ++i)
                 {
                     var timeline = m_Timelines[i];
-                    var sampleCount = timeUnit == TimeUnit.Frames
-                        ? timeline.frameSamples.count
-                        : timeline.timeSamples.count;
+                    var sampleCount =
+                        timeUnit == TimeUnit.Frames
+                            ? timeline.frameSamples.count
+                            : timeline.timeSamples.count;
 
                     // Set up clip rect so that we can do stuff like render lines to samples
                     // falling outside the render rectangle and have them get clipped.
@@ -352,9 +360,10 @@ namespace UnityEngine.InputSystem.Samples
                     var color = m_Timelines[i].color;
                     for (var n = sampleCount - 1; n >= 0; --n)
                     {
-                        var sample = timeUnit == TimeUnit.Frames
-                            ? timeline.frameSamples[n].value
-                            : timeline.timeSamples[n].value;
+                        var sample =
+                            timeUnit == TimeUnit.Frames
+                                ? timeline.frameSamples[n].value
+                                : timeline.timeSamples[n].value;
 
                         ////TODO: respect limitsY
 
@@ -366,10 +375,14 @@ namespace UnityEngine.InputSystem.Samples
 
                         y /= limitsY.y;
 
-                        var deltaTime = timeUnit == TimeUnit.Frames
-                            ? timeline.frameSamples[n].frame - startFrame
-                            : timeline.timeSamples[n].time - startTime;
-                        var pos = new Vector2(deltaTime * timeUnitsPerPixel, rect.height - y * rect.height);
+                        var deltaTime =
+                            timeUnit == TimeUnit.Frames
+                                ? timeline.frameSamples[n].frame - startFrame
+                                : timeline.timeSamples[n].time - startTime;
+                        var pos = new Vector2(
+                            deltaTime * timeUnitsPerPixel,
+                            rect.height - y * rect.height
+                        );
 
                         if (plotType == PlotType.LineGraph)
                         {
@@ -383,7 +396,12 @@ namespace UnityEngine.InputSystem.Samples
                         else if (plotType == PlotType.BarChart)
                         {
                             ////TODO: make rectangles have a progressively stronger hue or saturation
-                            var barRect = new Rect(pos.x, pos.y, timeUnitsPerPixel, y * limitsY.y * rect.height);
+                            var barRect = new Rect(
+                                pos.x,
+                                pos.y,
+                                timeUnitsPerPixel,
+                                y * limitsY.y * rect.height
+                            );
                             DrawRectangle(barRect, color);
                         }
 
@@ -420,8 +438,16 @@ namespace UnityEngine.InputSystem.Samples
                     if (m_LimitsYMin == null)
                         m_LimitsYMin = new GUIContent(m_LimitsY.x.ToString());
 
-                    DrawText(m_LimitsYMax, new Vector2(rect.x + rect.width, rect.y), ValueTextStyle);
-                    DrawText(m_LimitsYMin, new Vector2(rect.x + rect.width, rect.y + rect.height), ValueTextStyle);
+                    DrawText(
+                        m_LimitsYMax,
+                        new Vector2(rect.x + rect.width, rect.y),
+                        ValueTextStyle
+                    );
+                    DrawText(
+                        m_LimitsYMin,
+                        new Vector2(rect.x + rect.width, rect.y + rect.height),
+                        ValueTextStyle
+                    );
                 }
             }
 
@@ -455,7 +481,13 @@ namespace UnityEngine.InputSystem.Samples
             public int GetTimeline(string name)
             {
                 for (var i = 0; i < timelineCount; ++i)
-                    if (string.Compare(m_Timelines[i].name.text, name, StringComparison.InvariantCultureIgnoreCase) == 0)
+                    if (
+                        string.Compare(
+                            m_Timelines[i].name.text,
+                            name,
+                            StringComparison.InvariantCultureIgnoreCase
+                        ) == 0
+                    )
                         return i;
                 return -1;
             }
@@ -463,11 +495,9 @@ namespace UnityEngine.InputSystem.Samples
             // Add a time-based sample.
             public void AddSample(int timelineIndex, PrimitiveValue value, float time)
             {
-                m_Timelines[timelineIndex].timeSamples.Append(new TimeSample
-                {
-                    value = value,
-                    time = time
-                });
+                m_Timelines[timelineIndex].timeSamples.Append(
+                    new TimeSample { value = value, time = time }
+                );
             }
 
             // Add a frame-based sample.
@@ -481,10 +511,13 @@ namespace UnityEngine.InputSystem.Samples
                     if (samples[count - 1].frame == frame)
                         return ref samples[count - 1].value;
 
-                    Debug.Assert(samples[count - 1].frame < frame, "Frame numbers must be ascending");
+                    Debug.Assert(
+                        samples[count - 1].frame < frame,
+                        "Frame numbers must be ascending"
+                    );
                 }
 
-                return ref samples.Append(new FrameSample {frame = frame}).value;
+                return ref samples.Append(new FrameSample { frame = frame }).value;
             }
 
             private float m_TotalTimeUnitsShown;
@@ -531,7 +564,9 @@ namespace UnityEngine.InputSystem.Samples
 
         public static void DrawAxis(Axis axis, Rect rect, Color color = default, float width = 1)
         {
-            Vector2 start, end, tickOffset;
+            Vector2 start,
+                end,
+                tickOffset;
             switch (axis)
             {
                 case Axis.X:
@@ -587,7 +622,12 @@ namespace UnityEngine.InputSystem.Samples
         }
 
         // Adapted from http://wiki.unity3d.com/index.php?title=DrawLine
-        public static void DrawLine(Vector2 pointA, Vector2 pointB, Color color = default, float width = 1)
+        public static void DrawLine(
+            Vector2 pointA,
+            Vector2 pointB,
+            Color color = default,
+            float width = 1
+        )
         {
             // Save the current GUI matrix, since we're going to make changes to it.
             var matrix = GUI.matrix;
@@ -610,7 +650,10 @@ namespace UnityEngine.InputSystem.Samples
             //  non-integer values for the width and length (such as sub 1 pixel widths).
             // Note that the pivot point is at +.5 from pointA.y, this is so that the width of the line
             //  is centered on the origin at pointA.
-            GUIUtility.ScaleAroundPivot(new Vector2((pointB - pointA).magnitude, width), new Vector2(pointA.x, pointA.y + 0.5f));
+            GUIUtility.ScaleAroundPivot(
+                new Vector2((pointB - pointA).magnitude, width),
+                new Vector2(pointA.x, pointA.y + 0.5f)
+            );
 
             // Set the rotation for the line.
             //  The angle was calculated with pointA as the origin.

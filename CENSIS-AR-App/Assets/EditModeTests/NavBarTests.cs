@@ -1,9 +1,9 @@
 using System.Collections;
 using NUnit.Framework;
-using UnityEngine;
-using UnityEngine.TestTools;
-using UnityEngine.InputSystem;
 using UnityEditor.SceneManagement;
+using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.TestTools;
 using UnityEngine.UI;
 
 namespace Tests
@@ -16,8 +16,6 @@ namespace Tests
             EditorSceneManager.OpenScene("Assets/Scenes/AppScene.unity");
         }
 
-     
-
         public Canvas GetCanvas(string canvas)
         {
             return GameObject.Find(canvas).GetComponent<Canvas>();
@@ -26,7 +24,9 @@ namespace Tests
         [UnityTest]
         public IEnumerator TestHomeButton()
         {
-            Button homeButton = GameObject.Find("NavbarAndTopBar/NavBar/HomeButton").GetComponent<Button>();
+            Button homeButton = GameObject
+                .Find("NavbarAndTopBar/NavBar/HomeButton")
+                .GetComponent<Button>();
             homeButton.onClick.Invoke();
 
             // check home canvas is enabled
@@ -43,7 +43,9 @@ namespace Tests
         [UnityTest]
         public IEnumerator TestCameraButton()
         {
-            Button cameraButton = GameObject.Find("NavbarAndTopBar/NavBar/CameraButton").GetComponent<Button>();
+            Button cameraButton = GameObject
+                .Find("NavbarAndTopBar/NavBar/CameraButton")
+                .GetComponent<Button>();
             cameraButton.onClick.Invoke();
 
             // check camera canvas is enabled
@@ -60,7 +62,9 @@ namespace Tests
         [UnityTest]
         public IEnumerator TestMapButton()
         {
-            Button mapButton = GameObject.Find("NavbarAndTopBar/NavBar/MapButton").GetComponent<Button>();
+            Button mapButton = GameObject
+                .Find("NavbarAndTopBar/NavBar/MapButton")
+                .GetComponent<Button>();
             mapButton.onClick.Invoke();
 
             // check map canvas is enabled
@@ -74,11 +78,12 @@ namespace Tests
             yield return null;
         }
 
-
         [UnityTest]
         public IEnumerator TestInfoButton()
         {
-            Button infoButton = GameObject.Find("NavbarAndTopBar/NavBar/InfoButton").GetComponent<Button>();
+            Button infoButton = GameObject
+                .Find("NavbarAndTopBar/NavBar/InfoButton")
+                .GetComponent<Button>();
             infoButton.onClick.Invoke();
 
             // check info canvas is enabled
@@ -92,5 +97,4 @@ namespace Tests
             yield return null;
         }
     }
-
 }

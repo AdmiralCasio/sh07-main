@@ -7,16 +7,16 @@ public class Builder
     private static void BuildAndroid()
     {
         // Set architecture in BuildSettings
-        bool success = EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Android, BuildTarget.Android);
+        bool success = EditorUserBuildSettings.SwitchActiveBuildTarget(
+            BuildTargetGroup.Android,
+            BuildTarget.Android
+        );
 
         // Setup build options (e.g. scenes, build output location)
         var options = new BuildPlayerOptions
         {
             // Change to scenes from your project
-            scenes = new[]
-            {
-                "Assets/Scenes/AppScene.unity"
-            },
+            scenes = new[] { "Assets/Scenes/AppScene.unity" },
             // Change to location the output should go
             locationPathName = "./AndroidBuilds/Build.apk",
             options = BuildOptions.CleanBuildCache | BuildOptions.StrictMode,
@@ -37,15 +37,15 @@ public class Builder
 
     private static void BuildIOS()
     {
-        bool success = EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.iOS, BuildTarget.iOS);
+        bool success = EditorUserBuildSettings.SwitchActiveBuildTarget(
+            BuildTargetGroup.iOS,
+            BuildTarget.iOS
+        );
 
         var options = new BuildPlayerOptions
         {
             // Change to scenes from your project
-            scenes = new[]
-            {
-                "Assets/Scenes/AppScene.unity"
-            },
+            scenes = new[] { "Assets/Scenes/AppScene.unity" },
             // Change to location the output should go
             locationPathName = "./IOSBuilds/Build.xcodeproj",
             options = BuildOptions.CleanBuildCache | BuildOptions.StrictMode,
@@ -69,8 +69,5 @@ public class Builder
     {
         BuildAndroid();
         BuildIOS();
-        
     }
-
-
 }
