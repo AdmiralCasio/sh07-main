@@ -41,21 +41,21 @@ public class LocationValidationTests
     public void IsAtLocation()
     {
         Vector3 playerLoc = new Vector3(55.6830365f, -4.5154432f);
-        Assert.IsTrue(LocationValidator.AtLocation(playerLoc, loc));
+        Assert.IsTrue(LocationValidator.AtLocation(playerLoc, loc, new Vector3(0,0,0)));
     }
 
     [Test]
     public void IsNotAtLocation()
     {
         Vector3 playerLoc = new Vector3(-5, -5);
-        Assert.IsFalse(LocationValidator.AtLocation(playerLoc, loc));
+        Assert.IsFalse(LocationValidator.AtLocation(playerLoc, loc, new Vector3(0,0,0)));
     }
 
     [Test]
     public void InLocation()
     {
         Vector3 playerLoc = new Vector3(55.68291f, -4.51589f);
-        Assert.IsFalse(LocationValidator.AtLocation(playerLoc, loc));
+        Assert.IsFalse(LocationValidator.AtLocation(playerLoc, loc, new Vector3(0,0,0)));
     }
 
     [Test]
