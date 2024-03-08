@@ -6,6 +6,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.TestTools;
 using UnityEngine.UI;
+using CENSIS.Runtime;
+using CENSIS.Locations;
 
 public class LocationHandlerTests
 {

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
-
+using CENSIS.Utility;
 public class BoundaryBoxTest
 {
     [Test]

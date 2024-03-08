@@ -7,7 +7,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class WeatherManager : MonoBehaviour
+namespace CENSIS.Runtime
+{
+   public class WeatherManager : MonoBehaviour
 {
     public string apiKey;
     public string currentWeatherApi;
@@ -119,4 +121,6 @@ public class WeatherManager : MonoBehaviour
             FetchWeather(lastLocation.latitude.ToString(), lastLocation.longitude.ToString())
         );
     }
+} 
 }
+

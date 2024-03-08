@@ -10,6 +10,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 using UnityEngine.UI;
+using CENSIS.Runtime;
+using Location = CENSIS.Locations.Location;
+using CENSIS.Utility;
 
 public class GameScriptPlayModeTests
 {

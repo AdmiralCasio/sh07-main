@@ -5,6 +5,8 @@ using NUnit.Framework.Internal;
 using UnityEngine;
 using UnityEngine.TestTools;
 using static UnityEngine.UI.Image;
+using CENSIS.Locations;
+using CENSIS.Utility;
 
 public class LocationValidationTests
 {

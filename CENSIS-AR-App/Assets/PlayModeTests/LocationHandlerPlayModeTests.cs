@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
+using CENSIS.Runtime;
+using Location = CENSIS.Locations.Location;
 
 public class LocationHandlerPlayModeTests
 {
