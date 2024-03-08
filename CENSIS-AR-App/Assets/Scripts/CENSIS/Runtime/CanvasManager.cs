@@ -1,8 +1,7 @@
 using System.Linq;
-using Mapbox.Map;
 using Mapbox.Unity.Map;
 using UnityEngine;
-using UnityEngine.UI;
+
 namespace CENSIS.Runtime
 {
     public class CanvasManager : MonoBehaviour

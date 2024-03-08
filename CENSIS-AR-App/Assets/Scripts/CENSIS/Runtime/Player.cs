@@ -1,8 +1,6 @@
-using System.Collections;
 using Mapbox.Unity.Location;
 using Mapbox.Utils;
 using UnityEngine;
-using UnityEngine.Android;
 
 namespace CENSIS.Runtime
 {

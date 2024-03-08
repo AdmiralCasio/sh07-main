@@ -1,11 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEditor.SceneManagement;
-using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.TestTools;
-using UnityEngine.UI;
 using CENSIS.Runtime;
 using CENSIS.Locations;
 

@@ -5,7 +5,6 @@ using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using CENSIS.Locations;
 
-
 namespace CENSIS.Runtime {
     
     [Serializable]

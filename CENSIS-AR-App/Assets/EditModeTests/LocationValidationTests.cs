@@ -1,14 +1,11 @@
 using System.Collections;
-using System.Collections.Generic;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 using UnityEngine;
 using UnityEngine.TestTools;
-using static UnityEngine.UI.Image;
 using CENSIS.Locations;
 using CENSIS.Utility;
 
-namespace Tests
+namespace EditModeTests
 {
     public class LocationValidationTests
     {

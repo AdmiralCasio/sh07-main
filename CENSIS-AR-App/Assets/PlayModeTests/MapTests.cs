@@ -1,11 +1,5 @@
 using System.Collections;
-using System.Security.Policy;
-using Mapbox.Examples;
-using Mapbox.Map;
-using Mapbox.Unity.Location;
 using Mapbox.Unity.Map;
-using Mapbox.Utils;
-using Moq;
 using NUnit.Framework;
 using UnityEditor;
 using UnityEngine;
