@@ -28,7 +28,10 @@ namespace UnityEngine.InputSystem.Samples
         {
             if (m_Visualization != Visualization.Value || m_Action == null || m_Visualizer == null)
                 return;
-            if (InputSystem.settings.updateMode != InputSettings.UpdateMode.ProcessEventsInFixedUpdate)
+            if (
+                InputSystem.settings.updateMode
+                != InputSettings.UpdateMode.ProcessEventsInFixedUpdate
+            )
                 return;
             RecordValue(Time.fixedTime);
         }
@@ -37,7 +40,10 @@ namespace UnityEngine.InputSystem.Samples
         {
             if (m_Visualization != Visualization.Value || m_Action == null || m_Visualizer == null)
                 return;
-            if (InputSystem.settings.updateMode != InputSettings.UpdateMode.ProcessEventsInDynamicUpdate)
+            if (
+                InputSystem.settings.updateMode
+                != InputSettings.UpdateMode.ProcessEventsInDynamicUpdate
+            )
                 return;
             RecordValue(Time.time);
         }
@@ -86,8 +92,11 @@ namespace UnityEngine.InputSystem.Samples
             base.OnGUI();
 
             if (m_ShowControlName && m_ActiveControlName != null)
-                VisualizationHelpers.DrawText(m_ActiveControlName, new Vector2(m_Rect.x, m_Rect.yMax),
-                    VisualizationHelpers.ValueTextStyle);
+                VisualizationHelpers.DrawText(
+                    m_ActiveControlName,
+                    new Vector2(m_Rect.x, m_Rect.yMax),
+                    VisualizationHelpers.ValueTextStyle
+                );
         }
 
         private void RecordValue(double time)
@@ -125,16 +134,30 @@ namespace UnityEngine.InputSystem.Samples
             {
                 var slashIndex = m_ActionName.IndexOf('/');
                 var mapName = slashIndex != -1 ? m_ActionName.Substring(0, slashIndex) : null;
-                var actionName = slashIndex != -1 ? m_ActionName.Substring(slashIndex + 1) : m_ActionName;
+                var actionName =
+                    slashIndex != -1 ? m_ActionName.Substring(slashIndex + 1) : m_ActionName;
 
                 var enabledActions = InputSystem.ListEnabledActions();
                 foreach (var action in enabledActions)
                 {
-                    if (string.Compare(actionName, action.name, StringComparison.InvariantCultureIgnoreCase) != 0)
+                    if (
+                        string.Compare(
+                            actionName,
+                            action.name,
+                            StringComparison.InvariantCultureIgnoreCase
+                        ) != 0
+                    )
                         continue;
 
-                    if (mapName != null && action.actionMap != null && string.Compare(mapName, action.actionMap.name,
-                        StringComparison.InvariantCultureIgnoreCase) != 0)
+                    if (
+                        mapName != null
+                        && action.actionMap != null
+                        && string.Compare(
+                            mapName,
+                            action.actionMap.name,
+                            StringComparison.InvariantCultureIgnoreCase
+                        ) != 0
+                    )
                         continue;
 
                     m_Action = action;
@@ -182,15 +205,17 @@ namespace UnityEngine.InputSystem.Samples
                                 {
                                     var valueType = layout.GetValueType();
                                     if (valueType == typeof(float))
-                                        m_Visualizer = new VisualizationHelpers.ScalarVisualizer<float>
-                                        {
-                                            limitMax = 1
-                                        };
+                                        m_Visualizer =
+                                            new VisualizationHelpers.ScalarVisualizer<float>
+                                            {
+                                                limitMax = 1
+                                            };
                                     else if (valueType == typeof(int))
-                                        m_Visualizer = new VisualizationHelpers.ScalarVisualizer<int>
-                                        {
-                                            limitMax = 1
-                                        };
+                                        m_Visualizer =
+                                            new VisualizationHelpers.ScalarVisualizer<int>
+                                            {
+                                                limitMax = 1
+                                            };
                                     else if (valueType == typeof(Vector2))
                                         m_Visualizer = new VisualizationHelpers.Vector2Visualizer();
                                 }
@@ -209,9 +234,7 @@ namespace UnityEngine.InputSystem.Samples
             }
         }
 
-        private void OnActionDisabled()
-        {
-        }
+        private void OnActionDisabled() { }
 
         private void OnActionTriggered(InputAction.CallbackContext context)
         {
@@ -223,7 +246,10 @@ namespace UnityEngine.InputSystem.Samples
             {
                 timelineName = interaction.GetType().Name;
                 if (timelineName.EndsWith("Interaction"))
-                    timelineName = timelineName.Substring(0, timelineName.Length - "Interaction".Length);
+                    timelineName = timelineName.Substring(
+                        0,
+                        timelineName.Length - "Interaction".Length
+                    );
             }
 
             var visualizer = (VisualizationHelpers.TimelineVisualizer)m_Visualizer;
@@ -292,14 +318,26 @@ namespace UnityEngine.InputSystem.Samples
             }
         }
 
-        [SerializeField] private Visualization m_Visualization;
-        [SerializeField] private InputActionReference m_ActionReference;
-        [SerializeField] private string m_ActionName;
-        [SerializeField] private bool m_ShowControlName;
+        [SerializeField]
+        private Visualization m_Visualization;
 
-        [NonSerialized] private InputAction m_Action;
-        [NonSerialized] private InputControl m_ActiveControl;
-        [NonSerialized] private GUIContent m_ActiveControlName;
+        [SerializeField]
+        private InputActionReference m_ActionReference;
+
+        [SerializeField]
+        private string m_ActionName;
+
+        [SerializeField]
+        private bool m_ShowControlName;
+
+        [NonSerialized]
+        private InputAction m_Action;
+
+        [NonSerialized]
+        private InputControl m_ActiveControl;
+
+        [NonSerialized]
+        private GUIContent m_ActiveControlName;
 
         private static List<InputActionVisualizer> s_EnabledInstances;
         private static readonly Color[] s_InteractionColors =

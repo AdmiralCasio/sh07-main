@@ -8,7 +8,9 @@ public class LocationVisibility
     public static bool IsVisible(Vector3 target, Camera camera)
     {
         Vector3 screenPoint = camera.WorldToViewportPoint(target);
-        return screenPoint.x is > 0 and < 1 && screenPoint.y is > 0 and < 1 && screenPoint.z > 0;
+        return screenPoint.x is > 0 and < 1
+            && screenPoint.y is > 0 and < 1 
+            && screenPoint.z > 0;
     }
 
     public static int[] GetColour(Vector3 target, Camera camera)

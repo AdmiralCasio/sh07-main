@@ -1,34 +1,29 @@
 using System.Collections;
+using Mapbox.Unity.Location;
+using Mapbox.Utils;
 using UnityEngine;
 using UnityEngine.Android;
 
 public class Player : MonoBehaviour
-{ 
-    private void Awake()
+{
+    public static Vector2 GetUserLocation()
     {
-        Permission.RequestUserPermission(Permission.FineLocation);
-        Input.location.Start();
-        Input.compass.enabled = true;
-
-        VerifyLocation();
+        return Vector2dToVector2(
+            LocationProviderFactory
+                .Instance
+                .DefaultLocationProvider
+                .CurrentLocation
+                .LatitudeLongitude
+        );
     }
 
-    IEnumerator VerifyLocation()
+    public static float GetUserDirection()
     {
-        if (!Input.location.isEnabledByUser)
-        {
-            Debug.Log("Location not enabled on decies or app doesn  not have permission to access location");
-            yield break;
-        }
+        return LocationProviderFactory.Instance.DefaultLocationProvider.CurrentLocation.UserHeading;
     }
 
-    static public Vector2 getUserLocation()
+    private static Vector2 Vector2dToVector2(Vector2d vector2D)
     {
-        return new Vector2(Input.location.lastData.latitude, Input.location.lastData.longitude);
+        return new Vector2((float)vector2D.x, (float)vector2D.y);
     }
-    static public float getUserDirection()
-    {
-        return Input.compass.trueHeading;
-    }
-
 }

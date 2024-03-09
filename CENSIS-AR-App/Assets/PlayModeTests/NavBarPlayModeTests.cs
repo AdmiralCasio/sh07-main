@@ -14,12 +14,10 @@ public class NavBarPlayModeTests
     {
         SceneManager.LoadScene("Assets/Scenes/AppScene.unity");
         yield return null;
-        
     }
 
     [UnityTest]
     public IEnumerator TestPageOnStartup()
-
     {
         // check home canvas is enabled
         Assert.IsTrue(GameObject.Find("HomeCanvas").GetComponent<Canvas>().enabled);
