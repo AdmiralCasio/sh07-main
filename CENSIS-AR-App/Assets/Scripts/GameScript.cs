@@ -60,7 +60,9 @@ public class GameScript : MonoBehaviour
         nextButton = GameObject.Find("Next").GetComponent<Canvas>();
         showClue = GameObject.Find("ShowClue").GetComponent<Canvas>();
         startUpOverlay = GameObject.Find("StartOverlay").GetComponent<Canvas>();
-        locationUnavailableOverlay = GameObject.Find("LocationUnavailableOverlay").GetComponent<Canvas>();
+        locationUnavailableOverlay = GameObject
+            .Find("LocationUnavailableOverlay")
+            .GetComponent<Canvas>();
         // check if save file exists to check if user has opened the app before
         if (File.Exists(Path.Combine(Application.persistentDataPath, "PlayerData.dat")))
         {
@@ -93,9 +95,9 @@ public class GameScript : MonoBehaviour
 
     void Update()
     {
-        // #if NOT_UNITY_EDITOR
-        // check for location
-        if(!Player.CheckUserLocation() && startUpOverlay.enabled == false)
+#if UNITY_EDITOR
+#else
+        if (!Player.CheckUserLocation() && startUpOverlay.enabled == false)
         {
             locationUnavailableOverlay.enabled = true;
         }
@@ -103,7 +105,7 @@ public class GameScript : MonoBehaviour
         {
             locationUnavailableOverlay.enabled = false;
         }
-        // #endif
+#endif
         // define user, current building, and overlay locations
         var location = Player.GetUserLocation();
         var curr = LocationHandler.GetCurrLocation();
