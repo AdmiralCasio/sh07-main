@@ -75,7 +75,7 @@ public class BoundaryBoxTest
             new Vector2(55.8740145f, -4.2920211f)
         };
         Vector2 examplePosition = new Vector2(55.87393f, -4.29185f);
-        bool isinside = BoundaryBoxes.IsPointInPolygonGPS(examplePosition, polygon);
+        bool isinside = BoundaryBoxes.IsPointInPolygonGPS(examplePosition, polygon, new Vector3(0,0,0));
         Assert.IsTrue(isinside);
     }
 
@@ -98,6 +98,6 @@ public class BoundaryBoxTest
             new Vector2(55.8740145f, -4.2920211f)
         };
         Vector2 locationA = new Vector2(55.87375f, -4.29185f);
-        Assert.IsFalse(BoundaryBoxes.IsPointInPolygonGPS(locationA, polygon));
+        Assert.IsFalse(BoundaryBoxes.IsPointInPolygonGPS(locationA, polygon, new Vector3(0,0,0)));
     }
 }

@@ -171,20 +171,7 @@ public class GameScriptPlayModeTests
     [UnityTest]
     public IEnumerator Start_NotFirstStart_LocationsPopulatedShowClueButtonNoStartOverlay()
     {
-        //LocationHandler.locations = new List<Location>();
-        //LocationHandler.locations.Add(new Location("testLocation", "clue text", "information", new float[] { 55.87394f, -4.29181f }, new float[][][]{ new float[][]{
-        //new float[] {55.6829478f,-4.5160826f },
-        //new float[] {55.6830784f, -4.5155368f},
-        //new float[] {55.6827737f, -4.5153076f },
-        //new float[] {55.6826432f, -4.5158534f },
-        //new float[] {55.6829478f,-4.5160826f }, }
-        //}, new float[][][]{ new float [][]{
-        //new float[] {55.6827422f, -4.5150968f },
-        //new float[] {55.6831358f, -4.5154564f },
-        //new float[] {55.6829316f, -4.5165759f },
-        //new float[] {55.6824903f, -4.5160380f },
-        //new float[] {55.6827422f, -4.5150968f } } }
-        //));
+        
         Button nextButton = GameObject.Find("NextButton").GetComponent<Button>();
         nextButton.onClick.Invoke();
 
@@ -382,6 +369,57 @@ public class GameScriptPlayModeTests
         Assert.IsFalse(gameScript.BuildingText.activeSelf);
         Assert.IsFalse(gameScript.info.enabled);
         Assert.IsFalse(gameScript.title.enabled);
+    }
+
+    [UnityTest]
+    public IEnumerator ShowInsidePopup_TooCloseToBuilding_PopupVisible()
+    {
+        #region
+        editorLocation.SetPositionAndRotation(
+            Conversions
+                .GeoToWorldPosition(
+                    new Vector2d(LocationHandler.GetCurrLocation().centre.x,LocationHandler.GetCurrLocation().centre.y),
+                    map.CenterMercator,
+                    map.WorldRelativeScale
+                )
+                .ToVector3xz(),
+            Quaternion.identity
+        );
+        var lp = (TransformLocationProvider)LocationProviderFactory.Instance.DefaultLocationProvider;
+        lp.TargetTransform = editorLocation;
+        lp.SendLocationEvent();
+        yield return null;
+
+        #endregion
+
+        Assert.IsNotNull(GameObject.Find("InsideLocationOverlay"));
+        Assert.IsTrue(GameObject.Find("InsideLocationOverlay").GetComponent<Canvas>().enabled);
+        yield return null;
+    }
+    [UnityTest]
+    public IEnumerator ShowInsidePopup_NotTooCloseToBuilding_PopupNotVisible()
+    {
+        #region
+        editorLocation.SetPositionAndRotation(
+            Conversions
+                .GeoToWorldPosition(
+                    new Vector2d(LocationHandler.GetCurrLocation().outer[0].points[0].x,LocationHandler.GetCurrLocation().outer[0].points[0].y),
+                    map.CenterMercator,
+                    map.WorldRelativeScale
+                )
+                .ToVector3xz(),
+            Quaternion.identity
+        );
+        var lp = (TransformLocationProvider)LocationProviderFactory.Instance.DefaultLocationProvider;
+        lp.TargetTransform = editorLocation;
+        lp.SendLocationEvent();
+        yield return null;
+
+        #endregion
+
+        Assert.IsNotNull(GameObject.Find("InsideLocationOverlay"));
+        Assert.IsFalse(GameObject.Find("InsideLocationOverlay").GetComponent<Canvas>().enabled);
+        yield return null;
     }
 
     [UnityTearDown]
