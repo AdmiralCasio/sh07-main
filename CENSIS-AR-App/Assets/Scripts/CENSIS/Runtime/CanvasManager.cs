@@ -10,7 +10,7 @@ namespace CENSIS.Runtime
         public AbstractMap map;
         public Camera mapCamera;
 
-        public void ActivateCanvas(int canvasIndex)
+        private void ActivateCanvas(int canvasIndex)
         {
             // Loop through all canvases
             for (int i = 0; i < canvases.Length; i++)
@@ -35,7 +35,12 @@ namespace CENSIS.Runtime
             }
             else
             {
-                mapCamera.rect = new Rect(mapCamera.rect.x, mapCamera.rect.y, mapCamera.rect.width, 1);
+                mapCamera.rect = new Rect(
+                    mapCamera.rect.x,
+                    mapCamera.rect.y,
+                    mapCamera.rect.width,
+                    1
+                );
                 map.UpdateMap();
             }
         }

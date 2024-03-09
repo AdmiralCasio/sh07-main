@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace CENSIS.Utility
 {
-    public class LocationVisibility
+    public static class LocationVisibility
     {
         public static bool IsVisible(Vector3 target, Camera camera)
         {
@@ -15,4 +15,3 @@ namespace CENSIS.Utility
         }
     }
 }
-

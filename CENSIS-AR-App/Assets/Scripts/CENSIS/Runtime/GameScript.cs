@@ -1,15 +1,15 @@
 using System;
-using UnityEngine;
-using UnityEngine.Android;
-using TMPro;
-using Mapbox.Unity.Location;
-using Mapbox.Utils;
-using Component = UnityEngine.Component;
-using Vector2 = UnityEngine.Vector2;
-using Vector3 = UnityEngine.Vector3;
 using System.IO;
 using CENSIS.Utility;
+using Mapbox.Unity.Location;
+using Mapbox.Utils;
+using TMPro;
+using UnityEngine;
+using UnityEngine.Android;
+using Component = UnityEngine.Component;
 using Location = CENSIS.Locations.Location;
+using Vector2 = UnityEngine.Vector2;
+using Vector3 = UnityEngine.Vector3;
 
 namespace CENSIS.Runtime
 {
@@ -37,20 +37,19 @@ namespace CENSIS.Runtime
         Canvas nextButton;
         Canvas showClue;
         Canvas startUpOverlay;
-        
-        private Camera cam;
-        
 
-        void getOrigin()
+        private Camera cam;
+
+        private void getOrigin()
         {
             originPreConvert = Player.GetUserLocation();
-            origin = BoundaryBoxes.ConvertToUnityCartesian(originPreConvert) - cam.transform.position;
-            
+            origin =
+                BoundaryBoxes.ConvertToUnityCartesian(originPreConvert) - cam.transform.position;
         }
-        
+
         // Start is called before the first frame update
         void Start()
-        {    
+        {
             cam = Camera.main;
 
             Debug.Log("Game Script Start");
@@ -60,11 +59,11 @@ namespace CENSIS.Runtime
             Input.compass.enabled = true;
 
             // define origin point
-            InvokeRepeating("getOrigin", 2,5);
-            
+            InvokeRepeating("getOrigin", 2, 5);
+
             // Define text mesh pro components
             BuildingText.gameObject.SetActive(false);
-            title.gameObject.SetActive(false);  
+            title.gameObject.SetActive(false);
             info.gameObject.SetActive(false);
 
             // get locations from file
@@ -111,25 +110,36 @@ namespace CENSIS.Runtime
             // define user, current building, and overlay locations
             var location = Player.GetUserLocation();
             var curr = LocationHandler.GetCurrLocation();
-            
+
             // calculate where the overlay should appear
             Vector3 normalisedCentre = BoundaryBoxes.ConvertToUnityCartesian(curr.centre, origin);
             Vector3 overlayLocation = normalisedCentre;
 
             String strOriginPreConvert = originPreConvert.ToString("N8");
             String strOriginConverted = origin.ToString("N8");
-            
-            debugText[2].GetComponent<TMP_Text>().text = "dist from location:" +
-                                                         Math.Abs(cam.transform.position.x - overlayLocation.x) + " " + 
-                                                         Math.Abs(cam.transform.position.y - overlayLocation.y) + " " +
-                                                         Math.Abs(cam.transform.position.z - overlayLocation.z) + " " ;
-            debugText[3].GetComponent<TMP_Text>().text = "overlay is at : "+ BoundaryBoxes.ConvertToUnityCartesian(curr.centre) + " | Normalised : " + overlayLocation;
-            debugText[4].GetComponent<TMP_Text>().text = "Location accuracy : "+ LocationProviderFactory.Instance.DefaultLocationProvider.CurrentLocation.Accuracy;
-            debugText[5].GetComponent<TMP_Text>().text = "origin is : " + strOriginPreConvert + "  |  Converted to : " + strOriginConverted; 
-            
+
+            debugText[2].GetComponent<TMP_Text>().text =
+                "dist from location:"
+                + Math.Abs(cam.transform.position.x - overlayLocation.x)
+                + " "
+                + Math.Abs(cam.transform.position.y - overlayLocation.y)
+                + " "
+                + Math.Abs(cam.transform.position.z - overlayLocation.z)
+                + " ";
+            debugText[3].GetComponent<TMP_Text>().text =
+                "overlay is at : "
+                + BoundaryBoxes.ConvertToUnityCartesian(curr.centre)
+                + " | Normalised : "
+                + overlayLocation;
+            debugText[4].GetComponent<TMP_Text>().text =
+                "Location accuracy : "
+                + LocationProviderFactory.Instance.DefaultLocationProvider.CurrentLocation.Accuracy;
+            debugText[5].GetComponent<TMP_Text>().text =
+                "origin is : " + strOriginPreConvert + "  |  Converted to : " + strOriginConverted;
+
             // check if user is within location but not looking at the right direction
             if (
-                LocationValidator.AtLocation(location, curr,origin)
+                LocationValidator.AtLocation(location, curr, origin)
                 && !LocationValidator.LookingAtLocation(location, curr, origin)
             )
             {
@@ -155,7 +165,6 @@ namespace CENSIS.Runtime
                 LocationFound();
                 locationFoundOverlay.enabled = false;
                 InsideLocationOverlay.enabled = false;
-
             }
             // check if user is not in the location
             if (!LocationValidator.AtLocation(location, curr, origin))
@@ -173,7 +182,7 @@ namespace CENSIS.Runtime
 
             foreach (var inner in curr.inner)
             {
-                if (LocationValidator.InBox(location, inner.points,origin))
+                if (LocationValidator.InBox(location, inner.points, origin))
                 {
                     InsideLocationOverlay.enabled = true;
                 }

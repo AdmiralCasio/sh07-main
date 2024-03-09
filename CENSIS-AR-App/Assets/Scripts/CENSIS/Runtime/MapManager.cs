@@ -5,7 +5,6 @@ namespace CENSIS.Runtime
 {
     public class MapManager : MonoBehaviour
     {
-        // Start is called before the first frame update
         void Update()
         {
             var currentLocation = LocationProviderFactory
@@ -22,4 +21,3 @@ namespace CENSIS.Runtime
         }
     }
 }
-

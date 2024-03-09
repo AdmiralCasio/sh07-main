@@ -1,10 +1,11 @@
+using System.Net.Security;
 using Mapbox.Unity.Location;
 using Mapbox.Utils;
 using UnityEngine;
 
 namespace CENSIS.Runtime
 {
-    public class Player : MonoBehaviour
+    public static class Player
     {
         public static Vector2 GetUserLocation()
         {
@@ -19,7 +20,11 @@ namespace CENSIS.Runtime
 
         public static float GetUserDirection()
         {
-            return LocationProviderFactory.Instance.DefaultLocationProvider.CurrentLocation.UserHeading;
+            return LocationProviderFactory
+                .Instance
+                .DefaultLocationProvider
+                .CurrentLocation
+                .UserHeading;
         }
 
         private static Vector2 Vector2dToVector2(Vector2d vector2D)
@@ -28,4 +33,3 @@ namespace CENSIS.Runtime
         }
     }
 }
-

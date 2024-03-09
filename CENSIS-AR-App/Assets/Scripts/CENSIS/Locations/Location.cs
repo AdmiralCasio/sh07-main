@@ -8,16 +8,16 @@ namespace CENSIS.Locations
     {
         public struct BoundingBox
         {
-            public Vector2[] points;
+            public Vector2[] points { get; set; }
         }
-    
-        public BoundingBox[] inner;
-        public BoundingBox[] outer;
-        public string name;
-        public string clue;
-        public string information;
-        public Vector2 centre;
-    
+
+        public BoundingBox[] inner { get; }
+        public BoundingBox[] outer { get; }
+        public string name { get; }
+        public string clue { get; }
+        public string information { get; }
+        public Vector2 centre { get; set; }
+
         public Location(
             String name,
             string clue,
@@ -29,7 +29,7 @@ namespace CENSIS.Locations
         {
             this.name = name;
             this.inner = new BoundingBox[inner.Length];
-    
+
             for (int i = 0; i < inner.Length; i++)
             {
                 Vector2[] temp = new Vector2[inner[i].Length];
@@ -39,7 +39,7 @@ namespace CENSIS.Locations
                 }
                 this.inner[i].points = temp;
             }
-    
+
             this.outer = new BoundingBox[outer.Length];
             for (int i = 0; i < outer.Length; i++)
             {
@@ -55,5 +55,4 @@ namespace CENSIS.Locations
             this.centre = new Vector2(centre[0], centre[1]);
         }
     }
-
 }

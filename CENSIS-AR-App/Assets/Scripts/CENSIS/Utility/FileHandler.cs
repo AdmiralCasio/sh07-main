@@ -15,13 +15,13 @@ namespace CENSIS.Utility
             {
                 return new List<T>();
             }
-    
+
             List<T> res = JsonHelper.FromJson<T>(content).ToList();
-    
+
             return res;
         }
     }
-    
+
     public static class JsonHelper
     {
         public static T[] FromJson<T>(string json)
@@ -29,12 +29,11 @@ namespace CENSIS.Utility
             Wrapper<T> wrapper = JsonConvert.DeserializeObject<Wrapper<T>>(json);
             return wrapper.Items;
         }
-    
+
         [Serializable]
         private class Wrapper<T>
         {
             public T[] Items;
         }
     }
-
 }

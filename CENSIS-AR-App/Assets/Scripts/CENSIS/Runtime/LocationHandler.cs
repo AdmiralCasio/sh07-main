@@ -2,15 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-using UnityEngine;
 using CENSIS.Locations;
+using UnityEngine;
 
-namespace CENSIS.Runtime {
-    
+namespace CENSIS.Runtime
+{
     [Serializable]
     public class PlayerData
     {
-        public int locationIndex;
+        public int locationIndex { get; set; }
     }
 
     public class LocationHandler : MonoBehaviour
@@ -18,12 +18,8 @@ namespace CENSIS.Runtime {
         private static PlayerData playerData;
         private static BinaryFormatter binaryFormatter;
         private static string saveFilePath;
-        static int locationIndex;
-        public static int LocationIndex
-        {
-            get { return locationIndex; }
-            set { locationIndex = value; }
-        }
+
+        public static int LocationIndex { get; set; }
         public static List<Location> locations { get; set; }
 
         // Start is called before the first frame update
@@ -39,25 +35,23 @@ namespace CENSIS.Runtime {
                 FileStream file = File.Open(saveFilePath, FileMode.Open);
                 playerData = (PlayerData)binaryFormatter.Deserialize(file);
                 file.Close();
-                locationIndex = playerData.locationIndex;
+                LocationIndex = playerData.locationIndex;
                 Debug.Log(
                     "FileLoad: Load complete, current location index " + playerData.locationIndex
                 );
             }
             else
             {
-                locationIndex = 0;
-                playerData.locationIndex = locationIndex;
+                LocationIndex = 0;
+                playerData.locationIndex = LocationIndex;
                 Debug.Log("FileLoad: No save files to load");
             }
         }
 
         public static void NextLocation()
         {
-            locationIndex += 1;
-            //PlayerPrefs.SetInt("CurrentLocation", locationIndex);
-            //PlayerPrefs.Save();
-            playerData.locationIndex = locationIndex;
+            LocationIndex += 1;
+            playerData.locationIndex = LocationIndex;
             FileStream file = File.Create(saveFilePath);
             binaryFormatter.Serialize(file, playerData);
             file.Close();
@@ -65,12 +59,12 @@ namespace CENSIS.Runtime {
 
         public static bool IsFinalLocation()
         {
-            return locationIndex == locations.Count - 1;
+            return LocationIndex == locations.Count - 1;
         }
 
         public static Location GetCurrLocation()
         {
-            return locations[locationIndex];
+            return locations[LocationIndex];
         }
     }
 }

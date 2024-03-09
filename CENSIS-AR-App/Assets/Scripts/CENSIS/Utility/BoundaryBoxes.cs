@@ -4,12 +4,12 @@ using UnityEngine;
 
 namespace CENSIS.Utility
 {
-        public class BoundaryBoxes
-        {
+    public static class BoundaryBoxes
+    {
         public static bool IsPointInPolygonGPS(Vector2 point, Vector2[] polygon, Vector3 origin)
         {
-            Vector3 pointCart = ConvertToUnityCartesian(point,origin);
-            Vector3[] polygonCart = ConvertToUnityCartesian(polygon,origin);
+            Vector3 pointCart = ConvertToUnityCartesian(point, origin);
+            Vector3[] polygonCart = ConvertToUnityCartesian(polygon, origin);
             return IsPointInPolygon(pointCart, polygonCart);
         }
 
@@ -23,7 +23,10 @@ namespace CENSIS.Utility
                 if (
                     (
                         (polygon[i].y <= point.y + tolerance && point.y < polygon[j].y + tolerance)
-                        || (polygon[j].y <= point.y + tolerance && point.y < polygon[i].y + tolerance)
+                        || (
+                            polygon[j].y <= point.y + tolerance
+                            && point.y < polygon[i].y + tolerance
+                        )
                     )
                     && (
                         point.x
@@ -50,6 +53,7 @@ namespace CENSIS.Utility
             }
             return inside;
         }
+
         public static bool IsPointInPolygon(Vector3 point, Vector3[] polygon)
         {
             bool inside = false;
@@ -57,12 +61,32 @@ namespace CENSIS.Utility
 
             for (int i = 0, j = polygon.Length - 1; i < polygon.Length; j = i++)
             {
-                if (((polygon[i].y <= point.y + tolerance && point.y < polygon[j].y + tolerance) || (polygon[j].y <= point.y + tolerance && point.y < polygon[i].y + tolerance)) &&
-                    (point.x < (polygon[j].x - polygon[i].x) * (point.y - polygon[i].y) / (polygon[j].y - polygon[i].y) + polygon[i].x + tolerance))
+                if (
+                    (
+                        (polygon[i].y <= point.y + tolerance && point.y < polygon[j].y + tolerance)
+                        || (
+                            polygon[j].y <= point.y + tolerance
+                            && point.y < polygon[i].y + tolerance
+                        )
+                    )
+                    && (
+                        point.x
+                        < (polygon[j].x - polygon[i].x)
+                            * (point.y - polygon[i].y)
+                            / (polygon[j].y - polygon[i].y)
+                            + polygon[i].x
+                            + tolerance
+                    )
+                )
                 {
                     inside = !inside;
                 }
-                else if (polygon[i].y == point.y && polygon[j].y == point.y && point.x >= Math.Min(polygon[i].x, polygon[j].x) - tolerance && point.x <= Math.Max(polygon[i].x, polygon[j].x) + tolerance)
+                else if (
+                    polygon[i].y == point.y
+                    && polygon[j].y == point.y
+                    && point.x >= Math.Min(polygon[i].x, polygon[j].x) - tolerance
+                    && point.x <= Math.Max(polygon[i].x, polygon[j].x) + tolerance
+                )
                 {
                     inside = true;
                     break; // Exit the loop if the point is on an edge of the polygon
@@ -79,7 +103,6 @@ namespace CENSIS.Utility
                 carts.Add(ConvertToCartesian(latlong));
             }
             return carts.ToArray();
-            
         }
 
         public static Vector2 ConvertToCartesian(Vector2 latLong)
@@ -132,6 +155,7 @@ namespace CENSIS.Utility
         {
             return ConvertToUnityCartesian(latLong) - origin;
         }
+
         public static Vector3[] ConvertToUnityCartesian(Vector2[] latlongs, Vector3 origin)
         {
             List<Vector3> carts = new List<Vector3>();
@@ -141,18 +165,6 @@ namespace CENSIS.Utility
             }
 
             return carts.ToArray();
-        }
-
-        private void IsInsidePrint(bool isInside)
-        {
-            if (isInside)
-            {
-                Debug.Log("BOUNDARY BOX : User is within this boundary box");
-            }
-            else
-            {
-                Debug.Log("BOUNDARY BOX: User is not within this boundary box");
-            }
         }
     }
 }
