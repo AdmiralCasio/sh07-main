@@ -174,18 +174,6 @@ public class GameScript : MonoBehaviour
             InsideLocationOverlay.enabled = false;
         }
 
-        gameAid.enabled = true;
-        int[] toDisplay = LocationVisibility.GetColour(BoundaryBoxes.ConvertToUnityCartesian(curr.centre,origin), Camera.main);
-        Debug.Log($"Array: {toDisplay[0]}");
-        foreach (var comp in guideComponents)
-        {
-            comp.enabled = false;
-        }
-        foreach (int o in toDisplay)
-        {
-            guideComponents[o].enabled = true;
-        }
-
         foreach (var inner in curr.inner)
         {
             if (LocationValidator.InBox(location, inner.points,origin))
@@ -214,6 +202,8 @@ public class GameScript : MonoBehaviour
         BuildingText.gameObject.SetActive(false);
         info.enabled = false;
         title.enabled = false;
+        gameAid.enabled = false;
+
     }
 
     private void ShowLocationInformation(Vector3 overlayLocation, Location loc)
@@ -239,6 +229,18 @@ public class GameScript : MonoBehaviour
         // set text items to correct values
         title.text = loc.name;
         info.text = loc.information;
+        
+        gameAid.enabled = true;
+        int[] toDisplay = LocationVisibility.GetColour(BoundaryBoxes.ConvertToUnityCartesian(loc.centre,origin), Camera.main);
+        Debug.Log($"Array: {toDisplay[0]}");
+        foreach (var comp in guideComponents)
+        {
+            comp.enabled = false;
+        }
+        foreach (int o in toDisplay)
+        {
+            guideComponents[o].enabled = true;
+        }
     }
 
     public void Next()
