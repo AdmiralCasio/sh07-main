@@ -171,50 +171,14 @@ public class GameScript : MonoBehaviour
         gameAid.enabled = true;
         int[] toDisplay = LocationVisibility.GetColour(BoundaryBoxes.ConvertToUnityCartesian(curr.centre,origin), Camera.main);
         Debug.Log($"Array: {toDisplay[0]}");
-        for (int i=0;i<guideComponents.Length;i++){
-            guideComponents[i].enabled = false;
-        
+        foreach (var comp in guideComponents)
+        {
+            comp.enabled = false;
         }
-        foreach (int o in toDisplay){
+        foreach (int o in toDisplay)
+        {
             guideComponents[o].enabled = true;
         }
-        // if (LocationVisibility.GetColour(BoundaryBoxes.ConvertToUnityCartesian(curr.centre,origin), Camera.main) == "RedRight"){
-        //     redRight.enabled = true;
-        //     redLeft.enabled = false;
-        //     amberRight.enabled = false;
-        //     amberLeft.enabled = false;
-        //     green.enabled = false;
-        // }
-        // else if (LocationVisibility.GetColour(BoundaryBoxes.ConvertToUnityCartesian(curr.centre,origin), Camera.main) == "RedLeft"){
-        //     redRight.enabled = false;
-        //     redLeft.enabled = true;
-        //     amberRight.enabled = false;
-        //     amberLeft.enabled = false;
-        //     green.enabled = false;
-        // }
-        // else if (LocationVisibility.GetColour(BoundaryBoxes.ConvertToUnityCartesian(curr.centre,origin), Camera.main) == "AmberRight"){
-        //     redRight.enabled = false;
-        //     redLeft.enabled = false;
-        //     amberRight.enabled = true;
-        //     amberLeft.enabled = false;
-        //     green.enabled = false;
-        // }
-        // else if (LocationVisibility.GetColour(BoundaryBoxes.ConvertToUnityCartesian(curr.centre,origin), Camera.main) == "AmberLeft"){
-        //     redRight.enabled = false;
-        //     redLeft.enabled = false;
-        //     amberRight.enabled = false;
-        //     amberLeft.enabled = true;
-        //     green.enabled = false;
-        // } 
-        // else if (LocationVisibility.GetColour(BoundaryBoxes.ConvertToUnityCartesian(curr.centre,origin), Camera.main) == "Green"){
-        //     redRight.enabled = false;
-        //     redLeft.enabled = false;
-        //     amberRight.enabled = false;
-        //     amberLeft.enabled = false;
-        //     green.enabled = true;
-        // }
-        // Debug.Log($"TEST: Canvas is {gameAid.enabled}");
-        // Debug.Log($"TEST: Colour is {LocationVisibility.GetColour(BoundaryBoxes.ConvertToUnityCartesian(curr.centre,origin), Camera.main)}");
     }
 
     public void Next()
