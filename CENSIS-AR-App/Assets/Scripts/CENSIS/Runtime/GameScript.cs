@@ -37,6 +37,8 @@ namespace CENSIS.Runtime
         Canvas nextButton;
         Canvas showClue;
         Canvas startUpOverlay;
+        Canvas restartButton;
+        Canvas confirmRestart;
 
         private Camera cam;
 
@@ -76,11 +78,14 @@ namespace CENSIS.Runtime
             nextButton = GameObject.Find("Next").GetComponent<Canvas>();
             showClue = GameObject.Find("ShowClue").GetComponent<Canvas>();
             startUpOverlay = GameObject.Find("StartOverlay").GetComponent<Canvas>();
+            restartButton = GameObject.Find("Restart").GetComponent<Canvas>();
+            confirmRestart = GameObject.Find("RestartOverlay").GetComponent<Canvas>();
             // check if save file exists to check if user has opened the app before
             if (File.Exists(Path.Combine(Application.persistentDataPath, "PlayerData.dat")))
             {
                 startUpOverlay.enabled = false;
             }
+            confirmRestart.enabled = false;
             clueOverlay.enabled = false;
             nextButton.enabled = false;
             locationFoundOverlay.enabled = false;
@@ -267,6 +272,44 @@ namespace CENSIS.Runtime
         public void CloseStartUpPopUp()
         {
             startUpOverlay.enabled = false;
+        }
+
+        public void ShowRestart()
+        {
+            confirmRestart.enabled = true;
+        }
+
+        public void CancelRestart()
+        {
+            confirmRestart.enabled = false;
+        }
+
+        public void RestartConfirmation()
+        {
+            Console.WriteLine("maybe");
+            Debug.Log("maybe2");
+            string filePath = Path.Combine(Application.persistentDataPath, "PlayerData.dat");
+            // check if file exists
+            if (!File.Exists(filePath))
+            {
+                Debug.Log("no file exists");
+            }
+            else
+            {
+                Debug.Log("file exists, deleting...");
+
+                File.Delete(filePath);
+
+                RefreshEditorProjectWindow();
+            }
+
+            confirmRestart.enabled = false;
+        }
+        void RefreshEditorProjectWindow()
+        {
+            #if UNITY_EDITOR
+            UnityEditor.AssetDatabase.Refresh();
+            #endif
         }
 
         void GameWon()
