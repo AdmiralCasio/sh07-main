@@ -7463,7 +7463,7 @@ MonoBehaviour:
   mapManager: {fileID: 1217091917}
   _deviceLocationProviderUnity: {fileID: 2130878826}
   _deviceLocationProviderAndroid: {fileID: 133507899}
-  _editorLocationProvider: {fileID: 221266770}
+  _editorLocationProvider: {fileID: 1937645409}
   _transformLocationProvider: {fileID: 0}
   _dontDestroyOnLoad: 0
 --- !u!4 &1238432945
