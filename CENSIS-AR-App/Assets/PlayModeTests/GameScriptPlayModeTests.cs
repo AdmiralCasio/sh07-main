@@ -152,6 +152,30 @@ namespace PlayModeTests
     
             yield return null;
         }
+
+        [UnityTest]
+        public IEnumerator ShowSolution_StuckButtonClicked_ShowSolution()
+        {
+            Canvas solutionOverlay = GetCanvas("SolutionOverlay");
+            Assert.False(solutionOverlay.enabled);
+            Button stuckButton = GameObject.Find("StuckButton").GetComponent<Button>();
+            stuckButton.onClick.Invoke();
+            Assert.True(solutionOverlay.enabled);
+            
+            yield return null;
+        }
+        
+        [UnityTest]
+        public IEnumerator CloseSolution_CloseButtonClick_CloseSolution()
+        {
+            Canvas solutionOverlay = GetCanvas("SolutionOverlay");
+            solutionOverlay.enabled = true;
+            Button closeButton = GameObject.Find("SolutionCloseButton").GetComponent<Button>();
+            closeButton.onClick.Invoke();
+            Assert.False(solutionOverlay.enabled);
+            
+            yield return null;
+        }
     
         [UnityTest]
         public IEnumerator Start_FirstStart_LocationsPopulatedShowClueButtonAndStartOverlay()
