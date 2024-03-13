@@ -63,7 +63,7 @@ namespace PlayModeTests
         }
     
         [UnityTest]
-        public IEnumerator TestLocationFound()
+        public IEnumerator LocationFound_WhenLocationFound_NextButtonAndClueShown()
         {
             GameObject gameScriptObject = GameObject.Find("GameScriptObject");
             GameScript gameScript = gameScriptObject.GetComponent<GameScript>();
@@ -75,7 +75,7 @@ namespace PlayModeTests
         }
     
         [UnityTest]
-        public IEnumerator TestShowClue()
+        public IEnumerator ShowClue_WhenShowClueClicked_ClueOverlayShown()
         {
             Button showClueButton = GameObject.Find("ShowClueButton").GetComponent<Button>();
             showClueButton.onClick.Invoke();
@@ -86,7 +86,7 @@ namespace PlayModeTests
         }
     
         [UnityTest]
-        public IEnumerator TestCloseClue()
+        public IEnumerator CloseClue_WhenCloseClueClicked_ClueOverlayHidden()
         {
             GetCanvas("ClueOverlay").enabled = true;
             Button closeClueButton = GameObject.Find("CloseButton").GetComponent<Button>();
@@ -98,7 +98,7 @@ namespace PlayModeTests
         }
     
         [UnityTest]
-        public IEnumerator TestNextNotFinalLocation()
+        public IEnumerator Next_NotFinalLocation_ClueOverlayAndShowClueShownNextButtonHidden()
         {
             Button nextButton = GameObject.Find("NextButton").GetComponent<Button>();
             nextButton.onClick.Invoke();
@@ -111,7 +111,7 @@ namespace PlayModeTests
         }
     
         [UnityTest]
-        public IEnumerator TestNextIsFinalLocation()
+        public IEnumerator Next_IsFinalLocation_GameCompleteOverlayShown()
         {
             // initialise empty list
             LocationHandler.locations = new List<Location>();

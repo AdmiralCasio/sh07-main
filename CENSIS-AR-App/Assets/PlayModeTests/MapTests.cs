@@ -19,21 +19,21 @@ namespace PlayModeTests
         }
     
         [UnityTest]
-        public IEnumerator MapActiveOnSceneLoad()
+        public IEnumerator Start_OnSceneLoad_MapActive()
         {
             yield return null;
             Assert.IsTrue(GameObject.Find("Map").GetComponent<AbstractMap>().isActiveAndEnabled);
         }
     
         [UnityTest]
-        public IEnumerator MapNotNullOnSceneLoad()
+        public IEnumerator Start_OnSceneLoad_MapNotNull()
         {
             yield return null;
             Assert.IsNotNull(GameObject.Find("Map").GetComponent<AbstractMap>());
         }
     
         [UnityTest]
-        public IEnumerator MapSmallOnHomeScreen()
+        public IEnumerator ActivateCanvas_OnHomeScreen_MapSmall()
         {
             Button homeButton = GameObject
                 .Find("NavbarAndTopBar/NavBar/HomeButton")
@@ -47,7 +47,7 @@ namespace PlayModeTests
         }
     
         [UnityTest]
-        public IEnumerator MapFullOnMapScreen()
+        public IEnumerator ActivateCanvas_OnMapScreen_MapFull()
         {
             Button mapButton = GameObject
                 .Find("NavbarAndTopBar/NavBar/MapButton")
@@ -61,7 +61,7 @@ namespace PlayModeTests
         }
     
         [UnityTest]
-        public IEnumerator MapSizeChangeMapToHome()
+        public IEnumerator ActivateCanvas_MapPageToHomePage_MapSizeChange()
         {
             var map = GameObject.Find("MapCamera");
     
@@ -85,7 +85,7 @@ namespace PlayModeTests
         }
     
         [UnityTest]
-        public IEnumerator MapSizeChangeHomeToMap()
+        public IEnumerator ActivateCanvas_HomePageToMapPage_MapSizeChange()
         {
             Button homeButton = GameObject
                 .Find("NavbarAndTopBar/NavBar/HomeButton")
