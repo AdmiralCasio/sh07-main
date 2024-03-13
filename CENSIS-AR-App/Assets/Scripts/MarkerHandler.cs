@@ -1,10 +1,13 @@
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Mapbox.Examples;
 using Mapbox.Unity.Map;
 using Mapbox.Unity.MeshGeneration.Factories;
 using Mapbox.Unity.Utilities;
 using Mapbox.Utils;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class MarkerHandler : MonoBehaviour
 {
@@ -16,14 +19,27 @@ public class MarkerHandler : MonoBehaviour
 
     [SerializeField]
     GameObject _markerPrefab;
-
+    
     List<GameObject> _spawnedObjects { get; set; }
     List<Vector2d> vectorLocations;
+
+    IEnumerator getPrevLocations()
+    {
+        yield return new WaitForEndOfFrame();
+        Debug.Log("[MARKER] location index : " + LocationHandler.LocationIndex);
+        for (int i=0; i < LocationHandler.LocationIndex; i++)
+        {
+            print("[MARKER] adding location ... :");
+            AddMarker(LocationHandler.locations[i]);
+            print("[MARKER] added location :" + LocationHandler.locations[i]);
+        }
+    }
 
     void Start()
     {
         _spawnedObjects = new List<GameObject>();
         vectorLocations = new List<Vector2d>();
+        StartCoroutine(getPrevLocations());
     }
 
     public void AddMarker(Location location)
