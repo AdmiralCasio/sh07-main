@@ -11,11 +11,11 @@ namespace CENSIS.Locations
             public Vector2[] points { get; set; }
         }
 
-        public BoundingBox[] inner { get; }
-        public BoundingBox[] outer { get; }
-        public string name { get; }
-        public string clue { get; }
-        public string information { get; }
+        public BoundingBox[] inner { get; private set; }
+        public BoundingBox[] outer { get; private set; }
+        public string name { get; private set; }
+        public string clue { get; private set; }
+        public string information { get; private set; }
         public Vector2 centre { get; set; }
 
         public Location(
