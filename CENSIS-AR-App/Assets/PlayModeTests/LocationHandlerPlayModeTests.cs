@@ -18,7 +18,7 @@ namespace PlayModeTests
         }
     
         [UnityTest]
-        public IEnumerator testNextLocation()
+        public IEnumerator NextLocation_WhenCalled_LocationUpdated()
         {
             LocationHandler.LocationIndex = 0;
             LocationHandler.locations = new List<Location>();

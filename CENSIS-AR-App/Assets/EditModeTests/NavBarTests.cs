@@ -22,7 +22,7 @@ namespace EditModeTests
         }
 
         [UnityTest]
-        public IEnumerator TestHomeButton()
+        public IEnumerator ActivateCanvas_HomeButton_ActivatesHomeCanvas()
         {
             Button homeButton = GameObject
                 .Find("NavbarAndTopBar/NavBar/HomeButton")
@@ -41,7 +41,7 @@ namespace EditModeTests
         }
 
         [UnityTest]
-        public IEnumerator TestCameraButton()
+        public IEnumerator ActivateCanvas_CameraButton_ActivatesCameraCanvas()
         {
             Button cameraButton = GameObject
                 .Find("NavbarAndTopBar/NavBar/CameraButton")
@@ -60,7 +60,7 @@ namespace EditModeTests
         }
 
         [UnityTest]
-        public IEnumerator TestMapButton()
+        public IEnumerator ActivateCanvas_MapButton_ActivatesMapCanvas()
         {
             Button mapButton = GameObject
                 .Find("NavbarAndTopBar/NavBar/MapButton")
@@ -79,7 +79,7 @@ namespace EditModeTests
         }
 
         [UnityTest]
-        public IEnumerator TestInfoButton()
+        public IEnumerator ActivateCanvas_InfoButton_ActivatesInfoCanvas()
         {
             Button infoButton = GameObject
                 .Find("NavbarAndTopBar/NavBar/InfoButton")
