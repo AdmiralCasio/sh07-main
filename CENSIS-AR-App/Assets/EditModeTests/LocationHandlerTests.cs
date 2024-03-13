@@ -15,7 +15,7 @@ namespace EditModeTests
         }
     
         [Test]
-        public void testIsFinalLocationWhenIsNot()
+        public void IsFinalLocation_WhenIsNotFinal_ReturnsFalse()
         {
             LocationHandler.LocationIndex = 0;
             LocationHandler.locations = new List<Location>();
@@ -83,7 +83,7 @@ namespace EditModeTests
         }
     
         [Test]
-        public void testIsFinalLocationWhenIs()
+        public void IsFinalLocation_WhenIsFinal_ReturnsTrue()
         {
             LocationHandler.locations = new List<Location>();
             Location loc1 = new Location(
@@ -152,7 +152,7 @@ namespace EditModeTests
         }
     
         [Test]
-        public void testGetCurrLocation()
+        public void GetCurrLocation_ReturnsCurrentLocation()
         {
             LocationHandler.locations = new List<Location>();
             Location loc1 = new Location(

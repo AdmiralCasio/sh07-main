@@ -16,7 +16,7 @@ namespace PlayModeTests
         }
     
         [UnityTest]
-        public IEnumerator TestPageOnStartup()
+        public IEnumerator ActivateCanvas_OnStartup_HomeActiveOthersInactive()
         {
             // check home canvas is enabled
             Assert.IsTrue(GameObject.Find("HomeCanvas").GetComponent<Canvas>().enabled);
