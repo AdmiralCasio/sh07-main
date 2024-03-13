@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.TestTools;
 using UnityEngine.UI;
 
-namespace Tests
+namespace EditModeTests
 {
     public class NavBar : InputTestFixture
     {
