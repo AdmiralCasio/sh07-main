@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace CENSIS.Runtime
 {
+    /// <summary>
+    /// Manages map scaling, motion and display
+    /// </summary>
     public class MapManager : MonoBehaviour
     {
         void Update()
