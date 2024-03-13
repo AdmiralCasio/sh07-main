@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mapbox.Unity.Location;
 
+/// <summary>
+/// Manages map scaling, motion and display
+/// </summary>
 public class MapManager : MonoBehaviour
 {
     // Start is called before the first frame update
