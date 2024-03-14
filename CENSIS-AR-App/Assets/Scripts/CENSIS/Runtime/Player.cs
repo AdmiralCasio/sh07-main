@@ -7,6 +7,7 @@ namespace CENSIS.Runtime
 {
     public static class Player
     {
+        /// <returns>The current GPS location of the user's device</returns>
         public static Vector2 GetUserLocation()
         {
             return Vector2dToVector2(
@@ -18,6 +19,7 @@ namespace CENSIS.Runtime
             );
         }
 
+        /// <returns>The current compass heading of the user's device</returns>
         public static float GetUserDirection()
         {
             return LocationProviderFactory

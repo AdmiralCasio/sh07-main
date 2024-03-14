@@ -8,7 +8,7 @@ namespace EditModeTests
     public class BoundaryBoxTest
     {
         [Test]
-        public void BoundaryBoxConvertToCartTest()
+        public void  ConvertToCartesian_CorrectlyConverts()
         {
             Vector2 longlat = new Vector2(55.8740145f, -4.2920211f);
             Vector2 longlatAsCart = BoundaryBoxes.ConvertToCartesian(longlat);
@@ -24,7 +24,7 @@ namespace EditModeTests
         }
     
         [Test]
-        public void BoundaryBoxSimpleIsPointInPolygonTests()
+        public void IsPointInPolygon_CorrectlyIdentifiesWhenPointInPolygon()
         {
             Vector2[] polygon = new Vector2[]
             {
@@ -57,7 +57,7 @@ namespace EditModeTests
         }
     
         [Test]
-        public void BoundaryBoxTestAlwynPass()
+        public void IsPointInPolygonGPS_WhenUserInAlwynBox_ReturnsTrue()
         {
             Vector2[] polygon = new Vector2[]
             {
@@ -80,7 +80,7 @@ namespace EditModeTests
         }
     
         [Test]
-        public void BoundaryBoxTestAlwynFail()
+        public void IsPointInPolygonGPS_WhenUserNotInAlwynBox_ReturnsFalse()
         {
             Vector2[] polygon = new Vector2[]
             {

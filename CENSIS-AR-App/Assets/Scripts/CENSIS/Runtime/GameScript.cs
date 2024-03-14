@@ -17,7 +17,8 @@ namespace CENSIS.Runtime
     {
         [SerializeField]
         string filename;
-
+        [SerializeField]
+        TextMeshProUGUI solutionText;
         [SerializeField]
         TextMeshProUGUI clueText;
         Component text;
@@ -26,6 +27,8 @@ namespace CENSIS.Runtime
         public TMP_Text info;
         public Vector3 origin { get; private set; }
         Vector2 originPreConvert;
+
+        [SerializeField] MarkerHandler markerHandler;
 
         [SerializeField]
         GameObject[] debugText;
@@ -40,6 +43,7 @@ namespace CENSIS.Runtime
         Canvas nextButton;
         Canvas showClue;
         Canvas startUpOverlay;
+        Canvas solutionOverlay;
         Canvas gameAid;
 
         private Camera cam;
@@ -81,6 +85,8 @@ namespace CENSIS.Runtime
             showClue = GameObject.Find("ShowClue").GetComponent<Canvas>();
             gameAid = GameObject.Find("GameAidCanvas").GetComponent<Canvas>();
             startUpOverlay = GameObject.Find("StartOverlay").GetComponent<Canvas>();
+            solutionOverlay = GameObject.Find("SolutionOverlay").GetComponent<Canvas>();
+
             // check if save file exists to check if user has opened the app before
             if (File.Exists(Path.Combine(Application.persistentDataPath, "PlayerData.dat")))
             {
@@ -91,6 +97,8 @@ namespace CENSIS.Runtime
             locationFoundOverlay.enabled = false;
             gameCompleteOverlay.enabled = false;
             gameAid.enabled = false;
+            solutionOverlay.enabled = false;
+
             Debug.Log($"clueOverlay.enabled {clueOverlay.enabled}");
             Debug.Log($"nextButton.enabled {nextButton.enabled}");
         }
@@ -102,6 +110,7 @@ namespace CENSIS.Runtime
                 $"Location name: {LocationHandler.GetCurrLocation().name}, Building info: {LocationHandler.GetCurrLocation().information}"
             );
             // show next button
+            markerHandler.AddMarker(LocationHandler.GetCurrLocation());
             nextButton.enabled = true;
             showClue.enabled = false;
         }
@@ -285,6 +294,17 @@ namespace CENSIS.Runtime
         public void CloseStartUpPopUp()
         {
             startUpOverlay.enabled = false;
+        }
+        public void ShowSolution()
+        {
+            solutionOverlay.enabled = true;
+            clueOverlay.enabled = false;
+            solutionText.text = "You are looking for the " + 	LocationHandler.GetCurrLocation().name;
+        }
+        
+        public void CloseSolution()
+        {
+            solutionOverlay.enabled = false;
         }
 
         void GameWon()
