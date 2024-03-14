@@ -28,6 +28,8 @@ namespace CENSIS.Runtime
         public Vector3 origin { get; private set; }
         Vector2 originPreConvert;
 
+        [SerializeField] MarkerHandler markerHandler;
+
         [SerializeField]
         GameObject[] debugText;
 
@@ -102,6 +104,7 @@ namespace CENSIS.Runtime
                 $"Location name: {LocationHandler.GetCurrLocation().name}, Building info: {LocationHandler.GetCurrLocation().information}"
             );
             // show next button
+            markerHandler.AddMarker(LocationHandler.GetCurrLocation());
             nextButton.enabled = true;
             showClue.enabled = false;
         }
