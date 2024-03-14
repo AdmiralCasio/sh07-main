@@ -12,7 +12,11 @@ namespace CENSIS.Runtime
     {
         public int locationIndex { get; set; }
     }
-
+    /**
+     * <summary>
+     *  Keeps track of and provides methods to manipulate locations.
+     * </summary>
+    **/ 
     public class LocationHandler : MonoBehaviour
     {
         private static PlayerData playerData;
@@ -22,10 +26,8 @@ namespace CENSIS.Runtime
         public static int LocationIndex { get; set; }
         public static List<Location> locations { get; set; }
 
-        // Start is called before the first frame update
         void Start()
         {
-            // gets the index of the current building or 0
             playerData = new PlayerData();
             binaryFormatter = new BinaryFormatter();
             saveFilePath = Path.Combine(Application.persistentDataPath, "PlayerData.dat");
@@ -47,7 +49,9 @@ namespace CENSIS.Runtime
                 Debug.Log("FileLoad: No save files to load");
             }
         }
-
+        /// <summary>
+        ///     Advances the current location to the next in the list.
+        /// </summary>
         public static void NextLocation()
         {
             LocationIndex += 1;
@@ -57,11 +61,19 @@ namespace CENSIS.Runtime
             file.Close();
         }
 
+        /// <summary>
+        ///  Has the final location in the list been reached.
+        /// </summary>
+        /// <returns>A boolean representing whether the final location in the list has been reached.</returns>
         public static bool IsFinalLocation()
         {
             return LocationIndex == locations.Count - 1;
         }
-
+        
+        /// <summary>
+        /// Gets the current location in the list of locations.
+        /// </summary>
+        /// <returns>The current location in the scavenger hunt.</returns>
         public static Location GetCurrLocation()
         {
             return locations[LocationIndex];
