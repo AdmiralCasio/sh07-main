@@ -66,6 +66,7 @@ namespace CENSIS.Runtime
 
             // Define text mesh pro components
             BuildingText.gameObject.SetActive(false);
+            BuildingText.transform.forward = -BuildingText.transform.forward;
             title.gameObject.SetActive(false);
             info.gameObject.SetActive(false);
             defaultInfoTitleScale = title.transform.localScale;
@@ -164,11 +165,9 @@ namespace CENSIS.Runtime
             {
                 if (!BuildingText.gameObject.activeSelf)
                 {
-                    title.transform.LookAt(BoundaryBoxes.ConvertToUnityCartesian(location,origin));
-                    info.transform.LookAt(BoundaryBoxes.ConvertToUnityCartesian(location,origin));
-
-                    title.transform.forward = -title.transform.forward;
-                    info.transform.forward = -info.transform.forward;
+                    BuildingText.transform.LookAt(Camera.main.transform.position);
+                    // BuildingText.transform.rotation = Quaternion.LookRotation(
+                    //     BuildingText.transform.position)
                     ScaleText(new Vector3(scale,scale,1));
                 }
                 ShowLocationInformation(overlayLocation, curr);
@@ -222,6 +221,8 @@ namespace CENSIS.Runtime
         private void HideLocationInformation()
         {
             BuildingText.gameObject.SetActive(false);
+            info.gameObject.SetActive(false);
+            title.gameObject.SetActive(false);
             info.enabled = false;
             title.enabled = false;
             title.transform.localScale = defaultInfoTitleScale;
@@ -247,6 +248,8 @@ namespace CENSIS.Runtime
 
             // toggle game object states
             BuildingText.gameObject.SetActive(true);
+            info.gameObject.SetActive(true);
+            title.gameObject.SetActive(true);
             info.enabled = true;
             title.enabled = true;
 
