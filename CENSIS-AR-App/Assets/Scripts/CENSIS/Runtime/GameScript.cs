@@ -159,7 +159,16 @@ namespace CENSIS.Runtime
             )
             {
                 HideLocationInformation();
-
+                gameAid.enabled = true;
+                int[] toDisplay = LocationVisibility.GetColour(BoundaryBoxes.ConvertToUnityCartesian(curr.centre,origin), cam);
+                foreach (var comp in guideComponents)
+                {
+                    comp.enabled = false;
+                }
+                foreach (int o in toDisplay)
+                {
+                    guideComponents[o].enabled = true;
+                }
                 // on screen debug
                 debugText[0].GetComponent<TMP_Text>().text = "At Location: true";
                 debugText[1].GetComponent<TMP_Text>().text = "Looking at Location : false";
@@ -250,16 +259,7 @@ namespace CENSIS.Runtime
             title.text = loc.name;
             info.text = loc.information;
             
-            gameAid.enabled = true;
-            int[] toDisplay = LocationVisibility.GetColour(BoundaryBoxes.ConvertToUnityCartesian(loc.centre,origin), Camera.main);
-            foreach (var comp in guideComponents)
-            {
-                comp.enabled = false;
-            }
-            foreach (int o in toDisplay)
-            {
-                guideComponents[o].enabled = true;
-            }
+            
         }
 
         public void Next()
@@ -279,7 +279,8 @@ namespace CENSIS.Runtime
             }
         }
 
-        private void ShowClue()
+        
+        public void ShowClue()
         {
             clueText.text = LocationHandler.GetCurrLocation().clue;
             clueOverlay.enabled = true;
