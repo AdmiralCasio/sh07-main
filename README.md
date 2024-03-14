@@ -2,9 +2,9 @@
 
 ## Description
 
-The Glasgow University Scavenger Hunt leads you on a guided scavenger hunt through Glasgow University's stunning Gilmorehill Campus, using fun clues and Augmented Reality aids to help you find your way to some of the campus' iconic location.
+The Glasgow University Scavenger Hunt leads you on a guided scavenger hunt through Glasgow University's stunning Gilmorehill Campus, using fun clues and Augmented Reality aids to help you find your way to some of the campus' iconic locations.
 
-When you find a location, you can discover interesting insights about the location, as well as interact with the location's digital twin.
+When you find a location, you can discover interesting insights about the location.
 
 ## Installing, Building and Running
 
@@ -12,30 +12,87 @@ To build and run the app on mobile devices, you must first install [Unity](https
 
 ### Android
 
-To build and run on Android devices, first ensure you have the latest version of Android installed.
+To build and run on Android devices, first ensure you have installed
 
-Then, connect your device to your computer using a wired or wireless connection. You will need to enable developer mode on your Android device. The specific method to achieve this is device dependent, so please consult the relevant documentation for your device.
+* the latest version of Android
+* the Android Build Support module for Unity
+* the Android SDK for Unity [(SDK)](https://developer.android.com/studio#command-tools)
+* the Native Development Kit [(NDK)](https://developer.android.com/ndk/)
+* a Java development kit [(Unity uses OpenJDK)](http://openjdk.java.net/)
 
-Once your device is connected and in developer mode, allow debugging on your device and open the folder {repo-root}/CENSIS-AR-App/ in the Unity Editor. Open the build and run menu, select 'Sample Scene', select your device, and click build and run.
+An easy way to do this is to install them through the Unity Hub as described [here](https://docs.unity3d.com/Manual/android-sdksetup.html).
+
+#### Building from the Unity Editor GUI
+
+Connect your device to your computer using a wired or wireless connection. You will need to enable developer mode on your Android device. The specific method to achieve this is device dependent, so please consult the relevant documentation for your device.
+
+Once your device is connected and in developer mode, allow debugging on your device and open the folder {repo-root}/CENSIS-AR-App/ in the Unity Editor. Open the build and run menu, select 'Assets/Scenes/AppScene', select your device, and click build and run.
 
 The app will then build and open automatically on your Android device.
 
+#### Building from the command line
+
+To build from the command line, you can run the following command.
+
+```
+{path to unity executable} -projectPath {repo-root}/CENSIS-AR-App -quit -batchmode -nographics -buildTarget Android -customBuildTarget Android -customBuildName {build name} -customBuildPath {path to apk} -executeMethod BuildCommand.PerformBuild -logFile {log file}
+```
+
 ### IOS
 
-To build and run on IOS it is somewhat more difficult.
+#### Building fromthe Unity Editor GUI
 
-Firstly macOS is required to access XCode to run builds and so this guide will assume you are using a mac but if you are developing on windows a virtual environment may need to be explored, however, these have proven to be difficult to work with. Assuming access to a mac and an iphone is available firstly ensure both devices are updated to the most recent software as previous versions may not be compatible. Then, if you do not have XCode installed simply visit the apple developer webpage and install the most recent version to your mac. To finish preparing the devices navigate to the privacy settings on your iphone and turn on developer mode.
+Using a Mac and an iPhone, ensure both devices are updated to the most recent software as previous versions may not be compatible. Then, if you do not have XCode installed simply visit the apple developer webpage and install the most recent version to your Mac. To finish preparing the device, navigate to the privacy settings on your iPhone and turn on developer mode.
 
-Now, from the unity hub you need to install the IOS package module before opening the folder {repo-root}/CENSIS-AR-App/ in the Unity Editor. To build the project, open the build setting and firstly switch the platform to IOS before checking the developer build setting and add the 'Sample Scene'. Now click the build and run button and create a new folder name 'Builds' and XCode should be open upon completion.
+Now, from Unity Hub you need to install the IOS package module before opening the folder {repo-root}/CENSIS-AR-App/ in the Unity Editor. To build the project, open the build setting and firstly switch the platform to IOS before checking the developer build setting and add the 'Assets/Scenes/AppScene'. Now click the build and run button and create a new folder name 'Builds' and XCode should be open upon completion.
 
-Next in XCode the code should begin compiling but before we can deploy we must first navigate to the Signing and Capabilites tab, check the Enable Automatic Signing box and create and assign your team following the pop ups from the drop down menu. Now Connect your phone to the mac (a cable is most appropriate) and ensure the correct device is selected on the top bar of XCode and press run. Finally navigate to the VPN and Device Management option in the phones general setting and trust the developer and you should be able to open the app from your home page.
+Next in XCode, the code should begin compiling but before we can deploy we must first navigate to the Signing and Capabilities tab, check the Enable Automatic Signing box and create and assign your team following the pop ups from the drop down menu. Now Connect your phone to the mac (a cable is most appropriate) and ensure the correct device is selected on the top bar of XCode and press run. Finally navigate to the VPN and Device Management option in the phones general setting and trust the developer and you should be able to open the app from your home page.
 
-If any issues are encountered please refer to documentation online or this youtube video as a reference [Video Reference](https://www.youtube.com/watch?v=-Hr4-XNCf8Y&t=352s)
+If any issues are encountered please refer to documentation online or [this](https://www.youtube.com/watch?v=-Hr4-XNCf8Y&t=352s) YouTube video as a reference.
+
+#### Building from the command line
+
+To build from the command line, you can run the following command.
+
+```
+{path to unity executable} -projectPath {repo-root}/CENSIS-AR-App -quit -batchmode -nographics -buildTarget iOS -customBuildTarget iOS -customBuildName {build name} -customBuildPath {path to apk} -executeMethod BuildCommand.PerformBuild -logFile {log file}
+```
+
+Open the resulting file in XCode, the code should begin compiling but before we can deploy we must first navigate to the Signing and Capabilities tab, check the Enable Automatic Signing box and create and assign your team following the pop ups from the drop down menu. Now Connect your phone to the mac (a cable is most appropriate) and ensure the correct device is selected on the top bar of XCode and press run. Finally navigate to the VPN and Device Management option in the phones general setting and trust the developer and you should be able to open the app from your home page.
+
+If any issues are encountered please refer to documentation online or [this](https://www.youtube.com/watch?v=-Hr4-XNCf8Y&t=352s) YouTube video as a reference.
 
 ## Visuals
 
+
+
 ## Usage
+
+### Using the App
+
+The app requires permission to access your location and camera to function properly. If these are not granted, you will be warned and the app will not function as intended.
+
+To visit a location, you must move to within a geofenced area which surrounds it. If you then look at the building, using the visual aids to help you find the right place to look, you will be able to read, and interact with, historical information about the location displayed using AR.
+
+The app also contains a map to help you navigate around the area you're hunting in and keeps track of locations you've already visited, helping you get back to them if you want to read the information again.
+
+### Adding new locations
+
+To add a new location, go to [Open Street Map](https://www.openstreetmap.org/) and find the location you're looking for. Run the [executable](Utils%2Foutput%2FLocationAdder%2FLocationAdder.exe) in the Utils folder, copy the link to the relation or way you want to add from OSM and add your own custom information. The Location Adder will give you a json representation of your location. Add this to the end of [LocationInformation.json](CENSIS-AR-App%2FAssets%2FResources%2FLocationInformation.json) to add this to the app.
+
+(Note the locations in the JSON file must initially be visited in the order they appear in the JSON.)
+
+## APIs
+
+The app makes use of two APIs - [Open Weather Map](https://openweathermap.org/api) and [Mapbox](https://www.mapbox.com/unity).
+
+The API token for OWM is stored within the [OpenWeatherMap.json](CENSIS-AR-App%2FAssets%2FResources%2FOpenWeatherMap.json) file.
+
+The API token and configuration for Mapbox is stored in [MapboxConfiguration.txt](CENSIS-AR-App%2FAssets%2FResources%2FMapbox%2FMapboxConfiguration.txt). If you wish to use your own API token, open the Unity project and navigate to the Mapbox tab at the top of the editor. From here you can access the configuration and input your API token.
+
+(Tokens can be acquired by creating a Mapbox account [here](https://account.mapbox.com).)
 
 ## Acknowledgements
 
-game-ci/docker Copyright (c) 2020-present GameCI used under MIT License. See details at [GitHub](https://github.com/game-ci/docker)
+* game-ci/docker Copyright (c) 2020-present GameCI used under MIT License. See details at [GitHub](https://github.com/game-ci/docker)
+* [Mapbox Unity SDK](https://www.mapbox.com/unity) copyright (c) 2016-2017 Mapbox used under MIT License
