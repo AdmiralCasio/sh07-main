@@ -48,7 +48,8 @@
 
 		public void Update()
 		{
-			if (Input.GetMouseButtonDown(0) && EventSystem.current.IsPointerOverGameObject())
+			var viewportPoint = _referenceCamera.ScreenToViewportPoint(Input.mousePosition);
+			if (Input.GetMouseButtonDown(0) && (EventSystem.current.IsPointerOverGameObject() || viewportPoint.x is > 1 or < 0 || viewportPoint.y is > 1 or < 0))
 			{
 				_dragStartedOnUI = true;
 			}

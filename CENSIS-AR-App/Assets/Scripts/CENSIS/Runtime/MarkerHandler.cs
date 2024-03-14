@@ -5,6 +5,8 @@ using Mapbox.Unity.Map;
 using CENSIS.Locations;
 using Mapbox.Utils;
 using UnityEngine;
+using System.Linq;
+using TMPro;
 
 namespace CENSIS.Runtime
 {
@@ -52,6 +54,8 @@ namespace CENSIS.Runtime
                 instance.transform.localScale = new Vector3(_spawnScale, _spawnScale, _spawnScale);
                 instance.name = location.name;
                 instance.GetComponent<LabelTextSetter>().Set(new Dictionary<string, object> { { "name", location.name } });
+                instance.layer = LayerMask.NameToLayer("Map");
+                for (int i = 0; i < instance.gameObject.transform.childCount; i++) { instance.gameObject.transform.GetChild(i).gameObject.layer = LayerMask.NameToLayer("Map") ; }
                 _spawnedObjects.Add(instance);
             }
         }
