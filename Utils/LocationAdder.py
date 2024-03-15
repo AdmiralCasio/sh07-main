@@ -6,6 +6,16 @@ from FindBuildingPolygon import getVectors
 from shapely.affinity import scale
 from shapely.geometry import Polygon
 
+outputJSON = "Location.json"
+
+def show_file_entry():
+    global outputJSON
+    if (newJSON.get() == 0):
+        fileEntry.pack_forget()
+        outputJSON = "Location.json"
+    else:
+        fileEntry.pack()
+        outputJSON = fileEntry.get()
 
 def read():
     try:
@@ -16,21 +26,47 @@ def read():
         scale_factor = float(scaleEntry.get())
         inner = json.loads(getVectors(url))
 
-        with open("Locations.txt", "w") as f:
-            f.write(
-                f"""
-            {{
-            \"name\" : \"{title}\",
-            \"clue\" : \"{clue}\",
-            \"info\" : \"{info}\",
-            \"centre\" : [{Polygon(inner).centroid.x}, {Polygon(inner).centroid.y}],
-            \"inner\" : [{inner}],
-            \"outer\" : [{get_outer(inner, scale_factor)}]
-            }}"""
-            )
+        if (newJSON.get() == 1):
+            global outputJSON
+            outputJSON = fileEntry.get()
+            with open(outputJSON, "r+") as f:
+                
+                new = {
+                "name" : title,
+                "clue" : clue,
+                "info" : info,
+                "centre" : [Polygon(inner).centroid.x, Polygon(inner).centroid.y],
+                "inner" : [inner],
+                "outer" : [get_outer(inner, scale_factor)]
+                }
+                
+                current = json.load(f)
+                current["Items"].append(new)
+                
+                f.seek(0)
+                
+                json.dump(current, f, indent=1)
+                
+        else:
+            with open(outputJSON, "w") as f:
+                new = {"Items":[{
+                "name" : title,
+                "clue" : clue,
+                "info" : info,
+                "centre" : [Polygon(inner).centroid.x, Polygon(inner).centroid.y],
+                "inner" : [inner],
+                "outer" : [get_outer(inner, scale_factor)]
+                }]}
+                
+                f.seek(0)
+                
+                json.dump(new, f, indent=1)
+            
         messagebox.showinfo(
-            "Success!", "Location added successfully, proceed to Locations.txt"
+            "Success!", f"Location added successfully, proceed to {outputJSON}"
         )
+
+        
 
         buildingEntry.delete(0, END)
         clueEntry.delete("1.0", END)
@@ -38,9 +74,32 @@ def read():
         osmUrlEntry.delete(0, END)
         scaleEntry.delete(0, END)
 
+    except FileNotFoundError as e:
+        outputJSON = fileEntry.get()
+        with open(outputJSON, "w") as f:
+            
+            new = {"Items":[{
+            "name" : title,
+            "clue" : clue,
+            "info" : info,
+            "centre" : [Polygon(inner).centroid.x, Polygon(inner).centroid.y],
+            "inner" : [inner],
+            "outer" : [get_outer(inner, scale_factor)]
+            }]}
+            
+            f.seek(0)
+            
+            json.dump(new, f, indent=1)
+            
+        messagebox.showinfo(
+            "Success!", f"Location added successfully, proceed to {outputJSON}"
+        )
+
     except Exception as e:
-        print(e)
         messagebox.showerror("Error!", "An Error occurred, please try again")
+        raise e.with_traceback(e.__traceback__)
+
+
 
 
 def get_outer(vertices, factor):
@@ -53,7 +112,7 @@ def get_outer(vertices, factor):
 
 
 window = tk.Tk()
-window.geometry("500x500")
+window.geometry("500x520")
 window.title("Add Location")
 
 buildingLabel = tk.Label(window, text="Building Name")
@@ -88,6 +147,15 @@ scaleEntry = tk.Entry(
     width=5,
 )
 scaleEntry.pack(padx=10, pady=5)
+
+frame = tk.Frame(window)
+frame.pack()
+
+newJSON = tk.IntVar()
+newJSONCheck = tk.Checkbutton(frame, text='Add to existing JSON', variable=newJSON, onvalue=1, offvalue=0, command=show_file_entry)
+newJSONCheck.pack()
+
+fileEntry = tk.Entry(frame, text="File to append to")
 
 button = tk.Button(window, text="submit", command=read)
 button.pack(padx=10, pady=5)

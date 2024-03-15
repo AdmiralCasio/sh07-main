@@ -55,6 +55,7 @@ namespace CENSIS.Runtime
         Canvas showClue;
         Canvas startUpOverlay;
         Canvas solutionOverlay;
+        Canvas locationUnavailableOverlay;
 
         #endregion
         
@@ -94,6 +95,9 @@ namespace CENSIS.Runtime
             showClue = GameObject.Find("ShowClue").GetComponent<Canvas>();
             startUpOverlay = GameObject.Find("StartOverlay").GetComponent<Canvas>();
             solutionOverlay = GameObject.Find("SolutionOverlay").GetComponent<Canvas>();
+            locationUnavailableOverlay = GameObject
+                .Find("LocationUnavailableOverlay")
+                .GetComponent<Canvas>();
 
             #endregion
 
@@ -111,6 +115,7 @@ namespace CENSIS.Runtime
             locationFoundOverlay.enabled = false;
             gameCompleteOverlay.enabled = false;
             solutionOverlay.enabled = false;
+            locationUnavailableOverlay.enabled = false;		
 
             #endregion
         }
@@ -124,6 +129,19 @@ namespace CENSIS.Runtime
 
         void Update()
         {
+#if UNITY_EDITOR
+#else
+        if (!Player.CheckUserLocation() && startUpOverlay.enabled == false)
+        {
+            locationUnavailableOverlay.enabled = true;
+        }
+        else
+        {
+            locationUnavailableOverlay.enabled = false;
+        }
+#endif
+
+            // define user, current building, and overlay locations
             var location = Player.GetUserLocation();
             var curr = LocationHandler.GetCurrLocation();
 
