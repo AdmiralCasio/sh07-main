@@ -36,6 +36,9 @@ namespace CENSIS.Runtime
         [SerializeField]
         GameObject[] debugText;
 
+        [SerializeField]
+        TMP_Text[] guideComponents;
+        
         Canvas clueOverlay;
         Canvas locationFoundOverlay;
         Canvas InsideLocationOverlay;
@@ -46,6 +49,7 @@ namespace CENSIS.Runtime
         Canvas restartButton;
         Canvas confirmRestart;
         Canvas solutionOverlay;
+        Canvas gameAid;
         Canvas locationUnavailableOverlay;
 
         private Camera cam;
@@ -87,6 +91,7 @@ namespace CENSIS.Runtime
             gameCompleteOverlay = GameObject.Find("GameCompleteOverlay").GetComponent<Canvas>();
             nextButton = GameObject.Find("Next").GetComponent<Canvas>();
             showClue = GameObject.Find("ShowClue").GetComponent<Canvas>();
+            gameAid = GameObject.Find("GameAidCanvas").GetComponent<Canvas>();
             startUpOverlay = GameObject.Find("StartOverlay").GetComponent<Canvas>();
             solutionOverlay = GameObject.Find("SolutionOverlay").GetComponent<Canvas>();
             locationUnavailableOverlay = GameObject
@@ -105,6 +110,7 @@ namespace CENSIS.Runtime
             nextButton.enabled = false;
             locationFoundOverlay.enabled = false;
             gameCompleteOverlay.enabled = false;
+            gameAid.enabled = false;
             solutionOverlay.enabled = false;
             locationUnavailableOverlay.enabled = false;		
 
@@ -183,7 +189,16 @@ namespace CENSIS.Runtime
             )
             {
                 HideLocationInformation();
-
+                gameAid.enabled = true;
+                int[] toDisplay = LocationVisibility.GetColour(BoundaryBoxes.ConvertToUnityCartesian(curr.centre,origin), cam);
+                foreach (var comp in guideComponents)
+                {
+                    comp.enabled = false;
+                }
+                foreach (int o in toDisplay)
+                {
+                    guideComponents[o].enabled = true;
+                }
                 // on screen debug
                 debugText[0].GetComponent<TMP_Text>().text = "At Location: true";
                 debugText[1].GetComponent<TMP_Text>().text = "Looking at Location : false";
@@ -258,9 +273,11 @@ namespace CENSIS.Runtime
             }
             info.enabled = false;
             title.enabled = false;
+            gameAid.enabled = false;
             title.transform.localScale = defaultInfoTitleScale;
             info.transform.localScale = defaultInfoTitleScale;
             BuildingText.transform.localScale = defaultBuildingTextScale;
+            
         }
 
         private void ShowLocationInformation(Vector3 overlayLocation, Location loc)
@@ -292,6 +309,8 @@ namespace CENSIS.Runtime
             // set text items to correct values
             title.text = loc.name;
             info.text = loc.information;
+            
+            
         }
 
         public void Next()
@@ -315,7 +334,8 @@ namespace CENSIS.Runtime
             title.gameObject.transform.localScale.Scale(scale);
         }
 
-        private void ShowClue()
+        
+        public void ShowClue()
         {
             clueText.text = LocationHandler.GetCurrLocation().clue;
             clueOverlay.enabled = true;
