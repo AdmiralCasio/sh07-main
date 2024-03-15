@@ -20,3 +20,6 @@ If you want to contribute:
 [Visual Studio](https://visualstudio.microsoft.com/downloads/) is the recommended IDE.
 [Unity](https://unity.com/download) for editing the interface.
 
+# Generating documentation
+
+Documentation for the the CENSIS AR App is automatically generated from XML headers in code.
