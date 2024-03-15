@@ -27,6 +27,9 @@ namespace CENSIS.Runtime
         public TMP_Text info;
         public Vector3 origin { get; private set; }
         Vector2 originPreConvert;
+        Vector3 defaultInfoTitleScale;
+        Vector3 defaultBuildingTextScale;
+
 
         [SerializeField] MarkerHandler markerHandler;
 
@@ -43,8 +46,11 @@ namespace CENSIS.Runtime
         Canvas nextButton;
         Canvas showClue;
         Canvas startUpOverlay;
+        Canvas restartButton;
+        Canvas confirmRestart;
         Canvas solutionOverlay;
         Canvas gameAid;
+        Canvas locationUnavailableOverlay;
 
         private Camera cam;
 
@@ -73,6 +79,8 @@ namespace CENSIS.Runtime
             BuildingText.gameObject.SetActive(false);
             title.gameObject.SetActive(false);
             info.gameObject.SetActive(false);
+            defaultInfoTitleScale = title.transform.localScale;
+            defaultBuildingTextScale = BuildingText.transform.localScale;
 
             // get locations from file
             LocationHandler.locations = FileHandler.ReadFromJSON<Location>(filename);
@@ -86,19 +94,27 @@ namespace CENSIS.Runtime
             gameAid = GameObject.Find("GameAidCanvas").GetComponent<Canvas>();
             startUpOverlay = GameObject.Find("StartOverlay").GetComponent<Canvas>();
             solutionOverlay = GameObject.Find("SolutionOverlay").GetComponent<Canvas>();
+            locationUnavailableOverlay = GameObject
+                .Find("LocationUnavailableOverlay")
+                .GetComponent<Canvas>();
 
+            restartButton = GameObject.Find("Restart").GetComponent<Canvas>();
+            confirmRestart = GameObject.Find("RestartOverlay").GetComponent<Canvas>();
             // check if save file exists to check if user has opened the app before
             if (File.Exists(Path.Combine(Application.persistentDataPath, "PlayerData.dat")))
             {
                 startUpOverlay.enabled = false;
             }
+            confirmRestart.enabled = false;
             clueOverlay.enabled = false;
             nextButton.enabled = false;
             locationFoundOverlay.enabled = false;
             gameCompleteOverlay.enabled = false;
             gameAid.enabled = false;
             solutionOverlay.enabled = false;
+            locationUnavailableOverlay.enabled = false;		
 
+            restartButton.enabled = false;
             Debug.Log($"clueOverlay.enabled {clueOverlay.enabled}");
             Debug.Log($"nextButton.enabled {nextButton.enabled}");
         }
@@ -122,6 +138,18 @@ namespace CENSIS.Runtime
 
         void Update()
         {
+#if UNITY_EDITOR
+#else
+        if (!Player.CheckUserLocation() && startUpOverlay.enabled == false)
+        {
+            locationUnavailableOverlay.enabled = true;
+        }
+        else
+        {
+            locationUnavailableOverlay.enabled = false;
+        }
+#endif
+
             // define user, current building, and overlay locations
             var location = Player.GetUserLocation();
             var curr = LocationHandler.GetCurrLocation();
@@ -132,7 +160,9 @@ namespace CENSIS.Runtime
 
             String strOriginPreConvert = originPreConvert.ToString("N8");
             String strOriginConverted = origin.ToString("N8");
-
+            float distanceFromOverlay = Vector3.Distance(cam.transform.position, overlayLocation);
+            float scale = distanceFromOverlay / 5;
+            
             debugText[2].GetComponent<TMP_Text>().text =
                 "dist from location:"
                 + Math.Abs(cam.transform.position.x - overlayLocation.x)
@@ -179,6 +209,12 @@ namespace CENSIS.Runtime
             // check if user is both in and looking at location
             if (LocationValidator.LookingAtLocation(location, curr, origin))
             {
+                if (!BuildingText.gameObject.activeSelf)
+                {
+                    BuildingText.transform.LookAt(Camera.main.transform.position);
+                    BuildingText.transform.forward = -BuildingText.transform.forward;
+                    ScaleText(new Vector3(scale,scale,1));
+                }
                 ShowLocationInformation(overlayLocation, curr);
 
                 // on screen debug
@@ -199,7 +235,7 @@ namespace CENSIS.Runtime
                 // on screen debug
                 debugText[0].GetComponent<TMP_Text>().text = "At Location: false";
                 debugText[1].GetComponent<TMP_Text>().text = "Looking at Location : false";
-                Debug.Log($"Game Script: Not at {curr.name}");
+                // Debug.Log($"Game Script: Not at {curr.name}");
                 locationFoundOverlay.enabled = false;
                 InsideLocationOverlay.enabled = false;
             }
@@ -230,9 +266,18 @@ namespace CENSIS.Runtime
         private void HideLocationInformation()
         {
             BuildingText.gameObject.SetActive(false);
+            int children = BuildingText.transform.childCount;
+            for (int i = 0; i < children; i++)
+            {
+                BuildingText.transform.GetChild(i).gameObject.SetActive(false);
+            }
             info.enabled = false;
             title.enabled = false;
             gameAid.enabled = false;
+            title.transform.localScale = defaultInfoTitleScale;
+            info.transform.localScale = defaultInfoTitleScale;
+            BuildingText.transform.localScale = defaultBuildingTextScale;
+            
         }
 
         private void ShowLocationInformation(Vector3 overlayLocation, Location loc)
@@ -248,10 +293,16 @@ namespace CENSIS.Runtime
                     overlayLocation.z
                 );
             }
+            
             BuildingText.transform.position = overlayLocation;
 
             // toggle game object states
             BuildingText.gameObject.SetActive(true);
+            int children = BuildingText.transform.childCount;
+            for (int i = 0; i < children; i++)
+            {
+                BuildingText.transform.GetChild(i).gameObject.SetActive(true);
+            }
             info.enabled = true;
             title.enabled = true;
 
@@ -270,13 +321,17 @@ namespace CENSIS.Runtime
             }
             else
             {
-                // switch to next location
                 LocationHandler.NextLocation();
-                // show clue
                 ShowClue();
                 nextButton.enabled = false;
                 showClue.enabled = true;
             }
+        }
+        private void ScaleText(Vector3 scale)
+        {
+            BuildingText.transform.localScale.Scale(scale);
+            info.gameObject.transform.localScale.Scale(scale);
+            title.gameObject.transform.localScale.Scale(scale);
         }
 
         
@@ -289,7 +344,6 @@ namespace CENSIS.Runtime
         public void CloseClue()
         {
             clueOverlay.enabled = false;
-            Debug.Log($"clueOverlay.enabled {clueOverlay.enabled}");
         }
 
         public void CloseStartUpPopUp()
@@ -308,11 +362,37 @@ namespace CENSIS.Runtime
             solutionOverlay.enabled = false;
         }
 
+        public void ShowRestartConfirmation()
+        {
+            gameCompleteOverlay.enabled = false;
+            confirmRestart.enabled = true;
+        }
+
+        public void CancelRestart()
+        {
+            confirmRestart.enabled = false;
+        }
+
+        public void ConfirmRestart()
+        {
+            LocationHandler.Restart();
+            restartButton.enabled = false;
+            confirmRestart.enabled = false;
+            showClue.enabled = true;
+            ShowClue();
+        }
+
         void GameWon()
         {
-            // display congratulations
-            Debug.Log("Game finished, well done");
             gameCompleteOverlay.enabled = true;
+            showClue.enabled = false;
+            nextButton.enabled = false;
+            restartButton.enabled = true;
+        }
+
+        public void CloseGameCompleteOverlay()
+        {
+            gameCompleteOverlay.enabled = false;
         }
     }
 }
