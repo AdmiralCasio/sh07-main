@@ -17,7 +17,8 @@ namespace CENSIS.Runtime
     {
         [SerializeField]
         string filename;
-
+        [SerializeField]
+        TextMeshProUGUI solutionText;
         [SerializeField]
         TextMeshProUGUI clueText;
         Component text;
@@ -30,6 +31,8 @@ namespace CENSIS.Runtime
         Vector3 defaultBuildingTextScale;
 
 
+        [SerializeField] MarkerHandler markerHandler;
+
         [SerializeField]
         GameObject[] debugText;
 
@@ -40,6 +43,7 @@ namespace CENSIS.Runtime
         Canvas nextButton;
         Canvas showClue;
         Canvas startUpOverlay;
+        Canvas solutionOverlay;
 
         private Camera cam;
 
@@ -81,6 +85,8 @@ namespace CENSIS.Runtime
             nextButton = GameObject.Find("Next").GetComponent<Canvas>();
             showClue = GameObject.Find("ShowClue").GetComponent<Canvas>();
             startUpOverlay = GameObject.Find("StartOverlay").GetComponent<Canvas>();
+            solutionOverlay = GameObject.Find("SolutionOverlay").GetComponent<Canvas>();
+
             // check if save file exists to check if user has opened the app before
             if (File.Exists(Path.Combine(Application.persistentDataPath, "PlayerData.dat")))
             {
@@ -90,6 +96,8 @@ namespace CENSIS.Runtime
             nextButton.enabled = false;
             locationFoundOverlay.enabled = false;
             gameCompleteOverlay.enabled = false;
+            solutionOverlay.enabled = false;
+
             Debug.Log($"clueOverlay.enabled {clueOverlay.enabled}");
             Debug.Log($"nextButton.enabled {nextButton.enabled}");
         }
@@ -101,6 +109,7 @@ namespace CENSIS.Runtime
                 $"Location name: {LocationHandler.GetCurrLocation().name}, Building info: {LocationHandler.GetCurrLocation().information}"
             );
             // show next button
+            markerHandler.AddMarker(LocationHandler.GetCurrLocation());
             nextButton.enabled = true;
             showClue.enabled = false;
         }
@@ -300,6 +309,17 @@ namespace CENSIS.Runtime
         public void CloseStartUpPopUp()
         {
             startUpOverlay.enabled = false;
+        }
+        public void ShowSolution()
+        {
+            solutionOverlay.enabled = true;
+            clueOverlay.enabled = false;
+            solutionText.text = "You are looking for the " + 	LocationHandler.GetCurrLocation().name;
+        }
+        
+        public void CloseSolution()
+        {
+            solutionOverlay.enabled = false;
         }
 
         void GameWon()
