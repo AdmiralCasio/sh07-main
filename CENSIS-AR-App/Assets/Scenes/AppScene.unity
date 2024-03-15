@@ -7781,7 +7781,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1217091920}
         m_TargetAssemblyTypeName: CENSIS.Runtime.MapManager, NewAssembly
         m_MethodName: ReCentre
         m_Mode: 1
@@ -12718,7 +12718,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1217091920}
         m_TargetAssemblyTypeName: CENSIS.Runtime.MapManager, NewAssembly
         m_MethodName: ReCentre
         m_Mode: 1
