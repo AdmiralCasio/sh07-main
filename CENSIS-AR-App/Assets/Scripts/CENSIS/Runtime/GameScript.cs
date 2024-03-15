@@ -27,6 +27,9 @@ namespace CENSIS.Runtime
         public TMP_Text info;
         public Vector3 origin { get; private set; }
         Vector2 originPreConvert;
+        Vector3 defaultInfoTitleScale;
+        Vector3 defaultBuildingTextScale;
+
 
         [SerializeField] MarkerHandler markerHandler;
 
@@ -70,6 +73,8 @@ namespace CENSIS.Runtime
             BuildingText.gameObject.SetActive(false);
             title.gameObject.SetActive(false);
             info.gameObject.SetActive(false);
+            defaultInfoTitleScale = title.transform.localScale;
+            defaultBuildingTextScale = BuildingText.transform.localScale;
 
             // get locations from file
             LocationHandler.locations = FileHandler.ReadFromJSON<Location>(filename);
@@ -143,7 +148,9 @@ namespace CENSIS.Runtime
 
             String strOriginPreConvert = originPreConvert.ToString("N8");
             String strOriginConverted = origin.ToString("N8");
-
+            float distanceFromOverlay = Vector3.Distance(cam.transform.position, overlayLocation);
+            float scale = distanceFromOverlay / 5;
+            
             debugText[2].GetComponent<TMP_Text>().text =
                 "dist from location:"
                 + Math.Abs(cam.transform.position.x - overlayLocation.x)
@@ -181,6 +188,12 @@ namespace CENSIS.Runtime
             // check if user is both in and looking at location
             if (LocationValidator.LookingAtLocation(location, curr, origin))
             {
+                if (!BuildingText.gameObject.activeSelf)
+                {
+                    BuildingText.transform.LookAt(Camera.main.transform.position);
+                    BuildingText.transform.forward = -BuildingText.transform.forward;
+                    ScaleText(new Vector3(scale,scale,1));
+                }
                 ShowLocationInformation(overlayLocation, curr);
 
                 // on screen debug
@@ -232,8 +245,16 @@ namespace CENSIS.Runtime
         private void HideLocationInformation()
         {
             BuildingText.gameObject.SetActive(false);
+            int children = BuildingText.transform.childCount;
+            for (int i = 0; i < children; i++)
+            {
+                BuildingText.transform.GetChild(i).gameObject.SetActive(false);
+            }
             info.enabled = false;
             title.enabled = false;
+            title.transform.localScale = defaultInfoTitleScale;
+            info.transform.localScale = defaultInfoTitleScale;
+            BuildingText.transform.localScale = defaultBuildingTextScale;
         }
 
         private void ShowLocationInformation(Vector3 overlayLocation, Location loc)
@@ -249,10 +270,16 @@ namespace CENSIS.Runtime
                     overlayLocation.z
                 );
             }
+            
             BuildingText.transform.position = overlayLocation;
 
             // toggle game object states
             BuildingText.gameObject.SetActive(true);
+            int children = BuildingText.transform.childCount;
+            for (int i = 0; i < children; i++)
+            {
+                BuildingText.transform.GetChild(i).gameObject.SetActive(true);
+            }
             info.enabled = true;
             title.enabled = true;
 
@@ -276,6 +303,12 @@ namespace CENSIS.Runtime
                 nextButton.enabled = false;
                 showClue.enabled = true;
             }
+        }
+        private void ScaleText(Vector3 scale)
+        {
+            BuildingText.transform.localScale.Scale(scale);
+            info.gameObject.transform.localScale.Scale(scale);
+            title.gameObject.transform.localScale.Scale(scale);
         }
 
         private void ShowClue()
