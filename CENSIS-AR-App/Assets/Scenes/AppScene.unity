@@ -7358,7 +7358,7 @@ GameObject:
   - component: {fileID: 1136225149}
   - component: {fileID: 1136225148}
   m_Layer: 5
-  m_Name: CancelButton
+  m_Name: RestartCancelButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8884,7 +8884,7 @@ GameObject:
   - component: {fileID: 1306983167}
   - component: {fileID: 1306983166}
   m_Layer: 5
-  m_Name: ConfirmButton
+  m_Name: RestartConfirmButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
