@@ -1,3 +1,4 @@
+using System;
 using System.Net.Security;
 using Mapbox.Unity.Location;
 using Mapbox.Utils;
@@ -7,6 +8,7 @@ namespace CENSIS.Runtime
 {
     public static class Player
     {
+        /// <returns>The current GPS location of the user's device</returns>
         public static Vector2 GetUserLocation()
         {
             return Vector2dToVector2(
@@ -18,6 +20,7 @@ namespace CENSIS.Runtime
             );
         }
 
+        /// <returns>The current compass heading of the user's device</returns>
         public static float GetUserDirection()
         {
             return LocationProviderFactory
@@ -30,6 +33,34 @@ namespace CENSIS.Runtime
         private static Vector2 Vector2dToVector2(Vector2d vector2D)
         {
             return new Vector2((float)vector2D.x, (float)vector2D.y);
+        }
+        
+        public static bool CheckUserLocation()
+        {
+            var currLocation = LocationProviderFactory.Instance.DefaultLocationProvider.CurrentLocation;
+            Debug.Log(
+                "GPS: time diff:" + (ConvertToUnixTimestamp(DateTime.Now) - currLocation.Timestamp)
+            );
+            Debug.Log(
+                "GPS: curloctime:"
+                + currLocation.Timestamp
+                + "time:"
+                + ConvertToUnixTimestamp(DateTime.Now)
+            );
+            if (
+                (currLocation.IsLocationServiceEnabled || currLocation.IsLocationServiceInitializing)
+                && ConvertToUnixTimestamp(DateTime.Now) - currLocation.Timestamp < 10
+            )
+                return true;
+            else
+                return false;
+        }
+
+        private static double ConvertToUnixTimestamp(DateTime date)
+        {
+            DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+            TimeSpan diff = date.ToUniversalTime() - origin;
+            return diff.TotalSeconds;
         }
     }
 }

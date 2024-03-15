@@ -17,7 +17,8 @@ namespace CENSIS.Runtime
     {
         [SerializeField]
         string filename;
-
+        [SerializeField]
+        TextMeshProUGUI solutionText;
         [SerializeField]
         TextMeshProUGUI clueText;
         Component text;
@@ -26,6 +27,11 @@ namespace CENSIS.Runtime
         public TMP_Text info;
         public Vector3 origin { get; private set; }
         Vector2 originPreConvert;
+        Vector3 defaultInfoTitleScale;
+        Vector3 defaultBuildingTextScale;
+
+
+        [SerializeField] MarkerHandler markerHandler;
 
         [SerializeField]
         GameObject[] debugText;
@@ -39,6 +45,8 @@ namespace CENSIS.Runtime
         Canvas startUpOverlay;
         Canvas restartButton;
         Canvas confirmRestart;
+        Canvas solutionOverlay;
+        Canvas locationUnavailableOverlay;
 
         private Camera cam;
 
@@ -67,6 +75,8 @@ namespace CENSIS.Runtime
             BuildingText.gameObject.SetActive(false);
             title.gameObject.SetActive(false);
             info.gameObject.SetActive(false);
+            defaultInfoTitleScale = title.transform.localScale;
+            defaultBuildingTextScale = BuildingText.transform.localScale;
 
             // get locations from file
             LocationHandler.locations = FileHandler.ReadFromJSON<Location>(filename);
@@ -78,6 +88,11 @@ namespace CENSIS.Runtime
             nextButton = GameObject.Find("Next").GetComponent<Canvas>();
             showClue = GameObject.Find("ShowClue").GetComponent<Canvas>();
             startUpOverlay = GameObject.Find("StartOverlay").GetComponent<Canvas>();
+            solutionOverlay = GameObject.Find("SolutionOverlay").GetComponent<Canvas>();
+            locationUnavailableOverlay = GameObject
+                .Find("LocationUnavailableOverlay")
+                .GetComponent<Canvas>();
+
             restartButton = GameObject.Find("Restart").GetComponent<Canvas>();
             confirmRestart = GameObject.Find("RestartOverlay").GetComponent<Canvas>();
             // check if save file exists to check if user has opened the app before
@@ -90,6 +105,9 @@ namespace CENSIS.Runtime
             nextButton.enabled = false;
             locationFoundOverlay.enabled = false;
             gameCompleteOverlay.enabled = false;
+            solutionOverlay.enabled = false;
+            locationUnavailableOverlay.enabled = false;		
+
             Debug.Log($"clueOverlay.enabled {clueOverlay.enabled}");
             Debug.Log($"nextButton.enabled {nextButton.enabled}");
         }
@@ -101,6 +119,7 @@ namespace CENSIS.Runtime
                 $"Location name: {LocationHandler.GetCurrLocation().name}, Building info: {LocationHandler.GetCurrLocation().information}"
             );
             // show next button
+            markerHandler.AddMarker(LocationHandler.GetCurrLocation());
             nextButton.enabled = true;
             showClue.enabled = false;
         }
@@ -112,6 +131,18 @@ namespace CENSIS.Runtime
 
         void Update()
         {
+#if UNITY_EDITOR
+#else
+        if (!Player.CheckUserLocation() && startUpOverlay.enabled == false)
+        {
+            locationUnavailableOverlay.enabled = true;
+        }
+        else
+        {
+            locationUnavailableOverlay.enabled = false;
+        }
+#endif
+
             // define user, current building, and overlay locations
             var location = Player.GetUserLocation();
             var curr = LocationHandler.GetCurrLocation();
@@ -122,7 +153,9 @@ namespace CENSIS.Runtime
 
             String strOriginPreConvert = originPreConvert.ToString("N8");
             String strOriginConverted = origin.ToString("N8");
-
+            float distanceFromOverlay = Vector3.Distance(cam.transform.position, overlayLocation);
+            float scale = distanceFromOverlay / 5;
+            
             debugText[2].GetComponent<TMP_Text>().text =
                 "dist from location:"
                 + Math.Abs(cam.transform.position.x - overlayLocation.x)
@@ -160,6 +193,12 @@ namespace CENSIS.Runtime
             // check if user is both in and looking at location
             if (LocationValidator.LookingAtLocation(location, curr, origin))
             {
+                if (!BuildingText.gameObject.activeSelf)
+                {
+                    BuildingText.transform.LookAt(Camera.main.transform.position);
+                    BuildingText.transform.forward = -BuildingText.transform.forward;
+                    ScaleText(new Vector3(scale,scale,1));
+                }
                 ShowLocationInformation(overlayLocation, curr);
 
                 // on screen debug
@@ -211,8 +250,16 @@ namespace CENSIS.Runtime
         private void HideLocationInformation()
         {
             BuildingText.gameObject.SetActive(false);
+            int children = BuildingText.transform.childCount;
+            for (int i = 0; i < children; i++)
+            {
+                BuildingText.transform.GetChild(i).gameObject.SetActive(false);
+            }
             info.enabled = false;
             title.enabled = false;
+            title.transform.localScale = defaultInfoTitleScale;
+            info.transform.localScale = defaultInfoTitleScale;
+            BuildingText.transform.localScale = defaultBuildingTextScale;
         }
 
         private void ShowLocationInformation(Vector3 overlayLocation, Location loc)
@@ -228,10 +275,16 @@ namespace CENSIS.Runtime
                     overlayLocation.z
                 );
             }
+            
             BuildingText.transform.position = overlayLocation;
 
             // toggle game object states
             BuildingText.gameObject.SetActive(true);
+            int children = BuildingText.transform.childCount;
+            for (int i = 0; i < children; i++)
+            {
+                BuildingText.transform.GetChild(i).gameObject.SetActive(true);
+            }
             info.enabled = true;
             title.enabled = true;
 
@@ -256,6 +309,12 @@ namespace CENSIS.Runtime
                 showClue.enabled = true;
             }
         }
+        private void ScaleText(Vector3 scale)
+        {
+            BuildingText.transform.localScale.Scale(scale);
+            info.gameObject.transform.localScale.Scale(scale);
+            title.gameObject.transform.localScale.Scale(scale);
+        }
 
         private void ShowClue()
         {
@@ -272,6 +331,17 @@ namespace CENSIS.Runtime
         public void CloseStartUpPopUp()
         {
             startUpOverlay.enabled = false;
+        }
+        public void ShowSolution()
+        {
+            solutionOverlay.enabled = true;
+            clueOverlay.enabled = false;
+            solutionText.text = "You are looking for the " + 	LocationHandler.GetCurrLocation().name;
+        }
+        
+        public void CloseSolution()
+        {
+            solutionOverlay.enabled = false;
         }
 
         public void ShowRestart()

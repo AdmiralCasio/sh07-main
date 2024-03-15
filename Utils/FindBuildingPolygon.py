@@ -42,4 +42,3 @@ def getVectors(url):
         print(type(error).__name__, error)
 
 
-getVectors("https://www.openstreetmap.org/relation/11951")
