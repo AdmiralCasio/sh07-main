@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44402185, g: 0.49316466, b: 0.57223153, a: 1}
+  m_IndirectSpecularColor: {r: 0.44402185, g: 0.49316472, b: 0.57223153, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -5438,12 +5438,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   filename: LocationInformation
-  solutionText: {fileID: 0}
+  solutionText: {fileID: 1271521658}
   clueText: {fileID: 1306901233}
   BuildingText: {fileID: 295379840}
   title: {fileID: 237439878}
   info: {fileID: 1156712921}
-  markerHandler: {fileID: 0}
+  markerHandler: {fileID: 1217091918}
   debugText:
   - {fileID: 86851918}
   - {fileID: 1228576810}
