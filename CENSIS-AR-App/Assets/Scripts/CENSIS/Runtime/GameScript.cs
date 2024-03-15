@@ -43,6 +43,8 @@ namespace CENSIS.Runtime
         Canvas nextButton;
         Canvas showClue;
         Canvas startUpOverlay;
+        Canvas restartButton;
+        Canvas confirmRestart;
         Canvas solutionOverlay;
         Canvas locationUnavailableOverlay;
 
@@ -91,11 +93,14 @@ namespace CENSIS.Runtime
                 .Find("LocationUnavailableOverlay")
                 .GetComponent<Canvas>();
 
+            restartButton = GameObject.Find("Restart").GetComponent<Canvas>();
+            confirmRestart = GameObject.Find("RestartOverlay").GetComponent<Canvas>();
             // check if save file exists to check if user has opened the app before
             if (File.Exists(Path.Combine(Application.persistentDataPath, "PlayerData.dat")))
             {
                 startUpOverlay.enabled = false;
             }
+            confirmRestart.enabled = false;
             clueOverlay.enabled = false;
             nextButton.enabled = false;
             locationFoundOverlay.enabled = false;
@@ -103,6 +108,7 @@ namespace CENSIS.Runtime
             solutionOverlay.enabled = false;
             locationUnavailableOverlay.enabled = false;		
 
+            restartButton.enabled = false;
             Debug.Log($"clueOverlay.enabled {clueOverlay.enabled}");
             Debug.Log($"nextButton.enabled {nextButton.enabled}");
         }
@@ -214,7 +220,7 @@ namespace CENSIS.Runtime
                 // on screen debug
                 debugText[0].GetComponent<TMP_Text>().text = "At Location: false";
                 debugText[1].GetComponent<TMP_Text>().text = "Looking at Location : false";
-                Debug.Log($"Game Script: Not at {curr.name}");
+                // Debug.Log($"Game Script: Not at {curr.name}");
                 locationFoundOverlay.enabled = false;
                 InsideLocationOverlay.enabled = false;
             }
@@ -296,9 +302,7 @@ namespace CENSIS.Runtime
             }
             else
             {
-                // switch to next location
                 LocationHandler.NextLocation();
-                // show clue
                 ShowClue();
                 nextButton.enabled = false;
                 showClue.enabled = true;
@@ -320,7 +324,6 @@ namespace CENSIS.Runtime
         public void CloseClue()
         {
             clueOverlay.enabled = false;
-            Debug.Log($"clueOverlay.enabled {clueOverlay.enabled}");
         }
 
         public void CloseStartUpPopUp()
@@ -339,11 +342,37 @@ namespace CENSIS.Runtime
             solutionOverlay.enabled = false;
         }
 
+        public void ShowRestartConfirmation()
+        {
+            gameCompleteOverlay.enabled = false;
+            confirmRestart.enabled = true;
+        }
+
+        public void CancelRestart()
+        {
+            confirmRestart.enabled = false;
+        }
+
+        public void ConfirmRestart()
+        {
+            LocationHandler.Restart();
+            restartButton.enabled = false;
+            confirmRestart.enabled = false;
+            showClue.enabled = true;
+            ShowClue();
+        }
+
         void GameWon()
         {
-            // display congratulations
-            Debug.Log("Game finished, well done");
             gameCompleteOverlay.enabled = true;
+            showClue.enabled = false;
+            nextButton.enabled = false;
+            restartButton.enabled = true;
+        }
+
+        public void CloseGameCompleteOverlay()
+        {
+            gameCompleteOverlay.enabled = false;
         }
     }
 }
