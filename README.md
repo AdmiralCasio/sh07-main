@@ -78,7 +78,7 @@ An example of information text being displayed for the ARC Building on the UofG 
 
 The app requires permission to access your location and camera to function properly. If these are not granted, you will be warned and the app will not function as intended.
 
-To visit a location, you must move to within a geofenced area which surrounds it. If you then look at the building, using the visual aids to help you find the right place to look, you will be able to read, and interact with, historical information about the location displayed using AR.
+To visit a location, you must move to within a geofenced area which surrounds it. If you then look at the building, using the visual aids on the screen to help you find the right place to look, you will be able to read, and interact with, historical information about the location displayed using AR. In order to interact with the AR text you first need to tap it and then pinch to scale the text. You can also rotate it by performing a rotating motion with two fingers.
 
 The app also contains a map to help you navigate around the area you're hunting in and keeps track of locations you've already visited, helping you get back to them if you want to read the information again.
 
