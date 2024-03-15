@@ -7,7 +7,7 @@ namespace CENSIS.Utility
     public static class BoundaryBoxes
     {
         /// <summary>
-        /// Determines whether GPS cooridnate <paramref name="point"/> is in <paramref name="polygon"/> expressed in GPS coordinates
+        /// Determines whether GPS coordinate <paramref name="point"/> is in <paramref name="polygon"/> expressed in GPS coordinates
         /// </summary>
         /// <param name="point">the point to test</param>
         /// <param name="polygon">the polygon being tested</param>
@@ -114,20 +114,6 @@ namespace CENSIS.Utility
             return inside;
         }
         
-        /// <summary>
-        /// Converts the array of GPS coordinates <paramref name="latlongs"/> to Unity world space coordinates
-        /// </summary>
-        /// <param name="latlongs">the GPS coordinates to convert</param>
-        /// <returns>The array of GPS coordinates <paramref name="latlongs"/> as a an array of <see cref="Vector2"/> in Unity world space</returns>
-        public static Vector2[] ConvertToCartesian(Vector2[] latlongs)
-        {
-            List<Vector2> carts = new List<Vector2>();
-            foreach (Vector2 latlong in latlongs)
-            {
-                carts.Add(ConvertToCartesian(latlong));
-            }
-            return carts.ToArray();
-        }
         /// <summary>
         /// Converts the array of GPS coordinates <paramref name="latLong"/> to Unity world space coordinates
         /// </summary>

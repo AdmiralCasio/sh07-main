@@ -26,6 +26,9 @@ namespace CENSIS.Runtime
         [SerializeField] 
         MarkerHandler markerHandler;
         
+        [SerializeField]
+        TMP_Text[] guideComponents;
+        
         #endregion
 
         #region InfoOverlay
@@ -47,8 +50,6 @@ namespace CENSIS.Runtime
 
         #region Canvases
 
-        [SerializeField]
-        TMP_Text[] guideComponents;
         
         Canvas clueOverlay;
         Canvas locationFoundOverlay;
@@ -108,7 +109,7 @@ namespace CENSIS.Runtime
 
             restartButton = GameObject.Find("Restart").GetComponent<Canvas>();
             confirmRestart = GameObject.Find("RestartOverlay").GetComponent<Canvas>();
-            // check if save file exists to check if user has opened the app before
+            
             #endregion
 
 
@@ -171,7 +172,7 @@ namespace CENSIS.Runtime
             {
                 HideLocationInformation();
                 gameAid.enabled = true;
-                int[] toDisplay = LocationVisibility.GetColour(BoundaryBoxes.ConvertToUnityCartesian(curr.centre,origin), cam);
+                var toDisplay = LocationVisibility.GetColour(BoundaryBoxes.ConvertToUnityCartesian(curr.centre,origin), cam);
                 foreach (var comp in guideComponents)
                 {
                     comp.enabled = false;

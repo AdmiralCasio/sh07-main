@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace CENSIS.Utility
@@ -27,7 +26,7 @@ namespace CENSIS.Utility
                    && screenPoint.z > 0;
         }
 
-        public static int[] GetColour(Vector3 target, Camera camera)
+        public static IEnumerable<int> GetColour(Vector3 target, Camera camera)
         {
             Vector3 screenPoint = camera.WorldToViewportPoint(target);
             int[] array;
