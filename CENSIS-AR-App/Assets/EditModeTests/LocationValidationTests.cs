@@ -68,7 +68,7 @@ namespace EditModeTests
             cam.transform.position = BoundaryBoxes.ConvertToUnityCartesian(playerLoc, origin);
             loc.centre = new Vector2(55.68286f, -4.51571f);
             cam.transform.LookAt(BoundaryBoxes.ConvertToUnityCartesian(loc.centre, origin));
-            Assert.IsTrue(LocationValidator.LookingAtLocation(playerLoc, loc, origin));
+            Assert.IsTrue(LocationValidator.LookingAtLocation(playerLoc, loc, origin, cam));
         }
     
         [Test]
@@ -80,7 +80,7 @@ namespace EditModeTests
             cam.transform.position = BoundaryBoxes.ConvertToUnityCartesian(playerLoc, origin);
             loc.centre = new Vector2(55.68286f, -4.51571f);
             cam.transform.LookAt(-loc.centre);
-            Assert.IsFalse(LocationValidator.LookingAtLocation(playerLoc, loc, origin));
+            Assert.IsFalse(LocationValidator.LookingAtLocation(playerLoc, loc, origin, cam));
         }
     
         [Test]
@@ -92,7 +92,7 @@ namespace EditModeTests
             cam.transform.position = playerLoc;
             loc.centre = new Vector2(55.68286f, -4.51571f);
             cam.transform.LookAt(loc.centre);
-            Assert.IsFalse(LocationValidator.LookingAtLocation(playerLoc, loc, origin));
+            Assert.IsFalse(LocationValidator.LookingAtLocation(playerLoc, loc, origin, cam));
         }
 
         [Test]
@@ -104,7 +104,7 @@ namespace EditModeTests
             cam.transform.position = playerLoc;
             loc.centre = new Vector2(55.68286f, -4.51571f);
             cam.transform.LookAt(loc.centre);
-            Assert.IsFalse(LocationValidator.LookingAtLocation(playerLoc, loc, origin));
+            Assert.IsFalse(LocationValidator.LookingAtLocation(playerLoc, loc, origin, cam));
         }
     }
 }

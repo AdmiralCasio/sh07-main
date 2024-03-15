@@ -147,8 +147,10 @@ namespace PlayModeTests
             );
             Button nextButton = GameObject.Find("NextButton").GetComponent<Button>();
             nextButton.onClick.Invoke();
-            // test overlay
             Assert.IsTrue(GetCanvas("GameCompleteOverlay").enabled);
+            Assert.IsFalse(GetCanvas("ShowClue").enabled);
+            Assert.IsFalse(GetCanvas("Next").enabled);
+            Assert.IsTrue(GetCanvas("Restart").enabled);
     
             yield return null;
         }
@@ -172,221 +174,220 @@ namespace PlayModeTests
             solutionOverlay.enabled = true;
             Button closeButton = GameObject.Find("SolutionCloseButton").GetComponent<Button>();
             closeButton.onClick.Invoke();
-            Assert.False(solutionOverlay.enabled);
-            
-            yield return null;
-        }
-    
-        [UnityTest]
-        public IEnumerator Start_FirstStart_LocationsPopulatedShowClueButtonAndStartOverlay()
+            Assert.False(solutionOverlay.enabled);yield return null;
+    }
+
+    [UnityTest]
+    public IEnumerator Start_FirstStart_LocationsPopulatedShowClueButtonAndStartOverlay()
+    {
+        string saveFilePath = Path.Combine(Application.persistentDataPath, "PlayerData.dat");
+        if (File.Exists(saveFilePath))
         {
-            string saveFilePath = Path.Combine(Application.persistentDataPath, "PlayerData.dat");
-            if (File.Exists(saveFilePath))
-            {
-                File.Delete(saveFilePath);
-            }
-    
-            yield return null;
-    
-            Assert.IsTrue(LocationHandler.locations.Count > 0);
-            Assert.IsFalse(GetCanvas("ClueOverlay").enabled);
-            Assert.IsFalse(GetCanvas("Next").enabled);
-            Assert.IsTrue(GetCanvas("ShowClue").enabled);
-            Assert.IsTrue(GetCanvas("StartOverlay").enabled);
-    
-            yield return null;
+            File.Delete(saveFilePath);
         }
-    
-        [UnityTest]
-        public IEnumerator Start_NotFirstStart_LocationsPopulatedShowClueButtonNoStartOverlay()
-        {
-            
-            Button nextButton = GameObject.Find("NextButton").GetComponent<Button>();
-            nextButton.onClick.Invoke();
-    
-            SceneManager.LoadScene("Assets/Scenes/AppScene.unity");
-            yield return null;
-    
-            Assert.IsTrue(LocationHandler.locations.Count > 0);
-            Assert.IsFalse(GetCanvas("ClueOverlay").enabled);
-            Assert.IsFalse(GetCanvas("Next").enabled);
-            Assert.IsTrue(GetCanvas("ShowClue").enabled);
-            Assert.IsFalse(GetCanvas("StartOverlay").enabled);
-    
-            yield return null;
-        }
-    
-        [UnityTest]
-        public IEnumerator Update_NotAtPreviousLocation_NoTextDisplayed()
-        {
-            GameScript gameScript = GameObject.Find("GameScriptObject").GetComponent<GameScript>();
-    
-            gameScript.LocationFound();
-            gameScript.Next();
-    
-            #region
-            editorLocation.SetPositionAndRotation(
-                Conversions
-                    .GeoToWorldPosition(new Vector2d(5, 43), map.CenterMercator, map.WorldRelativeScale)
-                    .ToVector3xz(),
-                Quaternion.identity
+
+        yield return null;
+
+        Assert.IsTrue(LocationHandler.locations.Count > 0);
+        Assert.IsFalse(GetCanvas("ClueOverlay").enabled);
+        Assert.IsFalse(GetCanvas("Next").enabled);
+        Assert.IsTrue(GetCanvas("ShowClue").enabled);
+        Assert.IsTrue(GetCanvas("StartOverlay").enabled);
+
+        yield return null;
+    }
+
+    [UnityTest]
+    public IEnumerator Start_NotFirstStart_LocationsPopulatedShowClueButtonNoStartOverlay()
+    {
+        
+        Button nextButton = GameObject.Find("NextButton").GetComponent<Button>();
+        nextButton.onClick.Invoke();
+
+        SceneManager.LoadScene("Assets/Scenes/AppScene.unity");
+        yield return null;
+
+        Assert.IsTrue(LocationHandler.locations.Count > 0);
+        Assert.IsFalse(GetCanvas("ClueOverlay").enabled);
+        Assert.IsFalse(GetCanvas("Next").enabled);
+        Assert.IsTrue(GetCanvas("ShowClue").enabled);
+        Assert.IsFalse(GetCanvas("StartOverlay").enabled);
+
+        yield return null;
+    }
+
+    [UnityTest]
+    public IEnumerator Update_NotAtPreviousLocation_NoTextDisplayed()
+    {
+        GameScript gameScript = GameObject.Find("GameScriptObject").GetComponent<GameScript>();
+
+        gameScript.LocationFound();
+        gameScript.Next();
+
+        #region
+        editorLocation.SetPositionAndRotation(
+            Conversions
+                .GeoToWorldPosition(new Vector2d(5, 43), map.CenterMercator, map.WorldRelativeScale)
+                .ToVector3xz(),
+            Quaternion.identity
             );
-            var lp = (TransformLocationProvider)
-                LocationProviderFactory.Instance.DefaultLocationProvider;
-            lp.TargetTransform = editorLocation;
-            lp.SendLocationEvent();
-            #endregion
-    
-            var location = LocationHandler.locations.Find(location =>
-                location.name == "Sir Alwyn Williams"
+        var lp = (TransformLocationProvider)
+            LocationProviderFactory.Instance.DefaultLocationProvider;
+        lp.TargetTransform = editorLocation;
+        lp.SendLocationEvent();
+        #endregion
+
+        var location = LocationHandler.locations.Find(location =>
+            location.name == "Sir Alwyn Williams"
+        );
+
+        yield return null;
+
+        Assert.IsFalse(gameScript.BuildingText.activeSelf);
+        Assert.IsFalse(gameScript.info.enabled);
+        Assert.IsFalse(gameScript.title.enabled);
+    }
+
+    [UnityTest]
+    public IEnumerator Update_AtPreviousLocation_TextDisplayed()
+    {
+        GameScript gameScript = GameObject.Find("GameScriptObject").GetComponent<GameScript>();
+
+        gameScript.LocationFound();
+        gameScript.Next();
+
+        #region
+        editorLocation.SetPositionAndRotation(
+            Conversions
+                .GeoToWorldPosition(
+                    new Vector2d(55.87389437464513, -4.292198433520163),
+                    map.CenterMercator,
+                    map.WorldRelativeScale
+                )
+                .ToVector3xz(),
+            Quaternion.identity
+        
+            );var lp = (TransformLocationProvider)
+            LocationProviderFactory.Instance.DefaultLocationProvider;
+        lp.TargetTransform = editorLocation;
+        lp.SendLocationEvent();
+        #endregion
+
+        var location = LocationHandler.locations.Find(location =>
+            location.name == "Sir Alwyn Williams"
             );
-    
-            yield return null;
-    
-            Assert.IsFalse(gameScript.BuildingText.activeSelf);
-            Assert.IsFalse(gameScript.info.enabled);
-            Assert.IsFalse(gameScript.title.enabled);
-        }
-    
-        [UnityTest]
-        public IEnumerator Update_AtPreviousLocation_TextDisplayed()
-        {
-            GameScript gameScript = GameObject.Find("GameScriptObject").GetComponent<GameScript>();
-    
-            gameScript.LocationFound();
-            gameScript.Next();
-    
-            #region
-            editorLocation.SetPositionAndRotation(
-                Conversions
-                    .GeoToWorldPosition(
-                        new Vector2d(55.87389437464513, -4.292198433520163),
-                        map.CenterMercator,
-                        map.WorldRelativeScale
-                    )
-                    .ToVector3xz(),
-                Quaternion.identity
+
+        GameObject n = new GameObject();
+        Camera.main.transform.parent = n.transform;
+        n.transform.position = BoundaryBoxes.ConvertToUnityCartesian(
+            Player.GetUserLocation(),
+            gameScript.origin
+        );
+        n.transform.LookAt(BoundaryBoxes.ConvertToUnityCartesian(location.centre));
+
+        yield return null;
+
+        Assert.IsTrue(gameScript.BuildingText.activeSelf);
+        Assert.IsTrue(gameScript.info.enabled);
+        Assert.IsTrue(gameScript.title.enabled);
+    }
+
+    [UnityTest]
+    public IEnumerator Update_AtFutureLocation_NoTextDisplayed()
+    {
+        GameScript gameScript = GameObject.Find("GameScriptObject").GetComponent<GameScript>();
+
+        #region
+        editorLocation.SetPositionAndRotation(
+            Conversions
+                .GeoToWorldPosition(
+                    new Vector2d(55.8718268818084, -4.2951840883561845),
+                    map.CenterMercator,
+                    map.WorldRelativeScale
+                )
+                .ToVector3xz(),
+            Quaternion.identity
+        
+            );var lp = (TransformLocationProvider)
+            LocationProviderFactory.Instance.DefaultLocationProvider;
+        lp.TargetTransform = editorLocation;
+        lp.SendLocationEvent();
+        #endregion
+
+        var location = LocationHandler.locations.Find(location =>
+            location.name == "Advanced Research Centre"
+        );
+
+        GameObject n = new GameObject();
+        Camera.main.transform.parent = n.transform;
+        n.transform.position = BoundaryBoxes.ConvertToUnityCartesian(
+            Player.GetUserLocation(),
+            gameScript.origin
             );
-            var lp = (TransformLocationProvider)
-                LocationProviderFactory.Instance.DefaultLocationProvider;
-            lp.TargetTransform = editorLocation;
-            lp.SendLocationEvent();
-            #endregion
-    
-            var location = LocationHandler.locations.Find(location =>
-                location.name == "Sir Alwyn Williams"
+        n.transform.LookAt(BoundaryBoxes.ConvertToUnityCartesian(location.centre));
+        Camera.main.transform.position = BoundaryBoxes.ConvertToUnityCartesian(
+            Player.GetUserLocation(),
+            gameScript.origin
+        
+            );Camera.main.transform.LookAt(BoundaryBoxes.ConvertToUnityCartesian(location.centre));
+
+        yield return null;
+
+        Assert.IsFalse(gameScript.BuildingText.activeSelf);
+        Assert.IsFalse(gameScript.info.enabled);
+        Assert.IsFalse(gameScript.title.enabled);
+    }
+
+    [UnityTest]
+    public IEnumerator Update_WasAtPreviousLocation_NoTextDisplayed()
+    {
+        GameScript gameScript = GameObject.Find("GameScriptObject").GetComponent<GameScript>();
+
+        gameScript.LocationFound();
+        gameScript.Next();
+
+        #region
+        editorLocation.SetPositionAndRotation(
+            Conversions
+                .GeoToWorldPosition(
+                    new Vector2d(55.87389437464513, -4.292198433520163),
+                    map.CenterMercator,
+                    map.WorldRelativeScale
+                )
+                .ToVector3xz(),
+            Quaternion.identity
             );
-    
-            GameObject n = new GameObject();
-            Camera.main.transform.parent = n.transform;
-            n.transform.position = BoundaryBoxes.ConvertToUnityCartesian(
-                Player.GetUserLocation(),
-                gameScript.origin
+        var lp = (TransformLocationProvider)
+            LocationProviderFactory.Instance.DefaultLocationProvider;
+        lp.TargetTransform = editorLocation;
+        lp.SendLocationEvent();
+        #endregion
+
+        var location = LocationHandler.locations.Find(location =>
+            location.name == "Sir Alwyn Williams"
+        
             );
-            n.transform.LookAt(BoundaryBoxes.ConvertToUnityCartesian(location.centre));
-    
-            yield return null;
-    
-            Assert.IsTrue(gameScript.BuildingText.activeSelf);
-            Assert.IsTrue(gameScript.info.enabled);
-            Assert.IsTrue(gameScript.title.enabled);
-        }
-    
-        [UnityTest]
-        public IEnumerator Update_AtFutureLocation_NoTextDisplayed()
-        {
-            GameScript gameScript = GameObject.Find("GameScriptObject").GetComponent<GameScript>();
-    
-            #region
-            editorLocation.SetPositionAndRotation(
-                Conversions
-                    .GeoToWorldPosition(
-                        new Vector2d(55.8718268818084, -4.2951840883561845),
-                        map.CenterMercator,
-                        map.WorldRelativeScale
-                    )
-                    .ToVector3xz(),
-                Quaternion.identity
-            );
-            var lp = (TransformLocationProvider)
-                LocationProviderFactory.Instance.DefaultLocationProvider;
-            lp.TargetTransform = editorLocation;
-            lp.SendLocationEvent();
-            #endregion
-    
-            var location = LocationHandler.locations.Find(location =>
-                location.name == "Advanced Research Centre"
-            );
-    
-            GameObject n = new GameObject();
-            Camera.main.transform.parent = n.transform;
-            n.transform.position = BoundaryBoxes.ConvertToUnityCartesian(
-                Player.GetUserLocation(),
-                gameScript.origin
-            );
-            n.transform.LookAt(BoundaryBoxes.ConvertToUnityCartesian(location.centre));
-            Camera.main.transform.position = BoundaryBoxes.ConvertToUnityCartesian(
-                Player.GetUserLocation(),
-                gameScript.origin
-            );
-            Camera.main.transform.LookAt(BoundaryBoxes.ConvertToUnityCartesian(location.centre));
-    
-            yield return null;
-    
-            Assert.IsFalse(gameScript.BuildingText.activeSelf);
-            Assert.IsFalse(gameScript.info.enabled);
-            Assert.IsFalse(gameScript.title.enabled);
-        }
-    
-        [UnityTest]
-        public IEnumerator Update_WasAtPreviousLocation_NoTextDisplayed()
-        {
-            GameScript gameScript = GameObject.Find("GameScriptObject").GetComponent<GameScript>();
-    
-            gameScript.LocationFound();
-            gameScript.Next();
-    
-            #region
-            editorLocation.SetPositionAndRotation(
-                Conversions
-                    .GeoToWorldPosition(
-                        new Vector2d(55.87389437464513, -4.292198433520163),
-                        map.CenterMercator,
-                        map.WorldRelativeScale
-                    )
-                    .ToVector3xz(),
-                Quaternion.identity
-            );
-            var lp = (TransformLocationProvider)
-                LocationProviderFactory.Instance.DefaultLocationProvider;
-            lp.TargetTransform = editorLocation;
-            lp.SendLocationEvent();
-            #endregion
-    
-            var location = LocationHandler.locations.Find(location =>
-                location.name == "Sir Alwyn Williams"
-            );
-    
-            GameObject n = new GameObject();
-            Camera.main.transform.parent = n.transform;
-            n.transform.position = BoundaryBoxes.ConvertToUnityCartesian(
-                Player.GetUserLocation(),
-                gameScript.origin
-            );
-            n.transform.LookAt(BoundaryBoxes.ConvertToUnityCartesian(location.centre));
-    
-            yield return null;
-    
-            #region
-            editorLocation.SetPositionAndRotation(
-                Conversions
-                    .GeoToWorldPosition(
-                        new Vector2d(55.893793849785176, -4.324952777065971),
-                        map.CenterMercator,
-                        map.WorldRelativeScale
-                    )
-                    .ToVector3xz(),
-                Quaternion.identity
+        GameObject n = new GameObject();
+        Camera.main.transform.parent = n.transform;
+        n.transform.position = BoundaryBoxes.ConvertToUnityCartesian(
+            Player.GetUserLocation(),
+            gameScript.origin
+        );
+        n.transform.LookAt(BoundaryBoxes.ConvertToUnityCartesian(location.centre));
+
+        yield return null;
+
+        #region
+        editorLocation.SetPositionAndRotation(
+            Conversions
+                .GeoToWorldPosition(
+                    new Vector2d(55.893793849785176, -4.324952777065971),
+                    map.CenterMercator,
+                    map.WorldRelativeScale
+                )
+                .ToVector3xz(),
+            Quaternion.identity
+        
             );
             lp = (TransformLocationProvider)LocationProviderFactory.Instance.DefaultLocationProvider;
             lp.TargetTransform = editorLocation;
@@ -450,7 +451,44 @@ namespace PlayModeTests
             Assert.IsFalse(GameObject.Find("InsideLocationOverlay").GetComponent<Canvas>().enabled);
             yield return null;
         }
-    
+
+        [UnityTest]
+        public IEnumerator ShowRestartConfirmation_WhenRestartPressed_ConfirmationPopUpShown()
+        {
+            Canvas gameCompleteOverlay = GetCanvas("GameCompleteOverlay");
+            gameCompleteOverlay.enabled = true;
+            Button restartButton = GameObject.Find("GameCompleteRestartButton").GetComponent<Button>();
+            restartButton.onClick.Invoke();
+            Assert.IsFalse(gameCompleteOverlay.enabled);
+            Assert.IsTrue(GetCanvas("RestartOverlay").enabled);
+            yield return null;
+        }
+        
+        [UnityTest]
+        public IEnumerator CancelRestart_WhenCancelPressed_ConfirmationPopUpHidden()
+        {
+            Canvas restartOverlay = GetCanvas("RestartOverlay");
+            restartOverlay.enabled = true;
+            Button cancelButton = GameObject.Find("RestartCancelButton").GetComponent<Button>();
+            cancelButton.onClick.Invoke();
+            Assert.IsFalse(restartOverlay.enabled);
+            yield return null;
+        }
+        
+        [UnityTest]
+        public IEnumerator ConfirmRestart_WhenConfirmPressed_ConfirmationPopUpHidden()
+        {
+            Canvas restartOverlay = GetCanvas("RestartOverlay");
+            restartOverlay.enabled = true;
+            Button confirmButton = GameObject.Find("RestartConfirmButton").GetComponent<Button>();
+            confirmButton.onClick.Invoke();
+            Assert.IsFalse(restartOverlay.enabled);
+            Assert.IsFalse(GetCanvas("Restart").enabled);
+            Assert.IsTrue(GetCanvas("ShowClue").enabled);
+            Assert.IsTrue(GetCanvas("ClueOverlay").enabled);
+            yield return null;
+        }
+
         [UnityTearDown]
         public IEnumerator TearDown()
         {

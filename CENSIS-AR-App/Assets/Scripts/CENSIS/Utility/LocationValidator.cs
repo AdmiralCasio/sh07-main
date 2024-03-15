@@ -10,6 +10,7 @@ namespace CENSIS.Utility
         /// </summary>
         /// <param name="position">position to be tested</param>
         /// <param name="location">the location which contains the boundary box <c>position</c> is to be tested in</param>
+        /// <param name="origin">the camera origin point in unity space</param>
         /// <returns>A boolean representing whether <paramref name="position"/> is within the inner and outwith the outer boundary box(es) of <paramref name="location"/></returns>
 
         public static bool AtLocation(Vector2 position, Location location, Vector3 origin)
@@ -19,8 +20,7 @@ namespace CENSIS.Utility
 
             foreach (var box in location.outer)
             {
-                int boxNumber = 0;
-                if (InBox(position, location.outer[boxNumber].points, origin))
+                if (InBox(position, box.points, origin))
                 {
                     inOuter = true;
                 }
@@ -28,8 +28,7 @@ namespace CENSIS.Utility
 
             foreach (var box in location.inner)
             {
-                int boxNumber = 0;
-                if (InBox(position, location.inner[boxNumber].points, origin))
+                if (InBox(position, box.points, origin))
                 {
                     inInner = true;
                 }
@@ -44,13 +43,14 @@ namespace CENSIS.Utility
         /// <param name="position">the position of the user</param>
         /// <param name="location">the location to be tested</param>
         /// <param name="origin">the origin point of the Unity world space in GPS coordinates</param>
+        /// <param name="cam">Main camera</param>
         /// <returns>A boolean representing whether or not the user at <c>position</c> is looking at the centre of <c>location</c></returns>
-        public static bool LookingAtLocation(Vector2 position, Location location, Vector3 origin)
+        public static bool LookingAtLocation(Vector2 position, Location location, Vector3 origin, Camera cam)
         {
             return AtLocation(position, location, origin)
                 && LocationVisibility.IsVisible(
                     BoundaryBoxes.ConvertToUnityCartesian(location.centre, origin),
-                    Camera.main
+                    cam
                 );
         }
 

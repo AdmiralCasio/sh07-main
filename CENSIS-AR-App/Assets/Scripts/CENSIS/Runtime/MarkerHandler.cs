@@ -5,8 +5,6 @@ using Mapbox.Unity.Map;
 using CENSIS.Locations;
 using Mapbox.Utils;
 using UnityEngine;
-using System.Linq;
-using TMPro;
 
 namespace CENSIS.Runtime
 {
@@ -16,7 +14,7 @@ namespace CENSIS.Runtime
         AbstractMap _map;
 
         [SerializeField]
-        float _spawnScale = 100f;
+        float _spawnScale = 10f;
 
         [SerializeField]
         GameObject _markerPrefab;
@@ -50,7 +48,7 @@ namespace CENSIS.Runtime
                 Vector2d convertedLocation = new Vector2d(location.centre.x, location.centre.y);
                 vectorLocations.Add(convertedLocation);
                 var instance = Instantiate(_markerPrefab);
-                instance.transform.localPosition = _map.GeoToWorldPosition(convertedLocation, true);
+                instance.transform.localPosition = _map.GeoToWorldPosition(convertedLocation);
                 instance.transform.localScale = new Vector3(_spawnScale, _spawnScale, _spawnScale);
                 instance.name = location.name;
                 instance.GetComponent<LabelTextSetter>().Set(new Dictionary<string, object> { { "name", location.name } });
@@ -67,7 +65,7 @@ namespace CENSIS.Runtime
             {
                 var spawnedObject = _spawnedObjects[i];
                 var location = vectorLocations[i];
-                spawnedObject.transform.localPosition = _map.GeoToWorldPosition(location, true);
+                spawnedObject.transform.localPosition = _map.GeoToWorldPosition(location);
                 spawnedObject.transform.localScale = new Vector3(_spawnScale, _spawnScale, _spawnScale);
             }
         }

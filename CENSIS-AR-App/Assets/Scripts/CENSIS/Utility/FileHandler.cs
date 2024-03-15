@@ -1,3 +1,8 @@
+/*
+ * https://stackoverflow.com/a/36244111
+ * programmer, dbc
+ */
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
