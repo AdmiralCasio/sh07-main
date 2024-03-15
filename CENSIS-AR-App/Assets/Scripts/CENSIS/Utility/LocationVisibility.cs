@@ -30,15 +30,22 @@ namespace CENSIS.Utility
         public static int[] GetColour(Vector3 target, Camera camera)
         {
             Vector3 screenPoint = camera.WorldToViewportPoint(target);
-            int [] array = screenPoint.x switch
+            int[] array;
+            if (screenPoint.z > 0)
             {
-                > 0 and < 1 => new[] { 0 },
-                < 0 and > -1 => new[] { 7, 8 },
-                > 1 and < 2 => new [] { 3, 4 }, 
-                <-2 => new [] { 5, 6 },
-                _ => new [] { 1, 2 }
-            };
+                 array = screenPoint.x switch
+                {
+                    >= 0 and < 1 => new[] { 0 },
+                    < 0 and >= -1 => new[] { 7, 8 },
+                    >= 1 and < 2 => new[] { 3, 4 },
+                    < -1 => new[] { 5, 6 },
+                    >= 2 => new[] { 1, 2 },
+                    _ => new int[] { }
+                };
+            }
+            else array = new int[] { }; 
             return array;
+
         }
     }
 
