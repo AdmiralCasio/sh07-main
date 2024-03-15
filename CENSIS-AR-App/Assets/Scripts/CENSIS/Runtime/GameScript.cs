@@ -54,6 +54,8 @@ namespace CENSIS.Runtime
         Canvas nextButton;
         Canvas showClue;
         Canvas startUpOverlay;
+        Canvas restartButton;
+        Canvas confirmRestart;
         Canvas solutionOverlay;
         Canvas locationUnavailableOverlay;
 
@@ -99,6 +101,9 @@ namespace CENSIS.Runtime
                 .Find("LocationUnavailableOverlay")
                 .GetComponent<Canvas>();
 
+            restartButton = GameObject.Find("Restart").GetComponent<Canvas>();
+            confirmRestart = GameObject.Find("RestartOverlay").GetComponent<Canvas>();
+            // check if save file exists to check if user has opened the app before
             #endregion
 
 
@@ -110,13 +115,15 @@ namespace CENSIS.Runtime
 
             #region Disable Overlays 
 
+            confirmRestart.enabled = false;
             clueOverlay.enabled = false;
             nextButton.enabled = false;
             locationFoundOverlay.enabled = false;
             gameCompleteOverlay.enabled = false;
             solutionOverlay.enabled = false;
             locationUnavailableOverlay.enabled = false;		
-
+            restartButton.enabled = false;
+            
             #endregion
         }
 
@@ -295,9 +302,37 @@ namespace CENSIS.Runtime
             solutionOverlay.enabled = false;
         }
 
+        public void ShowRestartConfirmation()
+        {
+            gameCompleteOverlay.enabled = false;
+            confirmRestart.enabled = true;
+        }
+
+        public void CancelRestart()
+        {
+            confirmRestart.enabled = false;
+        }
+
+        public void ConfirmRestart()
+        {
+            LocationHandler.Restart();
+            restartButton.enabled = false;
+            confirmRestart.enabled = false;
+            showClue.enabled = true;
+            ShowClue();
+        }
+
         void GameWon()
         {
             gameCompleteOverlay.enabled = true;
+            showClue.enabled = false;
+            nextButton.enabled = false;
+            restartButton.enabled = true;
+        }
+
+        public void CloseGameCompleteOverlay()
+        {
+            gameCompleteOverlay.enabled = false;
         }
     }
 }

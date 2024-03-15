@@ -147,8 +147,10 @@ namespace PlayModeTests
             );
             Button nextButton = GameObject.Find("NextButton").GetComponent<Button>();
             nextButton.onClick.Invoke();
-            // test overlay
             Assert.IsTrue(GetCanvas("GameCompleteOverlay").enabled);
+            Assert.IsFalse(GetCanvas("ShowClue").enabled);
+            Assert.IsFalse(GetCanvas("Next").enabled);
+            Assert.IsTrue(GetCanvas("Restart").enabled);
     
             yield return null;
         }
@@ -449,7 +451,44 @@ namespace PlayModeTests
             Assert.IsFalse(GameObject.Find("InsideLocationOverlay").GetComponent<Canvas>().enabled);
             yield return null;
         }
-    
+
+        [UnityTest]
+        public IEnumerator ShowRestartConfirmation_WhenRestartPressed_ConfirmationPopUpShown()
+        {
+            Canvas gameCompleteOverlay = GetCanvas("GameCompleteOverlay");
+            gameCompleteOverlay.enabled = true;
+            Button restartButton = GameObject.Find("GameCompleteRestartButton").GetComponent<Button>();
+            restartButton.onClick.Invoke();
+            Assert.IsFalse(gameCompleteOverlay.enabled);
+            Assert.IsTrue(GetCanvas("RestartOverlay").enabled);
+            yield return null;
+        }
+        
+        [UnityTest]
+        public IEnumerator CancelRestart_WhenCancelPressed_ConfirmationPopUpHidden()
+        {
+            Canvas restartOverlay = GetCanvas("RestartOverlay");
+            restartOverlay.enabled = true;
+            Button cancelButton = GameObject.Find("RestartCancelButton").GetComponent<Button>();
+            cancelButton.onClick.Invoke();
+            Assert.IsFalse(restartOverlay.enabled);
+            yield return null;
+        }
+        
+        [UnityTest]
+        public IEnumerator ConfirmRestart_WhenConfirmPressed_ConfirmationPopUpHidden()
+        {
+            Canvas restartOverlay = GetCanvas("RestartOverlay");
+            restartOverlay.enabled = true;
+            Button confirmButton = GameObject.Find("RestartConfirmButton").GetComponent<Button>();
+            confirmButton.onClick.Invoke();
+            Assert.IsFalse(restartOverlay.enabled);
+            Assert.IsFalse(GetCanvas("Restart").enabled);
+            Assert.IsTrue(GetCanvas("ShowClue").enabled);
+            Assert.IsTrue(GetCanvas("ClueOverlay").enabled);
+            yield return null;
+        }
+
         [UnityTearDown]
         public IEnumerator TearDown()
         {
