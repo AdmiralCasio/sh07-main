@@ -66,7 +66,9 @@ Open the resulting file in XCode, the code should begin compiling but before we 
 
 If any issues are encountered please refer to documentation online or [this](https://www.youtube.com/watch?v=-Hr4-XNCf8Y&t=352s) YouTube video as a reference.
 
-## Visuals
+## Example Images
+
+An example of information text being displayed for the ARC Building on the UofG Gilmorehill Campus.
 
 <img src="Images/ARC_with_Text.jpg" alt="3D AR text displays information about the ARC next to the building" width="200"/>
 
