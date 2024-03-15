@@ -6000,6 +6000,7 @@ GameObject:
   m_Component:
   - component: {fileID: 797189757}
   - component: {fileID: 797189758}
+  - component: {fileID: 797189759}
   m_Layer: 0
   m_Name: GameScriptObject
   m_TagString: Untagged
@@ -6051,6 +6052,18 @@ MonoBehaviour:
   BuildingText: {fileID: 295379840}
   title: {fileID: 237439878}
   info: {fileID: 1156712921}
+--- !u!114 &797189759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 797189755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba19d87c2bb5a1846a1284ffc7c657f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &814687195
 GameObject:
   m_ObjectHideFlags: 0
@@ -11708,7 +11721,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1734195070}
   - component: {fileID: 1734195069}
-  - component: {fileID: 1734195071}
   m_Layer: 0
   m_Name: CanvasManagerObject
   m_TagString: Untagged
@@ -11750,18 +11762,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1734195071
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1734195068}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ba19d87c2bb5a1846a1284ffc7c657f8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1765196076
 GameObject:
   m_ObjectHideFlags: 0
