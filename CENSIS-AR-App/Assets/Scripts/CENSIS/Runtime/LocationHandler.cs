@@ -57,6 +57,26 @@ namespace CENSIS.Runtime
             file.Close();
         }
 
+        public static void Restart()
+        {
+            string filePath = Path.Combine(Application.persistentDataPath, "PlayerData.dat");
+            // check if file exists
+            if (!File.Exists(filePath))
+            {
+                Debug.Log("no file exists");
+            }
+            else
+            {
+                Debug.Log("file exists, deleting...");
+
+                File.Delete(filePath);
+
+                RefreshEditorProjectWindow();
+            }
+            LocationIndex = 0;
+            playerData.locationIndex = LocationIndex;
+        }
+
         public static bool IsFinalLocation()
         {
             return LocationIndex == locations.Count - 1;
@@ -65,6 +85,13 @@ namespace CENSIS.Runtime
         public static Location GetCurrLocation()
         {
             return locations[LocationIndex];
+        }
+        
+        static void RefreshEditorProjectWindow()
+        {
+        #if UNITY_EDITOR
+            UnityEditor.AssetDatabase.Refresh();
+        #endif
         }
     }
 }
