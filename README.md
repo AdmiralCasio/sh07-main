@@ -68,6 +68,8 @@ If any issues are encountered please refer to documentation online or [this](htt
 
 ## Visuals
 
+<img src="Images/ARC_with_Text.jpg" alt="3D AR text displays information about the ARC next to the building" width="200"/>
+
 ## Usage
 
 ### Using the App
