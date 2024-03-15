@@ -108,6 +108,7 @@ namespace CENSIS.Runtime
             solutionOverlay.enabled = false;
             locationUnavailableOverlay.enabled = false;		
 
+            restartButton.enabled = false;
             Debug.Log($"clueOverlay.enabled {clueOverlay.enabled}");
             Debug.Log($"nextButton.enabled {nextButton.enabled}");
         }
@@ -219,7 +220,7 @@ namespace CENSIS.Runtime
                 // on screen debug
                 debugText[0].GetComponent<TMP_Text>().text = "At Location: false";
                 debugText[1].GetComponent<TMP_Text>().text = "Looking at Location : false";
-                Debug.Log($"Game Script: Not at {curr.name}");
+                // Debug.Log($"Game Script: Not at {curr.name}");
                 locationFoundOverlay.enabled = false;
                 InsideLocationOverlay.enabled = false;
             }
@@ -301,9 +302,7 @@ namespace CENSIS.Runtime
             }
             else
             {
-                // switch to next location
                 LocationHandler.NextLocation();
-                // show clue
                 ShowClue();
                 nextButton.enabled = false;
                 showClue.enabled = true;
@@ -325,7 +324,6 @@ namespace CENSIS.Runtime
         public void CloseClue()
         {
             clueOverlay.enabled = false;
-            Debug.Log($"clueOverlay.enabled {clueOverlay.enabled}");
         }
 
         public void CloseStartUpPopUp()
@@ -344,8 +342,9 @@ namespace CENSIS.Runtime
             solutionOverlay.enabled = false;
         }
 
-        public void ShowRestart()
+        public void ShowRestartConfirmation()
         {
+            gameCompleteOverlay.enabled = false;
             confirmRestart.enabled = true;
         }
 
@@ -354,39 +353,26 @@ namespace CENSIS.Runtime
             confirmRestart.enabled = false;
         }
 
-        public void RestartConfirmation()
+        public void ConfirmRestart()
         {
-            Console.WriteLine("maybe");
-            Debug.Log("maybe2");
-            string filePath = Path.Combine(Application.persistentDataPath, "PlayerData.dat");
-            // check if file exists
-            if (!File.Exists(filePath))
-            {
-                Debug.Log("no file exists");
-            }
-            else
-            {
-                Debug.Log("file exists, deleting...");
-
-                File.Delete(filePath);
-
-                RefreshEditorProjectWindow();
-            }
-
+            LocationHandler.Restart();
+            restartButton.enabled = false;
             confirmRestart.enabled = false;
-        }
-        void RefreshEditorProjectWindow()
-        {
-            #if UNITY_EDITOR
-            UnityEditor.AssetDatabase.Refresh();
-            #endif
+            showClue.enabled = true;
+            ShowClue();
         }
 
         void GameWon()
         {
-            // display congratulations
-            Debug.Log("Game finished, well done");
             gameCompleteOverlay.enabled = true;
+            showClue.enabled = false;
+            nextButton.enabled = false;
+            restartButton.enabled = true;
+        }
+
+        public void CloseGameCompleteOverlay()
+        {
+            gameCompleteOverlay.enabled = false;
         }
     }
 }
