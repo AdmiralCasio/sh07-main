@@ -1,5 +1,4 @@
 using Mapbox.Unity.Location;
-using Mapbox.Unity.Map;
 using UnityEngine;
 
 namespace CENSIS.Runtime
@@ -10,9 +9,8 @@ namespace CENSIS.Runtime
     public class MapManager : MonoBehaviour
     {
 
-        bool _tracking = false;
+        bool _tracking;
         Camera _mapCamera;
-        AbstractMap _map;
 
         public void ReCentre()
         {
@@ -57,7 +55,6 @@ namespace CENSIS.Runtime
         private void Start()
         {
             _mapCamera = GameObject.Find("MapCamera").GetComponent<Camera>();
-            _map = LocationProviderFactory.Instance.mapManager;
         }
     }
 }

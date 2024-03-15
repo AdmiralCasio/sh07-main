@@ -20,16 +20,6 @@ namespace CENSIS.Runtime
             );
         }
 
-        /// <returns>The current compass heading of the user's device</returns>
-        public static float GetUserDirection()
-        {
-            return LocationProviderFactory
-                .Instance
-                .DefaultLocationProvider
-                .CurrentLocation
-                .UserHeading;
-        }
-
         private static Vector2 Vector2dToVector2(Vector2d vector2D)
         {
             return new Vector2((float)vector2D.x, (float)vector2D.y);
@@ -38,15 +28,7 @@ namespace CENSIS.Runtime
         public static bool CheckUserLocation()
         {
             var currLocation = LocationProviderFactory.Instance.DefaultLocationProvider.CurrentLocation;
-            Debug.Log(
-                "GPS: time diff:" + (ConvertToUnixTimestamp(DateTime.Now) - currLocation.Timestamp)
-            );
-            Debug.Log(
-                "GPS: curloctime:"
-                + currLocation.Timestamp
-                + "time:"
-                + ConvertToUnixTimestamp(DateTime.Now)
-            );
+            
             if (
                 (currLocation.IsLocationServiceEnabled || currLocation.IsLocationServiceInitializing)
                 && ConvertToUnixTimestamp(DateTime.Now) - currLocation.Timestamp < 10

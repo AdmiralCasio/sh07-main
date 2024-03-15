@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace CENSIS.Utility
@@ -13,7 +12,7 @@ namespace CENSIS.Utility
     {
         /**
         * <summary>
-        *  Determins whether a Unity world space point <c>target</c> is within the view of the <c>camera</c>.
+        *  Determines whether a Unity world space point <c>target</c> is within the view of the <c>camera</c>.
         * </summary>
         * <param name="target">the point to be checked</param>
         * <param name="camera">the camera which is being tested</param>
@@ -27,7 +26,7 @@ namespace CENSIS.Utility
                    && screenPoint.z > 0;
         }
 
-        public static int[] GetColour(Vector3 target, Camera camera)
+        public static IEnumerable<int> GetColour(Vector3 target, Camera camera)
         {
             Vector3 screenPoint = camera.WorldToViewportPoint(target);
             int[] array;
