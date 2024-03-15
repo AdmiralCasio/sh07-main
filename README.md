@@ -39,7 +39,7 @@ The app will then build and open automatically on your Android device.
 To build from the command line, you can run the following command from the repo root, replacing the Unity Editor path and your own custom names where you like.
 
 ``` bash
-&"C:\Program Files\Unity\Hub\Editor\2022.3.16f1\Editor\Unity.exe" -projectPath CENSIS-AR-App -quit -batchmode -nographics -buildTarget Android -customBuildTarget Android -customBuildName Build -customBuildPath CENSIS-AR-App/Builds/Android/Build.apk -executeMethod BuildCommand.PerformBuild -logFile stdout
+&"C:/Program Files/Unity/Hub/Editor/2022.3.16f1/Editor/Unity.exe" -projectPath CENSIS-AR-App -quit -batchmode -nographics -buildTarget Android -customBuildTarget Android -customBuildName Build -customBuildPath CENSIS-AR-App/Builds/Android/Build.apk -executeMethod BuildCommand.PerformBuild -logFile stdout
 ```
 
 ### IOS
@@ -59,7 +59,7 @@ If any issues are encountered please refer to documentation online or [this](htt
 To build from the command line, you can run the following command from the repo root, replacing the Unity Editor path and your own custom names where you like.
 
 ``` bash
-&"C:\Program Files\Unity\Hub\Editor\2022.3.16f1\Editor\Unity.exe" -projectPath CENSIS-AR-App -quit -batchmode -nographics -buildTarget iOS -customBuildTarget iOS -customBuildName Build -customBuildPath CENSIS-AR-App/Builds/IOS/Build.apk -executeMethod BuildCommand.PerformBuild -logFile stdout
+&"C:/Program Files/Unity/Hub/Editor/2022.3.16f1/Editor/Unity.exe" -projectPath CENSIS-AR-App -quit -batchmode -nographics -buildTarget iOS -customBuildTarget iOS -customBuildName Build -customBuildPath CENSIS-AR-App/Builds/IOS/Build.apk -executeMethod BuildCommand.PerformBuild -logFile stdout
 ```
 
 Open the resulting file in XCode, the code should begin compiling but before we can deploy we must first navigate to the Signing and Capabilities tab, check the Enable Automatic Signing box and create and assign your team following the pop ups from the drop down menu. Now Connect your phone to the mac (a cable is most appropriate) and ensure the correct device is selected on the top bar of XCode and press run. Finally navigate to the VPN and Device Management option in the phones general setting and trust the developer and you should be able to open the app from your home page.
