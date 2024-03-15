@@ -9704,7 +9704,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 797189758}
         m_TargetAssemblyTypeName: CENSIS.Runtime.GameScript, NewAssembly
-        m_MethodName: Next
+        m_MethodName: ShowSolution
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
