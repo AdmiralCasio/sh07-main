@@ -44,6 +44,7 @@ namespace CENSIS.Runtime
         Canvas showClue;
         Canvas startUpOverlay;
         Canvas solutionOverlay;
+        Canvas locationUnavailableOverlay;
 
         private Camera cam;
 
@@ -86,6 +87,9 @@ namespace CENSIS.Runtime
             showClue = GameObject.Find("ShowClue").GetComponent<Canvas>();
             startUpOverlay = GameObject.Find("StartOverlay").GetComponent<Canvas>();
             solutionOverlay = GameObject.Find("SolutionOverlay").GetComponent<Canvas>();
+            locationUnavailableOverlay = GameObject
+                .Find("LocationUnavailableOverlay")
+                .GetComponent<Canvas>();
 
             // check if save file exists to check if user has opened the app before
             if (File.Exists(Path.Combine(Application.persistentDataPath, "PlayerData.dat")))
@@ -97,6 +101,7 @@ namespace CENSIS.Runtime
             locationFoundOverlay.enabled = false;
             gameCompleteOverlay.enabled = false;
             solutionOverlay.enabled = false;
+            locationUnavailableOverlay.enabled = false;		
 
             Debug.Log($"clueOverlay.enabled {clueOverlay.enabled}");
             Debug.Log($"nextButton.enabled {nextButton.enabled}");
@@ -121,6 +126,18 @@ namespace CENSIS.Runtime
 
         void Update()
         {
+#if UNITY_EDITOR
+#else
+        if (!Player.CheckUserLocation() && startUpOverlay.enabled == false)
+        {
+            locationUnavailableOverlay.enabled = true;
+        }
+        else
+        {
+            locationUnavailableOverlay.enabled = false;
+        }
+#endif
+
             // define user, current building, and overlay locations
             var location = Player.GetUserLocation();
             var curr = LocationHandler.GetCurrLocation();
