@@ -141,7 +141,6 @@ namespace CENSIS.Runtime
         }
 #endif
 
-            // define user, current building, and overlay locations
             var location = Player.GetUserLocation();
             var curr = LocationHandler.GetCurrLocation();
 
