@@ -105,3 +105,4 @@ See the [LICENSE](LICENSE) file for licensing information as it pertains to file
 * [game-ci/docker](https://github.com/game-ci/docker) Copyright (c) 2020-present GameCI used under MIT License.
 * [Mapbox Unity SDK](https://www.mapbox.com/unity) copyright (c) 2016-2017 Mapbox used under MIT License
 * [SimpleJSON](https://github.com/Bunny83/SimpleJSON) Copyright (c) 2012-2022 Markus Göbel (Bunny83) used under MIT License
+* [Feather](https://github.com/feathericons/feather) Copyright (c) 2013-2023 Cole Bemis used under MIT License
