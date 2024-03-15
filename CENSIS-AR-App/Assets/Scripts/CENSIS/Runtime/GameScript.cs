@@ -66,7 +66,6 @@ namespace CENSIS.Runtime
 
             // Define text mesh pro components
             BuildingText.gameObject.SetActive(false);
-            BuildingText.transform.forward = -BuildingText.transform.forward;
             title.gameObject.SetActive(false);
             info.gameObject.SetActive(false);
             defaultInfoTitleScale = title.transform.localScale;
@@ -166,8 +165,7 @@ namespace CENSIS.Runtime
                 if (!BuildingText.gameObject.activeSelf)
                 {
                     BuildingText.transform.LookAt(Camera.main.transform.position);
-                    // BuildingText.transform.rotation = Quaternion.LookRotation(
-                    //     BuildingText.transform.position)
+                    BuildingText.transform.forward = -BuildingText.transform.forward;
                     ScaleText(new Vector3(scale,scale,1));
                 }
                 ShowLocationInformation(overlayLocation, curr);
@@ -221,8 +219,11 @@ namespace CENSIS.Runtime
         private void HideLocationInformation()
         {
             BuildingText.gameObject.SetActive(false);
-            info.gameObject.SetActive(false);
-            title.gameObject.SetActive(false);
+            int children = BuildingText.transform.childCount;
+            for (int i = 0; i < children; i++)
+            {
+                BuildingText.transform.GetChild(i).gameObject.SetActive(false);
+            }
             info.enabled = false;
             title.enabled = false;
             title.transform.localScale = defaultInfoTitleScale;
@@ -248,8 +249,11 @@ namespace CENSIS.Runtime
 
             // toggle game object states
             BuildingText.gameObject.SetActive(true);
-            info.gameObject.SetActive(true);
-            title.gameObject.SetActive(true);
+            int children = BuildingText.transform.childCount;
+            for (int i = 0; i < children; i++)
+            {
+                BuildingText.transform.GetChild(i).gameObject.SetActive(true);
+            }
             info.enabled = true;
             title.enabled = true;
 
