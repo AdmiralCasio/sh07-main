@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using Newtonsoft.Json;
 using SimpleJSON;
 using TMPro;
 using UnityEngine;
@@ -24,9 +23,9 @@ namespace CENSIS.Runtime
 
             // Config api
             string config = Resources.Load<TextAsset>("OpenWeatherMap").text;
-            var openWeatherMap = JSONNode.Parse(config);
-            apiKey = openWeatherMap["key"].ToString();
-            currentWeatherApi = openWeatherMap["currentAPI"].ToString();
+            var openWeatherMap = JSON.Parse(config);
+            apiKey = openWeatherMap["key"];
+            currentWeatherApi = openWeatherMap["currentAPI"];
             Debug.Log("weather : " + apiKey);
             Debug.Log("weather : " + currentWeatherApi);
 
