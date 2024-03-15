@@ -11,6 +11,7 @@ namespace CENSIS.Utility
         /// </summary>
         /// <param name="point">the point to test</param>
         /// <param name="polygon">the polygon being tested</param>
+        /// <param name="origin">the camera origin point in unity space</param>
         /// <returns>A boolean representing whether or not <paramref name="point"/> is in <paramref name="polygon"/></returns>
         public static bool IsPointInPolygonGPS(Vector2 point, Vector2[] polygon, Vector3 origin)
         {
@@ -53,8 +54,8 @@ namespace CENSIS.Utility
                     inside = !inside;
                 }
                 else if (
-                    polygon[i].y == point.y
-                    && polygon[j].y == point.y
+                    polygon[i].y.Equals(point.y)
+                    && polygon[j].y.Equals(point.y)
                     && point.x >= Math.Min(polygon[i].x, polygon[j].x) - tolerance
                     && point.x <= Math.Max(polygon[i].x, polygon[j].x) + tolerance
                 )
@@ -72,7 +73,7 @@ namespace CENSIS.Utility
         /// <param name="point">the point to test</param>
         /// <param name="polygon">the polygon being tested</param>
         /// <returns>A boolean representing whether or not <paramref name="point"/> is in <paramref name="polygon"/></returns>
-        public static bool IsPointInPolygon(Vector3 point, Vector3[] polygon)
+        private static bool IsPointInPolygon(Vector3 point, Vector3[] polygon)
         {
             bool inside = false;
             float tolerance = 0.001f; // Add a small tolerance value
@@ -100,8 +101,8 @@ namespace CENSIS.Utility
                     inside = !inside;
                 }
                 else if (
-                    polygon[i].y == point.y
-                    && polygon[j].y == point.y
+                    polygon[i].y.Equals(point.y)
+                    && polygon[j].y.Equals(point.y)
                     && point.x >= Math.Min(polygon[i].x, polygon[j].x) - tolerance
                     && point.x <= Math.Max(polygon[i].x, polygon[j].x) + tolerance
                 )
@@ -128,10 +129,10 @@ namespace CENSIS.Utility
             return carts.ToArray();
         }
         /// <summary>
-        /// Converts the array of GPS coordinates <paramref name="latlongs"/> to Unity world space coordinates
+        /// Converts the array of GPS coordinates <paramref name="latLong"/> to Unity world space coordinates
         /// </summary>
-        /// <param name="latlongs">the GPS coordinates to convert</param>
-        /// <returns>The array of GPS coordinates <paramref name="latlongs"/> as a an array of <see cref="Vector2"/> in Unity world space</returns>
+        /// <param name="latLong">the GPS coordinates to convert</param>
+        /// <returns>The array of GPS coordinates <paramref name="latLong"/> as a an array of <see cref="Vector2"/> in Unity world space</returns>
         public static Vector2 ConvertToCartesian(Vector2 latLong)
         {
             // WGS-84 ellipsoid constants
@@ -150,13 +151,12 @@ namespace CENSIS.Utility
             // cartesian coordinates
             double x = N * Math.Cos(lat) * Math.Cos(lon);
             double y = N * Math.Cos(lat) * Math.Sin(lon);
-            double z = (b * b) / (a * a) * N * Math.Sin(lat);
 
             return new Vector2((float)x, (float)y);
         }
 
         /// <summary>
-        /// Converts the GPS coordinate <paramref name="latLong"/> to Unity world space coordinates inlcuding calculated altitude
+        /// Converts the GPS coordinate <paramref name="latLong"/> to Unity world space coordinates including calculated altitude
         /// </summary>
         /// <param name="latLong">the GPS coordinate to be converted</param>
         /// <returns>The GPS coordinate <paramref name="latLong"/> as a <see cref="Vector3"/> in Unity world space</returns>
@@ -196,12 +196,12 @@ namespace CENSIS.Utility
         }
 
         /// <summary>
-        /// Converts the GPS coordinate <paramref name="latLong"/> to Unity world space coordinates, normalising the value using <paramref name="origin"/> as a zero point
+        /// Converts the GPS coordinate <paramref name="latlongs"/> to Unity world space coordinates, normalising the value using <paramref name="origin"/> as a zero point
         /// </summary>
-        /// <param name="latLong">the GPS coordinate to be converted</param>
-        /// <param name="origin">the origin point used to normalise <paramref name="latLong"/></param>
-        /// <returns>The GPS coordinate <paramref name="latLong"/> converted to Unity world space and normalised using <paramref name="origin"/></returns>
-        public static Vector3[] ConvertToUnityCartesian(Vector2[] latlongs, Vector3 origin)
+        /// <param name="latlongs">the GPS coordinate to be converted</param>
+        /// <param name="origin">the origin point used to normalise <paramref name="latlongs"/></param>
+        /// <returns>The GPS coordinate <paramref name="latlongs"/> converted to Unity world space and normalised using <paramref name="origin"/></returns>
+        private static Vector3[] ConvertToUnityCartesian(Vector2[] latlongs, Vector3 origin)
         {
             List<Vector3> carts = new List<Vector3>();
             foreach (Vector2 latlong in latlongs)

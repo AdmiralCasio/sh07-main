@@ -1,4 +1,3 @@
-using System.Net.Security;
 using Mapbox.Unity.Location;
 using Mapbox.Utils;
 using UnityEngine;
