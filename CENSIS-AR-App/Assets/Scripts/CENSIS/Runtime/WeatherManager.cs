@@ -24,9 +24,10 @@ namespace CENSIS.Runtime
         void Start()
         {
             string config = Resources.Load<TextAsset>("OpenWeatherMap").text;
-            string[] openWeatherMap = config.Split(",");
-            apiKey = openWeatherMap[0].Trim();
-            currentWeatherApi = openWeatherMap[1].Trim();
+            var openWeatherMap = JSON.Parse(config);
+            apiKey = openWeatherMap["key"];
+            currentWeatherApi = openWeatherMap["currentAPI"];
+            
             StartCoroutine(FetchLocationData());
         }
 
